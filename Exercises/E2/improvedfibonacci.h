@@ -12,7 +12,8 @@ class ImprovedFibonacci {
 public:
     ImprovedFibonacci(size_t maxSize);
     ImprovedFibonacci() : ImprovedFibonacci(20) {}
-    int fibonacci(int n); // fibonacci number n, n >= 0
+    ~ImprovedFibonacci();
+    int fibonacci(int n); // fibonacci number n, n > 0
 private:
     size_t maxSize;
     int* result;     // cache for computed results

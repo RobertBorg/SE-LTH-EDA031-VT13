@@ -13,6 +13,10 @@ ImprovedFibonacci::ImprovedFibonacci(size_t maxSize) {
     this->maxComputed = 1;
 }
 
+ImprovedFibonacci::~ImprovedFibonacci() {
+    delete result;
+}
+
 
 int ImprovedFibonacci::fibonacci(int n) {
 if( n <= 0 ) { throw std::out_of_range("n must be > 0"); }
