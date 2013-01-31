@@ -1,5 +1,8 @@
 class Coding {
-	public:
+public:
 	static char encode(char& c);
 	static char decode(char& c);
+private:
+	Coding();
+
 }
