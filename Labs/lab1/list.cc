@@ -22,44 +22,75 @@ namespace cpp_lab1 {
     List::~List() {
         TRACE("List::~List()");
         assert(head != 0);
-        //
-        // *** IMPLEMENT ***
-        //
+        
+        Node* c = head; 
+        while(c != 0) {
+            Node* toDelete = c;
+            c=c->next;
+            delete toDelete;
+        }
     }
     
     void List::insert(long d) {
-        //
-        // *** IMPLEMENT ***
-        //
+        Node* tmp = new Node(d,head->next);
+        head->next = tmp;
     }
     
     void List::remove(long d, DeleteFlag df) {
-        //
-        // *** IMPLEMENT ***
-        //
+        Node* p = 0;
+        Node* c = head;
+        bool terminateSearch = false;
+        while(!terminateSearch && c->next != 0 ){
+            p = c;
+            c=c->next;
+            switch(df){
+                case List::LESS:
+                    if(c->value < d){
+                        terminateSearch = true;
+                    }
+                break;
+                case List::EQUAL:
+                    if(c->value == d){
+                        terminateSearch = true;
+                    }
+                break;
+                case List::GREATER:
+                    if(c->value > d){
+                        terminateSearch = true;
+                    }
+                break;
+            }
+        }
+
+        if(terminateSearch){
+            p->next = c->next;
+            delete c;
+        }
     }
     
     int List::size() const {
         int size = 0;
-        //
-        // *** IMPLEMENT ***
-        //
+        Node* c = head;
+        while(c->next != 0){
+            c=c->next;
+            size++;
+        }
         return size;
     }
     
     bool List::empty() const {
-        bool empty = false;
-        //
-        // *** IMPLEMENT ***
-        //
-        return empty;
+        return head->next == 0;
     }
     
     long List::largest() const {
         long largest = std::numeric_limits<long>::min();
-        //
-        // *** IMPLEMENT ***
-        //
+        Node* c = head;
+        while(c->next != 0){
+            c=c->next;
+            if(c->value > largest){
+                largest = c->value;
+            }
+        }
         return largest;
     }
     
