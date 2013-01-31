@@ -12,6 +12,8 @@
 *.la
 *.a
 
+#sublime
+*.sublime-workspace
 
 #Build dirs
 build
