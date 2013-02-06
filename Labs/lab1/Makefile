@@ -2,13 +2,15 @@
 CXXFLAGS  = -pipe -O2 -Wall -W -ansi -pedantic-errors
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 
-ALLTARGETS = hello.ii hello.s ltest encode decode liblab1.a liblab1.so liblab1.so.1 liblab1.so.1.0 ltest_s encode_s decode_s
+ALLTARGETS = hello.ii hello.s ltest encode decode liblab1.a liblab1.so liblab1.so.1 liblab1.so.1.0 ltest_s encode_s decode_s hello
 
 # Define what to do when make is executed without arguments.
 all: $(ALLTARGETS)
 
 # The following rule means "if ltest is older than ltest.o or list.o,
 # then link ltest".
+hello: hello.cc
+
 hello.ii: hello.cc
 	g++ -E -o hello.ii hello.cc
 
