@@ -4,20 +4,40 @@
 
 # Compiler and compiler options:
 CXX       = g++
-CXXFLAGS  = -pipe -O2 -Wall -W -ansi -pedantic-errors
+CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
+CC        = g++
 
-ALLTARGETS = ltest
+# insert this line somewhere at the top of the file
+DEBUG = false
+# insert the following lines after the definitions of CXXFLAGS and LDFLAGS
+ifeq ($(DEBUG), true)
+	CXXFLAGS += -ggdb
+	LDFLAGS += -ggdb
+else
+	CXXFLAGS += -O2
+endif
+
+ALLTARGETS = ltest reciprocal vgtest
+
+sources = $(wildcard *.cc)
+
+.PHONY: install uninstall all clean cleaner build
+
+all: $(ALLTARGETS)
+
+%.dd: %.cc
+	@set -e; rm -f $@; \
+	$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
 
 # Linking:
 ltest: ltest.o list.o
-	$(CXX) -o $@ $^
 
 # Dependencies, the implicit rule .cc => .o is used
-ltest.o: ltest.cc list.h
-list.o: list.cc list.h
-
-.PHONY: install uninstall all clean cleaner build
+include $(sources:.cc=.dd)
 
 install: all
 	mkdir -p lib bin
@@ -26,5 +46,8 @@ install: all
 uninstall:
 	cd ./bin; rm $(ALLTARGETS)
  
-all: $(ALLTARGETS)
+clean:
+	$(RM) *.o *.dd
 
+cleaner:
+	$(RM) *.dd *.o $(ALLTARGETS)
