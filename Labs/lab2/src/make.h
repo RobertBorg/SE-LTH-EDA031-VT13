@@ -31,8 +31,9 @@ public:
 
 class Make {
 public: 
-	typedef map<string, shared_ptr<Vertex> > MakeMap; 
+
 	typedef shared_ptr<Vertex> VertexPtr;
+	typedef map<string, VertexPtr> MakeMap; 
 	typedef set<VertexPtr> VertexSet;
 	void readfile(const string filename) {
 		string input;
@@ -66,14 +67,14 @@ public:
 private:
 	MakeMap globalVertexMap;
 	VertexSet rootTargets;
-	shared_ptr<Vertex> currentNode;
-	shared_ptr<Vertex> getPutFromGlobal(const string& name) {
+	VertexPtr currentNode;
+	VertexPtr getPutFromGlobal(const string& name) {
 		 auto mapItt = globalVertexMap.find(name);
 		if( mapItt != globalVertexMap.end() ){
-			shared_ptr<Vertex> toRtn = (*mapItt).second;
+			VertexPtr toRtn = (*mapItt).second;
 			return toRtn;
 		} else {
-			shared_ptr<Vertex> toInsert(new Vertex(name));
+			VertexPtr toInsert(new Vertex(name));
 			globalVertexMap[name] = toInsert;
 			return toInsert;
 		}

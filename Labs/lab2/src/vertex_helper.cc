@@ -9,7 +9,7 @@ std::ostream& operator<<(std::ostream& os, Vertex& obj) {
 	}
 	obj.visited=true;
 	for(auto itt = obj.dependencies.begin(); itt != obj.dependencies.end(); ++itt){
-		os << **itt;
+		os << *((*itt).lock());
 
 	}
 	os << obj.name;
