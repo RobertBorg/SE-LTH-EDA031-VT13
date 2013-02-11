@@ -1,4 +1,8 @@
 #include "make.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 int main(int argc, char* argv[]) {
 	Make m;
@@ -7,6 +11,10 @@ int main(int argc, char* argv[]) {
 	} else {
 		m.readfile("test1.txt");
 	}
-	m.printCompileOrder(); 
+	try {
+		m.printCompileOrder(); 
+	} catch (cyclic& e) {
+		cout << e.what() << endl;
+	}
 	return 0;
 }

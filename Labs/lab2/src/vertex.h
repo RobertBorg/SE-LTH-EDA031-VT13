@@ -10,15 +10,18 @@ using boost::shared_ptr;
 using std::string;
 
 class Vertex {
-	friend std::ostream& operator<<(std::ostream& os, const Vertex& obj);
+	friend std::ostream& operator<<(std::ostream& os, Vertex& obj);
 public:
-	Vertex(const string& inName ) : name(inName) {}
+	bool isRootVertex;
+	Vertex(const string& inName ) : isRootVertex(true), name(inName), visited(false) {}
 
 	void addDependency(shared_ptr<Vertex> dep ) {
 		dependencies.insert(dep);
 	}
+
 private:
 	string name;
+	bool visited;
 	set< shared_ptr<Vertex> > dependencies;
 };
 
