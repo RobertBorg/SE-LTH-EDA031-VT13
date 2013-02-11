@@ -4,11 +4,11 @@
 
 # Compiler and compiler options:
 CXX       = g++
-CXXFLAGS  = -pipe -O2 -Wall -W -ansi -pedantic-errors
+CXXFLAGS  = -pipe -O2 -Wall -W -ansi -pedantic-errors -std=c++11
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CC        = g++
 
-ALLTARGETS = ltest encode decode hello
+ALLTARGETS = ltest encode decode hello topsort
 
 VPATH= ../src/
 
@@ -20,12 +20,14 @@ all: $(ALLTARGETS)
 
 %.dd: %.cc
 	@set -e; rm -f $@; \
-	$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
+	$(CC) -MM $(CXXFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
 
 # Linking:
+topsort: topsort.o vertex_helper.o
+
 ltest: ltest.o list.o
 
 encode: encode.o coding.o
