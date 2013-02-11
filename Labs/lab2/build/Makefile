@@ -4,11 +4,21 @@
 
 # Compiler and compiler options:
 CXX       = g++
-CXXFLAGS  = -pipe -O2 -Wall -W -ansi -pedantic-errors -std=c++11
+CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CC        = g++
 
 ALLTARGETS = ltest encode decode hello topsort
+
+# insert this line somewhere at the top of the file
+DEBUG = false
+# insert the following lines after the definitions of CXXFLAGS and LDFLAGS
+ifeq ($(DEBUG), true)
+	CXXFLAGS += -ggdb
+	LDFLAGS += -ggdb
+else
+	CXXFLAGS += -O2
+endif
 
 VPATH= ../src/
 
