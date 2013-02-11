@@ -7,7 +7,7 @@
 	],
 	"settings":
 	{
-		"sublimeclang_enabled": true,
+		"sublimeclang_enabled": false,
 		"sublimeclang_reparse_on_activated": true
 	}
 }
