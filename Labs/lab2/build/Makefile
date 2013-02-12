@@ -6,7 +6,7 @@
 CXX       = g++
 CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
-CC        = g++
+CC        = $(CXX)
 
 ALLTARGETS = ltest encode decode hello topsort
 
@@ -56,7 +56,7 @@ uninstall:
 	cd ./bin; rm $(ALLTARGETS)
  
 clean:
-	$(RM) *.o *.dd
+	$(RM) *.o *.dd*
 
 cleaner:
-	$(RM) *.dd *.o $(ALLTARGETS)
+	$(RM) *.dd* *.o $(ALLTARGETS)
