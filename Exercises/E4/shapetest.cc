@@ -11,17 +11,17 @@ using namespace std;
  */
 class Shape {
 public:
-    void print() const { cout << "I'm a Shape" << endl; }
+    virtual void print() const { cout << "I'm a Shape" << endl; }
 };
 
 class Square : public Shape {
 public:
-    void print() const { cout << "I'm a Square" << endl; }
+    virtual void print() const { cout << "I'm a Square" << endl; }
 };
 
 class Circle : public Shape {
 public:
-    void print() const { cout << "I'm a Circle" << endl; }
+    virtual void print() const { cout << "I'm a Circle" << endl; }
 };
 
 int main() {

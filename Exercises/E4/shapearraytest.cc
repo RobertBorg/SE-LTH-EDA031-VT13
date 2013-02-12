@@ -20,12 +20,12 @@ public:
 
 class Square : public Shape {
 public:
-    void print() const { cout << "I'm a Square" << endl; }
+    virtual void print() const { cout << "I'm a Square" << endl; }
 };
 
 class Circle : public Shape {
 public:
-    void print() const { cout << "I'm a Circle" << endl; }
+    virtual void print() const { cout << "I'm a Circle" << endl; }
 };
 
 
@@ -33,7 +33,7 @@ int main() {
     /*
      * A vector of Shapes.
      */
-    vector<Shape> shapes;
+    vector<Shape*> shapes;
     const size_t NBR_SHAPES = 10;
     
     /*
@@ -41,11 +41,11 @@ int main() {
      */
     for (size_t i = 0; i < NBR_SHAPES; ++i) {
         if (::random() % 2 == 0) {
-            Square aSquare;
+            Square* aSquare = new Square;
             shapes.push_back(aSquare);
         }
         else {
-            Circle aCircle;
+            Circle* aCircle = new Circle;
             shapes.push_back(aCircle);
         }
     }
@@ -53,6 +53,8 @@ int main() {
     /*
      * Print the shapes.
      */
-    for (size_t i = 0; i < shapes.size(); ++i)
-        shapes[i].print();
+    for (vector<Shape*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        (*it)->print();
+        delete *it;
+    }
 }
