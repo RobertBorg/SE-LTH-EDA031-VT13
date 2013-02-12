@@ -8,17 +8,17 @@
 Segment::Segment(double x1, double y1, double x2, double y2)
     : p(x1,y1), q(x2,y2) {}
 
-Segment::Segment(const Segment& s) 
+Segment::Segment(const Segment& other) 
     : p(other.p), 
     q(other.q) {}
 
-Segment& Segment::operator=(const Segment& s) {
-    if (&s == this) {
+Segment& Segment::operator=(const Segment& other) {
+    if (&other == this) {
         return *this;
     }
 
-    p = Point(s.p.getX(), s.p.getY());
-    q = Point(s.q.getX(), s.q.getY());
+    p = Point(other.p);
+    q = Point(other.q);
     return *this;
 }
 

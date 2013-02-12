@@ -18,15 +18,14 @@ class Segment {
 public:
     Segment(double x1, double y1,         // a line from (x1,y1) to (x2,y2)
             double x2, double y2);
-    Segment(const Segment& s);            // copy constructor
-    Segment& operator=(const Segment& s); // assignment operator
-    ~Segment();                           // destructor
+    Segment(const Segment& other);            // copy constructor
+    Segment& operator=(const Segment& other); // assignment operator
     void setToOrigo();                    // line from (0,0) to (0,0)
     double getLength() const;             // the length of the line
     
 private:
-    Point* p; // pointer to the start point
-    Point* q; // pointer to the end point
+    Point p; // pointer to the start point
+    Point q; // pointer to the end point
 };
 
 #endif

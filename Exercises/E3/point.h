@@ -8,6 +8,7 @@
 class Point {
 public:
     Point(double ix, double iy);
+    Point(const Point& other) : x(other.x), y(other.y) {}
     double getX() const;
     double getY() const;
 private:
