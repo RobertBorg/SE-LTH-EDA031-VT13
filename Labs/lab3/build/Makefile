@@ -8,7 +8,7 @@ CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CC        = $(CXX)
 
-ALLTARGETS = replace_all_test sievetest
+ALLTARGETS = replace_all_test sievetest date_test
 
 # insert this line somewhere at the top of the file
 DEBUG = false
@@ -36,7 +36,7 @@ all: $(ALLTARGETS)
 
 
 # Linking:
-replace_all_test: replace_all_test.o
+date_test: date_test.o date.o
 
 
 # Dependencies, the implicit rule .cc => .o is used

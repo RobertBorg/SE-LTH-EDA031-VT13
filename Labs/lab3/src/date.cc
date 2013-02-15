@@ -5,8 +5,31 @@
 
 #include <ctime>    // for C-routines: time and localtime
 #include "date.h"
+#include <iomanip>
+using std::setfill;
+using std::setw;
 
 namespace cpp_lab3 {
+    using std::dec;
+
+    ostream& operator<<(ostream& os, Date& date) {
+        os << setfill('0');
+        os  << setw(4) << date.getYear() << '-'
+            << setw(2) << date.getMonth() << '-'
+            << setw(2) << date.getDay();
+
+        return os;
+    }
+
+    istream& operator>>(istream& is, Date& date) {
+        char tmp;
+        is >> dec >> date.year;
+        is.get(tmp);
+        is >> dec >> date.month;
+        is.get(tmp);
+        is >> dec >> date.day;
+        return is;
+    }
     int Date::daysPerMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     
     Date::Date() {
@@ -17,11 +40,7 @@ namespace cpp_lab3 {
         day = locTime->tm_mday;
     }
     
-    Date::Date(int y, int m, int d) {
-        //
-        // *** IMPLEMENT ***
-        //
-    }
+    Date::Date(int y, int m, int d) : year(y), month(m), day(d) {}
     
     int Date::getYear() const {
         return year;
@@ -36,8 +55,12 @@ namespace cpp_lab3 {
     }
     
     void Date::next() {
-        //
-        // *** IMPLEMENT ***
-        //
+        if(++day > daysPerMonth[month-1]) {
+            if( ++month > 12) {
+                ++year;
+                month = 1;
+            }
+            day = 1;
+        }
     }
 }

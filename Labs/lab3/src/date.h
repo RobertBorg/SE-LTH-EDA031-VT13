@@ -6,9 +6,16 @@
 #define DATE_H
 
 #include <iostream>
+using std::istream;
+using std::ostream;
+
 
 namespace cpp_lab3 {
+    class Date;
+    ostream& operator<<(ostream& os, Date& date);
+    istream& operator>>(istream& is, Date& date);
     class Date {
+        friend istream& operator>>(istream& is, Date& date);
 	public:
         Date();                      // today's date
         Date(int y, int m, int d);   // yyyy-mm-dd
