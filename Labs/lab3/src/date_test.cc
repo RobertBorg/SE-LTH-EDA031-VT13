@@ -4,20 +4,6 @@
 using namespace cpp_lab3;
 using namespace std;
 
-/*
- * Prints the date d in the format yyyy-mm-dd. You shall replace this
- * function with an overloaded operator<<, and add an overloaded operator>>.
- *
- */
-void print(const Date& d) {
-	cout << d.getYear() << "-";
-	if (d.getMonth() < 10)
-		cout << "0";
-	cout << d.getMonth() << "-";
-	if (d.getDay() < 10)
-		cout << "0";
-	cout << d.getDay();
-}
 
 int main() {
     // Check input and output of dates. Uncomment the following when you 
