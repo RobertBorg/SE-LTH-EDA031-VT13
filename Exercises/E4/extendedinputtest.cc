@@ -1,5 +1,5 @@
 #include "rangereader.h"
-//#include "enumvaluesreader.h"  /* uncomment when you have written the file */
+#include "enumvaluesreader.h"  /* uncomment when you have written the file */
 #include <iostream>
 
 using namespace std;
@@ -20,12 +20,10 @@ int main() {
      * Check EnumValuesReader. Uncomment the following when you have
      * written the class.
      */
-    /*
     int x[] = {10, 20, 30, 40, 50};
     const int X_SIZE = sizeof(x) / sizeof(int);
     EnumValuesReader evr("Type a number (10, 20, 30, 40, 50): ",
                          "Illegal number!", x, X_SIZE);
     int nbr3 = evr.askAndGet();
     cout << "Accepted the number " << nbr3 << endl;
-     */
 }
