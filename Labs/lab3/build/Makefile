@@ -8,7 +8,7 @@ CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CC        = $(CXX)
 
-ALLTARGETS = replace_all_test
+ALLTARGETS = replace_all_test sievetest
 
 # insert this line somewhere at the top of the file
 DEBUG = false
