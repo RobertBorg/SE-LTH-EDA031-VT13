@@ -11,12 +11,10 @@ public:
 	}
 	const string& doAlgo() {
 		const size_t algoSize = algo.length();
-		size_t pos = algo.find('P');
-		while(pos != string::npos){
+		for(size_t pos = algo.find('P'); pos != string::npos; pos = algo.find('P',pos+1)){
 			for(size_t i = pos+pos; i < algoSize; i += pos) {
 				algo[i] = 'C';
 			}
-			pos = algo.find('P',pos+1);
 		}
 		return algo;
 	}
