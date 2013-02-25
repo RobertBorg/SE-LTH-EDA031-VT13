@@ -19,7 +19,7 @@ namespace cpp_lab2 {
         VertexList adj;    // list of adjacent vertices
         enum Color { WHITE = 0, GRAY = 1, BLACK = 2 };
         Color color;       // used in the DFS algorithm
-        int colour;
+        int colour; //white = 0, gray = 1, black = 2
 
 
         bool visited;

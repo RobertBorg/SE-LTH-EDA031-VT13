@@ -4,12 +4,11 @@
 
 # Compiler and compiler options:
 CXX       = g++
-CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++ -m32
+CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CC        = $(CXX)
-LDFLAGS += -m32
 
-ALLTARGETS = topsort ltest encode decode hello
+ALLTARGETS = replace_all_test
 
 # insert this line somewhere at the top of the file
 DEBUG = false
@@ -37,13 +36,7 @@ all: $(ALLTARGETS)
 
 
 # Linking:
-topsort: topsort.o vertex_helper.o
-
-ltest: ltest.o list.o
-
-encode: encode.o coding.o
-
-decode: decode.o coding.o
+replace_all_test: replace_all_test.o
 
 
 # Dependencies, the implicit rule .cc => .o is used

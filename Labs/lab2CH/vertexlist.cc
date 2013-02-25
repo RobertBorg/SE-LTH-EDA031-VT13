@@ -31,12 +31,12 @@ namespace cpp_lab2 {
         std::stack<std::string> result;
         /* 1. initialize the graph and the result stack */
         for(std::vector<Vertex*>::iterator w = vptrs.begin(); w != vptrs.end(); ++w) {
-            (*w)->colour = 0;
+            (*w)->color = Vertex::WHITE;
         }
         /* 2. search from all unvisited vertices */
         for(std::vector<Vertex*>::iterator w = vptrs.begin(); w != vptrs.end(); ++w) {
-            int color = (*w)->colour;
-            int white = 0;
+            int color = (*w)->color;
+            int white = Vertex::WHITE;
             if (color == white)
                 dfs_visit(*w, result);
         }
@@ -90,22 +90,24 @@ namespace cpp_lab2 {
     */
     void VertexList::dfs_visit(Vertex* v, std::stack<std::string>& result) throw(cyclic) {
         /* 1. white vertex v is just discovered, color it gray */
-        if(v->colour == 1) {
+        int vColor = v->color;
+        int gray = Vertex::GRAY;
+        if(vColor == gray) {
             throw cyclic();
         } else if(v->color == Vertex::BLACK) {
             return;
         }
        // std::cout << v->color << std::endl;
-        v->colour = 1;
+        v->color = Vertex::GRAY;
        // std::cout << v->color << std::endl;
         /* 2. recursively visit all unvisited adjacent nodes */
         for(std::vector<Vertex*>::iterator w = v->adj.vptrs.begin(); w != v->adj.vptrs.end(); ++w) {
-            if((*w)->colour == 0) {
+            if((*w)->color == Vertex::WHITE) {
                 dfs_visit(*w, result);
             }
         }
         /* 3. finish vertex v (color it black and output it) */
-        v->colour = 2;
+        v->color = Vertex::BLACK;
         result.push(v->name);
     }
 }
