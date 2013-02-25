@@ -43,8 +43,18 @@ class VectorNameServer : public NameServerInterface {
      * if the host name existed and the pair was removed, false
      * otherwise.
      */
-    virtual bool remove(const HostName&) {
-
+    virtual bool remove(const HostName& hostName) {
+		HostNameMatcher matcher(hostName);
+		NSVector::iterator begin =lookupDa.begin();
+		NSVector::iterator end =lookupDa.end();
+		NSVector::iterator it = std::find_if (begin, end, matcher);
+        
+        if(it != lookupDa.end()){
+			lookupDa.erase(it);
+			return true;
+        } else {
+            return false;
+        }	    	
     }
     
     /*
@@ -63,6 +73,8 @@ class VectorNameServer : public NameServerInterface {
             return NON_EXISTING_ADDRESS;
         }
     }
+
+
 
 
 public:
