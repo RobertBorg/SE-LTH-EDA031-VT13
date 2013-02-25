@@ -14,7 +14,7 @@ using namespace cpp_lab4;
 struct EraseComparator {
 	EraseComparator(HostName hostName) : name(hostName) {}
 
-	bool operator()(const pair<const HostName, IPAddress>& pair) {
+	bool operator()(const pair<HostName, IPAddress>& pair) {
 		return pair.first == name;
 	}
 
@@ -24,7 +24,7 @@ private:
 
 class Hash_Map {
 
-typedef pair<const HostName, IPAddress> NSPair;
+typedef pair<HostName, IPAddress> NSPair;
 typedef vector<vector< NSPair > > Map;
 
 
@@ -45,7 +45,7 @@ public:
 		return false;
 	}
 
-	vector<NSPair>::iterator find (const HostName& key) const {
+	vector<NSPair>::const_iterator find (const HostName& key) const {
 		const vector<NSPair>& toFind = map[hashFunction(key) % map.size()];
 		EraseComparator finder(key);
 		vector<NSPair>::const_iterator begin= toFind.begin();

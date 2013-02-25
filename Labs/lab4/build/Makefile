@@ -38,6 +38,8 @@ all: $(ALLTARGETS)
 # Linking:
 vectornameserver: vectornameserver.o
 
+hashnameserver: hashnameserver.o
+
 
 # Dependencies, the implicit rule .cc => .o is used
 include $(sources:.cc=.dd)
