@@ -10,7 +10,6 @@ using std::string;
 using std::pair;
 #include <algorithm>
 using std::find_if;
-#include <functional>
 
 
 using namespace cpp_lab4;
@@ -55,9 +54,11 @@ class VectorNameServer : public NameServerInterface {
      */
     virtual IPAddress lookup(const HostName& hostName) const {
     	HostNameMatcher matcher(hostName);
-    	function<bool, (const NSPair&)> f = [] = (const NSPair& pair) { return matcher.match(pair);};
-		NSVector::iterator it = std::find_if (lookupDa.begin(), lookupDa.end(), f);
+		//function<bool, (const NSPair&)> f = [] = (const NSPair& pair) { return matcher.match(pair);};
+		NSVector::iterator it = std::find_if (lookupDa.begin(), lookupDa.end(), bind2nd(HostNameMatcher::match(), name));
     }
+
+
 
 
 public:
