@@ -3,8 +3,8 @@
 #
 
 # Compiler and compiler options:
-CXX       = g++
-CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
+CXX       = clang
+CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CC        = $(CXX)
 
