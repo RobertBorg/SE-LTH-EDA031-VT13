@@ -9,7 +9,7 @@ CXX     = g++
 CC      = g++
 
 # Preprocessor, compiler and linker options
-CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -m32
+CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CXXFLAGS += -ggdb
 LDFLAGS  = -ggdb

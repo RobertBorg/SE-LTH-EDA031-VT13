@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "file_handle.h"
 #include "vertex.h"
 #include "vertex_helper.h"
@@ -17,7 +17,7 @@ using std::vector;
 using std::cout;
 using std::endl;
 using std::map;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 class cyclic: public std::exception

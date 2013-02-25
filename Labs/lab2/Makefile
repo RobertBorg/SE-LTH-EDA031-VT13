@@ -4,9 +4,10 @@
 
 # Compiler and compiler options:
 CXX       = g++
-CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors
+CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -m32
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CC        = g++
+LDFLAGS += -m32
 
 # insert this line somewhere at the top of the file
 DEBUG = false
