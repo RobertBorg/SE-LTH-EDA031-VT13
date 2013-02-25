@@ -4,11 +4,11 @@
 
 # Compiler and compiler options:
 CXX       = clang
-CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors
+CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CC        = $(CXX)
 
-ALLTARGETS = vectornameserver
+ALLTARGETS = vectornameserver hashnameserver
 
 # insert this line somewhere at the top of the file
 DEBUG = false
@@ -37,6 +37,8 @@ all: $(ALLTARGETS)
 
 # Linking:
 vectornameserver: vectornameserver.o
+
+hashnameserver: hashnameserver.o
 
 
 # Dependencies, the implicit rule .cc => .o is used
