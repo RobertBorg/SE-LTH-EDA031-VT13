@@ -10,6 +10,8 @@ using std::string;
 using std::pair;
 #include <algorithm>
 using std::find_if;
+#include <iostream>
+using std::cout;
 
 
 using namespace cpp_lab4;
@@ -17,7 +19,7 @@ using namespace cpp_lab4;
 struct HostNameMatcher {
 public:
 	HostNameMatcher(const HostName& hostName) : toMatch(hostName) {}
-	bool match(pair<HostName, IPAddress> pair) {
+	bool operator()(pair<HostName, IPAddress> pair) {
 		return toMatch == pair.first;
 	}
 private:
@@ -54,8 +56,14 @@ class VectorNameServer : public NameServerInterface {
      */
     virtual IPAddress lookup(const HostName& hostName) const {
     	HostNameMatcher matcher(hostName);
-		//function<bool, (const NSPair&)> f = [] = (const NSPair& pair) { return matcher.match(pair);};
-		NSVector::iterator it = std::find_if (lookupDa.begin(), lookupDa.end(), bind2nd(HostNameMatcher::match(), name));
+        //auto f = [&hostName] (NSPair p) {return p.first == hostName;};
+		NSVector::const_iterator it = std::find_if (lookupDa.begin(), lookupDa.end(), matcher);
+        
+        if(it != lookupDa.end()){
+            return it->second;
+        } else {
+            return NON_EXISTING_ADDRESS;
+        }
     }
 
 
