@@ -1,7 +1,7 @@
 /*
  * nstest.cc: a program to test the three name server implementations.
  */
-#include "nameserverinterface.h"
+#include "nameserver/nameserverinterface.h"
 #include "vectornameserver.h"
 #include "mapnameserver.h"
 #include "hashnameserver.h"

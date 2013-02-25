@@ -6,18 +6,19 @@
 
 using namespace cpp_lab4;
 
-class HashNameServer : public NameServerInterface {
+class HashNameServer : public NameServerInterface, private Hash_Map {
+typedef pair<HostName, IPAddress> NSPair;
 
-//	typedef pair<const HostName, IPAddress> NSPair;
-//	typedef hash_map<const HostName, IPAddress> NSMap;
 public:
+
+    HashNameServer(int size) : Hash_Map(size) {}
 
     /*
      * Insert a name/address pair. Does not check if the name
      * or address already exists.
      */
     virtual void insert(const HostName& hostName, const IPAddress& iP) {
-
+        Hash_Map::insert(NSPair(hostName, iP));
     } 
     
     /*
@@ -26,7 +27,7 @@ public:
      * otherwise.
      */
     virtual bool remove(const HostName& hostName)  {
-
+        return erase(hostName);
     }
     
     /*
@@ -35,13 +36,8 @@ public:
      * server.
      */
     virtual IPAddress lookup(const HostName& hostName) const {
-
+       return get(hostName);
     }
-private:
-	Hash_Map hash_map;
-
 };
-
-
 
 #endif

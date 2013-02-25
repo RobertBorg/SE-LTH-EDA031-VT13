@@ -30,6 +30,8 @@ typedef vector<vector< NSPair > > Map;
 
 public:
 
+	Hash_Map(int size) : map(size, vector<NSPair>()) {}
+
 	void insert(const NSPair& val) {
 		map[hashFunction(val.first) % map.size()].push_back(val);
 	}
@@ -45,12 +47,17 @@ public:
 		return false;
 	}
 
-	vector<NSPair>::const_iterator find (const HostName& key) const {
+	const IPAddress get (const HostName& key) const {
 		const vector<NSPair>& toFind = map[hashFunction(key) % map.size()];
 		EraseComparator finder(key);
 		vector<NSPair>::const_iterator begin= toFind.begin();
 		vector<NSPair>::const_iterator end = toFind.end();
-		return find_if(begin, end, finder);
+		vector<NSPair>::const_iterator it = find_if(begin, end, finder);
+		if(it != toFind.end()) {
+			return it->second;
+		} else {
+			return NON_EXISTING_ADDRESS;
+		}
 	}
 
 

@@ -29,6 +29,7 @@ class VectorNameServer : public NameServerInterface {
 	
 	typedef pair<HostName, IPAddress> NSPair;
 	typedef vector<NSPair> NSVector;
+public:
 
     /*
      * Insert a name/address pair. Does not check if the name
@@ -77,7 +78,6 @@ class VectorNameServer : public NameServerInterface {
 
 
 
-public:
 
 private:
 	NSVector lookupDa;

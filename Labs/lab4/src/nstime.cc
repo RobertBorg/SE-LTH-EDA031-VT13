@@ -2,7 +2,7 @@
  * nstime.cc: performs timing tests of the lookup() function in 
  * the three different name server implementations.
  */
-#include "nameserverinterface.h"
+#include "nameserver/nameserverinterface.h"
 #include "vectornameserver.h"
 #include "mapnameserver.h"
 #include "hashnameserver.h"
@@ -29,8 +29,10 @@ typedef std::pair<HostName, IPAddress> dns_record;
 double measureTime(const NameServerInterface& ns,
                    const vector<dns_record>& data,
                    int nbrSearches, int randomSeed) {
-    if (nbrSearches <= 0)
+    if (nbrSearches <= 0) {
+        cout << "nbrSearches <= 0" << endl;
         return 0;
+    }
 
     /*
      * First, measure the administration time for the time measurement
@@ -92,7 +94,7 @@ int main() {
      */
     HashNameServer hns(17441);
     
-    ifstream in("nameserverdata.txt");
+    ifstream in("nameserver/nameserverdata.txt");
     if (! in) {
         cerr << "Could not open data file (nameserverdata.txt)" << endl;
         exit(1);
@@ -118,7 +120,11 @@ int main() {
         mns.insert(name, nbr);
         hns.insert(name, nbr);
     }
+
     int size = data.size();
+    //for(vector<dns_record>::iterator it = data.begin(); data.end() != it; ++it) {
+    //    cout << it->first << " " << it->second << endl;
+    //}
     cout << " read " << size << " words." << endl;
     
     /*
