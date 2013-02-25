@@ -13,9 +13,9 @@ using namespace std;
 int Coding::process(char(*processChar)(char& in), int argc, const char* argv[]) {
 	istream* myInput;
 	if(argc != 2){
-		myInput = &cin;
+		myInput = &cin; //Console stuff
 	} else {
-		myInput = new ifstream;
+		myInput = new ifstream;//Opening file
 		static_cast<ifstream*>(myInput)->open(argv[1]);
 		if(!static_cast<ifstream*>(myInput)->is_open()){
 			delete myInput;

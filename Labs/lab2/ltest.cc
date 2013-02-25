@@ -52,5 +52,4 @@ int main() {
 	assert(testRemoveFirstElement());
 	TRACE("testRemoveLastElement");
 	assert(testRemoveLastElement());
-
 }
