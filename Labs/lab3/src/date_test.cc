@@ -22,28 +22,30 @@ int main() {
             cin.clear();
             cin.ignore(10000, '\n');
         }
-        else
+        else{
+            aDate.next();
             cout << "Output: " << aDate << endl;
+        }
     }
     
 	// Check 'next' by creating an object describing today's date, then
 	// printing dates more than a month ahead
     cout << "--- Today and more than a month ahead:" << endl;
 	Date d1;
-	print(d1);
+	cout << d1;
 	cout << endl;
 	for (int i = 1; i <= 35 ; ++i) {
 		d1.next();
-		print(d1);
+		cout << d1;
 		cout << endl;
 	}
 	
 	// Check so 'next' functions correctly from one year to the next
     cout << "--- New Year's Eve and the next day:" << endl;
 	Date d2(2005, 12, 31);
-	print(d2);
+	cout << d2;
 	cout << endl;
 	d2.next();
-	print(d2);
+	cout << d2;
 	cout << endl;
 }

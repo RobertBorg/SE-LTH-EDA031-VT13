@@ -38,8 +38,8 @@ int main (int argc, char* argv[]) {
 	std::string sd = toString(d);
 	std::string st = toString(today);
 
-	cout << sd << endl;
-	cout << st << endl;
+	//cout << sd << endl;
+	//cout << st << endl;
 
 	try {
 		int i = string_cast<int>("123");
