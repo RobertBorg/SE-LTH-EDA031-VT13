@@ -10,8 +10,6 @@ using std::string;
 using std::pair;
 #include <algorithm>
 using std::find_if;
-#include <iostream>
-using std::cout;
 
 
 using namespace cpp_lab4;
