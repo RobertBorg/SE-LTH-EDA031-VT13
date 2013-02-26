@@ -6,9 +6,13 @@ using std::vector;
 
 #include <utility>
 using std::pair;
-#include "nameserver/nameserverinterface.h"
 #include <algorithm>
 using std::find_if;
+#include <functional>
+using std::hash;
+
+
+#include "nameserver/nameserverinterface.h"
 using namespace cpp_lab4;
 
 struct EraseComparator {
@@ -66,7 +70,8 @@ private:
 
 	//REDO
 	size_t hashFunction(const HostName& key) const {
-		return key.length();
+		hash<HostName> H;
+		return H(key);
 	}
 };
 

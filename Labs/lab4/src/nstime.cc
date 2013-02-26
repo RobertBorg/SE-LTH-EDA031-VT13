@@ -94,7 +94,7 @@ int main() {
      */
     HashNameServer hns(17441);
     
-    ifstream in("nameserver/nameserverdata.txt");
+    ifstream in("../src/nameserver/nameserverdata.txt");
     if (! in) {
         cerr << "Could not open data file (nameserverdata.txt)" << endl;
         exit(1);
