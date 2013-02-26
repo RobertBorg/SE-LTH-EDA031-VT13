@@ -3,12 +3,12 @@
 #
 
 # Compiler and compiler options:
-CXX       = clang
+CXX       = clang++
 CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
 CC        = $(CXX)
 
-ALLTARGETS = vectornameserver hashnameserver
+ALLTARGETS = nstest nstime simplebitsettest bitsettest1 bitsettest2
 
 # insert this line somewhere at the top of the file
 DEBUG = false
@@ -36,10 +36,15 @@ all: $(ALLTARGETS)
 
 
 # Linking:
-vectornameserver: vectornameserver.o
+nstime: nstime.o
 
-hashnameserver: hashnameserver.o
+nstest: nstest.o
 
+simplebitsettest: simplebitsettest.o simplebitset.o
+
+bitsettest1: bitsettest1.o bitreference.o bitset.o
+
+bitsettest2: bitsettest2.o bitreference.o bitset.o bitsetiterator.o
 
 # Dependencies, the implicit rule .cc => .o is used
 include $(sources:.cc=.dd)
