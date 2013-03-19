@@ -18,6 +18,6 @@ namespace cpp_lab4 {
     }
     
     BitReference::operator bool() const {
-        return (*p_bits & (1L << pos)) != 0;;
+        return (*p_bits & (1L << pos)) != 0;
     }
 }

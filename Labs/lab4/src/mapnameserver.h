@@ -22,8 +22,7 @@ public:
      * or address already exists.
      */
     virtual void insert(const HostName& hostName, const IPAddress& iP) {
-    	NSPair toInsert(hostName, iP);
-    	lookupMap.insert(toInsert);
+    	lookupMap.insert(NSPair(hostName, iP));
     }
     
     /*

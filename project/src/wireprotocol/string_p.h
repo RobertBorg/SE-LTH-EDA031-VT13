@@ -1,0 +1,33 @@
+#ifndef STRING_P_H__
+#define STRING_P_H__
+
+#include "num_p.h"
+
+#include <string>
+using std::string;
+
+struct string_p {
+	string value;
+};
+
+istream &operator>>(istream &in, string_p &rhs) {
+	num_p size;
+	in >> size;
+	char c;
+	while(size.value-- > 0) {
+		in >> c;
+		rhs.value.push_back(c);
+	}
+	return in;
+}
+
+ostream &operator<<(ostream &out, string_p &rhs) {
+	num_p size(rhs.value.length());
+	out << size;
+	for(auto i = rhs.value.begin(); i != rhs.value.end(); ++i) {
+		out << *i;
+	}
+	return out;
+}
+
+#endif /* end of include guard: STRING_P_H__ */

@@ -17,6 +17,6 @@ namespace cpp_lab4 {
     }
     
     BitReference BitsetIterator::operator*() {
-        return BitReference(p_bits,pos);
+        return *this;
     }
 }
