@@ -12,6 +12,10 @@ struct num_p {
 	uint32_t value;
 };
 
+operator unsigned int() const {
+	return value;
+}
+
 istream_news& operator>>(istream_news &in, num_p &rhs) {
 	uint32_t t = 0;
 	char byte = 0;
