@@ -4,17 +4,17 @@
 #include "package.h"
 #include <string>
 
-class ComCreateNewsGroup : public ComPackage {
+class ComCreateNewsGroupPacket : public ComPacket {
 public:
-	ComCreateNewsGroup(string newsGroupName_) : newsGroupName(newsGroupName_) {}
-	virtual shared_ptr<AnsPackage> process(Database *db) const {
+	ComCreateNewsGroupPacket(string newsGroupName_) : newsGroupName(newsGroupName_) {}
+	virtual shared_ptr<AnsPacket> process(Database *db) const {
 
 	}
 private:
 	string newsGroupName;
 };
 
-istream_news& operator>>(istream_news &in, ComCreateNewsGroup &rhs) {
+istream_news& operator>>(istream_news &in, ComCreateNewsGroupPacket &rhs) {
 	in.eat(protocol::COM_CREATE_NG);
 	string_p str;
 	in >> str;
@@ -23,7 +23,7 @@ istream_news& operator>>(istream_news &in, ComCreateNewsGroup &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, ComCreateNewsGroup &rhs) {
+iostream_news& operator<<(iostream_news &out, ComCreateNewsGroupPacket &rhs) {
 	out << protocol::COM_CREATE_NG;
 	out << string_p(newsGroupName);
 	out << protocol::COM_END;

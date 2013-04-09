@@ -5,11 +5,11 @@ using std::string;
 #include <utility>
 using std::pair;
 
-class AnsListArt : public AnsPackage {
+class AnsListArtPacket : public AnsPacket {
 public:
 	typedef pair<int, string> Article;
 	typedef vector<Article> Articles;
-	AnsListArt(Articles &newsGroups_) : articles(newsGroups_) {}
+	AnsListArtPacket(Articles &newsGroups_) : articles(newsGroups_) {}
 	virtual void process() const {
 
 	}
@@ -17,7 +17,7 @@ private:
 	Articles articles;
 };
 
-istream_news& operator>>(istream_news &in, AnsListArt &rhs) {
+istream_news& operator>>(istream_news &in, AnsListArtPacket &rhs) {
 	in.eat(protocol::ANS_LIST_ART);
 	uint8_t success;
 	switch(success) {
@@ -41,7 +41,7 @@ istream_news& operator>>(istream_news &in, AnsListArt &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsListArt &rhs) {
+iostream_news& operator<<(iostream_news &out, AnsListArtPacket &rhs) {
 	out << protocol::ANS_LIST_ART;
 	out << num_p(static_cast<int>(rhs.articles.size()));
 	for(Article a : rhs.articles) {

@@ -2,12 +2,12 @@
 #define COM_LIST_ARTICLE_H__
 
 
-class ComListArticlePackage : public ComPackage{
+class ComListArticlePacket : public ComPacket{
 public:
-	AnsPackage process(Database *db){
+	AnsPacket process(Database *db){
 		
 	}
-	ComListArticlePackage(int groupNum_): groupNum(groupNum_){}
+	ComListArticlePacket(int groupNum_): groupNum(groupNum_){}
 
 
 private:
@@ -15,7 +15,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, ComListArticlePackage &rhs) {
+istream_news& operator>>(istream_news &in, ComListArticlePacket &rhs) {
 	in.eat(Protocol::COM_LIST_ART);
 	num_p num;
 	in >> num;
@@ -24,7 +24,7 @@ istream_news& operator>>(istream_news &in, ComListArticlePackage &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, ComListArticlePackage &rhs) {
+iostream_news& operator<<(iostream_news &out, ComListArticlePacket &rhs) {
 	out << Protocol::COM_LIST_ART;
 	out << num_p(groupNum);
 	out << Protocol::COM_END;

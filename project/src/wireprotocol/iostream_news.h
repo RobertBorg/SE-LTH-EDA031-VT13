@@ -3,6 +3,10 @@
 
 #include <iostream>
 
+struct ProtocolViolationException{
+
+};
+
 class iostream_news : public iostream {
 public:
 	void eat(const uint8_t &expects){
