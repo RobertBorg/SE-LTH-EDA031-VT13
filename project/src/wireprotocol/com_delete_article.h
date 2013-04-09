@@ -19,7 +19,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, ComListPackage &rhs) {
+istream_news& operator>>(istream_news &in, ComDeleteArticlePackage &rhs) {
 	in.eat(Protocol::COM_LIST_ART);
 	num_p num;
 	in >> num;
@@ -30,7 +30,7 @@ istream_news& operator>>(istream_news &in, ComListPackage &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, ComListPackage &rhs) {
+iostream_news& operator<<(iostream_news &out, ComDeleteArticlePackage &rhs) {
 	out << Protocol::COM_LIST_ART;
 	out << num_p(groupNum);
 	out << num_p(articNum);
