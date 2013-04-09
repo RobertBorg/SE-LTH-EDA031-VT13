@@ -10,6 +10,9 @@ using std::string;
 
 struct string_p {
 	string value;
+	const string& operator string() {
+		return value;
+	}
 };
 
 iostream_news &operator>>(iostream_news &in, string_p &rhs) {
