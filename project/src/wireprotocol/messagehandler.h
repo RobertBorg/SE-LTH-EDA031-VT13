@@ -1,12 +1,11 @@
 #ifndef MESSAGEHANDLER_H__
 #define MESSAGEHANDLER_H__
 
+#include "iostream_news.h"
+
 class MessageHandler {
 public:
-	void process(Package &pkgPtr) {
-		switch()
-	}
-	shared_ptr<Package> parsePkg(istream& in) {
+	shared_ptr<Package> parsePkg(iostream_news& in) {
 		
 	}
 };

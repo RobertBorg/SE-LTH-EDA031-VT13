@@ -1,6 +1,8 @@
 #ifndef NUM_P_H__
 #define NUM_P_H__
 
+#include "iostream_news.h"
+
 #include <string>
 #include <cstdint>
 
@@ -10,7 +12,7 @@ struct num_p {
 	uint32_t value;
 };
 
-istream& operator>>(istream &in, num_p &rhs) {
+istream_news& operator>>(istream_news &in, num_p &rhs) {
 	uint32_t t = 0;
 	char byte = 0;
 
@@ -24,7 +26,7 @@ istream& operator>>(istream &in, num_p &rhs) {
 	return in;
 }
 
-ostream& operator<<(ostream &out, num_p &rhs) {
+iostream_news& operator<<(iostream_news &out, num_p &rhs) {
 	int bitOffset = 24;
 	for(int i = 0; i < 4; ++i) {
 		char byte = (rhs.value >> bitOffset) & 0xFF;
