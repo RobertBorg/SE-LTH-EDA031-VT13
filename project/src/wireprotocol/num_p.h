@@ -5,11 +5,22 @@
 
 #include <string>
 #include <cstdint>
+#include ".../../lib/clientserver/protocol.h"
 
 struct num_p {
 	num_p() = default;
 	num_p(size_t &size) : value(size) {}
 	uint32_t value;
+
+private:
+	void extractN(istream_news &in, uint32_t &t) {
+		t = 0;
+		for(int i = 0; i < 4; ++i) {
+		in >> byte;
+		t = t << 8;
+		t |= byte;
+	}
+	}
 };
 
 operator unsigned int() const {
@@ -17,6 +28,7 @@ operator unsigned int() const {
 }
 
 istream_news& operator>>(istream_news &in, num_p &rhs) {
+	in.eat(protocol::PAR_NUM)
 	uint32_t t = 0;
 	char byte = 0;
 
