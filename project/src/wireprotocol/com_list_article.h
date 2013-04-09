@@ -1,13 +1,13 @@
-#ifndef COM_DELETE_NEWSGROUP_H__
-#define COM_DELETE_NEWSGROUP_H__
+#ifndef COM_LIST_ARTICLE_H__
+#define COM_LIST_ARTICLE_H__
 
 
-class ComDeleteNewsgroupPackage : public ComPackage{
+class ComListArticlePackage : public ComPackage{
 public:
 	AnsPackage process(Database *db){
 		
 	}
-	ComDeleteNewsgroupPackage(int groupNum_): groupNum(groupNum_){}
+	ComListArticlePackage(int groupNum_): groupNum(groupNum_){}
 
 
 private:
@@ -16,7 +16,7 @@ private:
 
 
 istream_news& operator>>(istream_news &in, ComListPackage &rhs) {
-	in.eat(Protocol::COM_DELETE_NG);
+	in.eat(Protocol::COM_LIST_ART);
 	num_p num;
 	in >> num;
 	groupNum = num;
@@ -25,11 +25,12 @@ istream_news& operator>>(istream_news &in, ComListPackage &rhs) {
 }
 
 iostream_news& operator<<(iostream_news &out, ComListPackage &rhs) {
-	out << Protocol::COM_DELETE_NG;
+	out << Protocol::COM_LIST_ART;
 	out << num_p(groupNum);
 	out << Protocol::COM_END;
 	return out;
 }
+
 
 
 #endif
