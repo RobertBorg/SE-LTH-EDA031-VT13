@@ -7,7 +7,7 @@ public:
 	AnsPackage process(Database *db){
 		
 	}
-	ComDeleteNewsgroupPackage(int param): groupNum(param){}
+	ComDeleteNewsgroupPackage(int groupNum_): groupNum(groupNum_){}
 
 
 private:
