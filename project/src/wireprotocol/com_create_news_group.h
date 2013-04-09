@@ -14,7 +14,7 @@ private:
 	string newsGroupName;
 };
 
-istream_news& operator>>(istream_news &in, num_p &rhs) {
+istream_news& operator>>(istream_news &in, ComCreateNewsGroup &rhs) {
 	in.eat(protocol::COM_CREATE_NG);
 	string_p str;
 	in >> str;
@@ -23,7 +23,7 @@ istream_news& operator>>(istream_news &in, num_p &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, num_p &rhs) {
+iostream_news& operator<<(iostream_news &out, ComCreateNewsGroup &rhs) {
 	out << protocol::COM_CREATE_NG;
 	out << string_p(newsGroupName);
 	out << protocol::COM_END;
