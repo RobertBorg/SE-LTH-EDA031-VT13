@@ -17,18 +17,18 @@ private:
 
 
 Connection& operator>>(Connection &inConn, ComListArticlePacket &rhs) {
-	eat(Protocol::COM_LIST_ART);
+	eat(protocol::COM_LIST_ART);
 	num_p num;
 	inConn >> num;
 	groupNum = num;
-	eat(Protocol::COM_END);
+	eat(protocol::COM_END);
 	return inConn;
 }
 
 Connection& operator<<(Connection &outConn, ComListArticlePacket &rhs) {
-	outConn << Protocol::COM_LIST_ART;
+	outConn << protocol::COM_LIST_ART;
 	outConn << num_p(groupNum);
-	outConn << Protocol::COM_END;
+	outConn << protocol::COM_END;
 	return outConn;
 }
 

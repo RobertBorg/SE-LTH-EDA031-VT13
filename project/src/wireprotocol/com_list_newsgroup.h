@@ -10,14 +10,14 @@ public:
 };
 
 Connection& operator>>(Connection &in, ComListPacket &rhs) {
-	eat(Protocol::COM_LIST_NG);
-	eat(Protocol::COM_END);
+	eat(protocol::COM_LIST_NG);
+	eat(protocol::COM_END);
 	return in;
 }
 
 Connection& operator<<(Connection &out, ComListPacket &rhs) {
-	out << Protocol::COM_LIST_NG;
-	out << Protocol::COM_END;
+	out << protocol::COM_LIST_NG;
+	out << protocol::COM_END;
 	return out;
 }
 

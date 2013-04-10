@@ -17,16 +17,16 @@ private:
 
 
 Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs) {
-	in.eat(Protocol::ANS_DELETE_NG);
+	in.eat(protocol::ANS_DELETE_NG);
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
-		case Protocol:ANS_ACK:
+		case protocol:ANS_ACK:
 			rhs.success = true;
 			break;
 
-		case Protocol:ANS_NAK:
-			in.eat(Protocol::ERR_NG_DOES_NOT_EXIST);
+		case protocol:ANS_NAK:
+			in.eat(protocol::ERR_NG_DOES_NOT_EXIST);
 			rhs.success = false;
 			break;
 
@@ -35,19 +35,19 @@ Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs) {
 			break;
 
 	}
-	in.eat(Protocol::ANS_END);
+	in.eat(protocol::ANS_END);
 	return in;
 }
 
 Connection& operator<<(Connection &out, AnsDeleteNewsgroupPacket &rhs) {
-	out << Protocol::ANS_DELETE_NG;
+	out << protocol::ANS_DELETE_NG;
 	if (success){
-		out << Protocol:ANS_ACK;
+		out << protocol:ANS_ACK;
 	} else {
-		out << Protocol:ANS_NAK;
-		out << Protocol:ERR_NG_DOES_NOT_EXIST;
+		out << protocol:ANS_NAK;
+		out << protocol:ERR_NG_DOES_NOT_EXIST;
 	}
-	out << Protocol::ANS_END;
+	out << protocol::ANS_END;
 	return out;
 }
 

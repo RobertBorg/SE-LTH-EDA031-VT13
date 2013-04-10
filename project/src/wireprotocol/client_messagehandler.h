@@ -7,33 +7,42 @@
 #include "num_p.h"
 
 
-using std::cerr;
-using std::endl;
-
 class ClientMessageHandler {
 public:
-	shared_ptr<Packet> parsePkg(iostream_news& in) {
-		uint8_t pkgType;
-		in >> pkgType;
+	shared_ptr<Packet> parsePkg(Connection& conn) {
+		uint8_t pkgType = conn.peek();
+		shared_ptr<ComPacket> packet;
 		switch(pkgType) {
 			case protocol::ANS_LIST_NG:
-				num_p numNewsGroups;
-				in >> numNewsGroups;
+				packet(new AnsListNewsgroupPacket());
+				conn << &packet;
 				break;
 			case protocol::ANS_CREATE_NG:
+				packet(new AnsCreateNewsgroupPacket());
+				conn << &packet;
 				break;
 			case protocol::ANS_DELETE_NG:
+				packet(new AnsDeleteNewsgroupPacket());
+				conn << &packet;
 				break;
 			case protocol::ANS_LIST_ART:
+				packet(new AnsListArtPacket());
+				conn << &packet;
 				break;
 			case protocol::ANS_CREATE_ART:
+				packet(new AnsCreateArticlePacket());
+				conn << &packet;
 				break;
 			case protocol::ANS_DELETE_ART:
+				packet(new AnsDeleteArticlePacket());
+				conn << &packet;
 				break;
 			case protocol::ANS_GET_ART:
+				packet(new AnsGetArticlePacket());
+				conn << &packet;
 				break;
 			default:
-				cerr << "unknown packagetype received: " << static_cast<unsigned int>(pkgType) << endl;
+				throw ProtocolViolationException();
 				break;
 
 		}
