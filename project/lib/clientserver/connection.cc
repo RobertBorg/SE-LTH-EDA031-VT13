@@ -108,9 +108,10 @@ namespace client_server {
     
     unsigned char Connection::read() const throw(ConnectionClosedException) {
         if (isPeeked){
+            isPeeked = false;
             return peekChar;
         } 
-        isPeeked = false;
+        
         char data;
         if (my_socket == -1)
             error("Read attempted on a not properly opened Connection");
