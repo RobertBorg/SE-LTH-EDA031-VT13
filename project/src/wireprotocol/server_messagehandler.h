@@ -14,12 +14,12 @@ public:
 		shared_ptr<ComPacket> packet;
 		switch(packetType){
 			case Protocol::COM_LIST_NG:
-				packet(new ComListNewsgroupPacket()) ;
+				packet(new ComListNewsgroupPacket());
 				in << packet;
 			break;
 
 			case Protocol::COM_CREATE_NG:
-				packet(new ComCreateNewsGroupPacket()) ;
+				packet(new ComCreateNewsGroupPacket());
 				in << packet;
 				break;
 
