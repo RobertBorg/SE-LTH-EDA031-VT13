@@ -20,7 +20,7 @@ private:
 	NewsGroups newsGroups;
 };
 
-istream_news& operator>>(istream_news &in, AnsListNewsgroupPacket &rhs) {
+Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs) {
 	in.eat(protocol::ANS_LIST_NG);
 	num_p numNG;
 	in >> numNG;
@@ -34,7 +34,7 @@ istream_news& operator>>(istream_news &in, AnsListNewsgroupPacket &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsListNewsgroupPacket &rhs) {
+Connection& operator<<(Connection &out, AnsListNewsgroupPacket &rhs) {
 	out << protocol::ANS_LIST_NG;
 	out << num_p(static_cast<int>(rhs.newsGroups.size()));
 	for(NewsGroup ng : rhs.newsGroups) {

@@ -16,7 +16,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, AnsCreateNewsgroupPacket &rhs) {
+Connection& operator>>(Connection &in, AnsCreateNewsgroupPacket &rhs) {
 	in.eat(Protocol::ANS_CREATE_NG);
 	uint8_t selection;
 	in >> selection;
@@ -39,7 +39,7 @@ istream_news& operator>>(istream_news &in, AnsCreateNewsgroupPacket &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsCreateNewsgroupPacket &rhs) {
+Connection& operator<<(Connection &out, AnsCreateNewsgroupPacket &rhs) {
 	out << Protocol::ANS_CREATE_NG;
 	if (success){
 		out << Protocol:ANS_ACK;

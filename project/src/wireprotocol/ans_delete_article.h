@@ -17,7 +17,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, AnsDeleteArticlePacket &rhs) {
+Connection& operator>>(Connection &in, AnsDeleteArticlePacket &rhs) {
 	in.eat(Protocol::ANS_CREATE_ART);
 	uint8_t selection;
 	in >> selection;
@@ -51,7 +51,7 @@ istream_news& operator>>(istream_news &in, AnsDeleteArticlePacket &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsDeleteArticlePacket &rhs) {
+Connection& operator<<(Connection &out, AnsDeleteArticlePacket &rhs) {
 	out << Protocol::ANS_CREATE_ART;
 	if (rhs.success){
 		out << Protocol:ANS_ACK;

@@ -18,7 +18,7 @@ private:
 	Articles articles;
 };
 
-istream_news& operator>>(istream_news &in, AnsListArtPacket &rhs) {
+Connection& operator>>(Connection &in, AnsListArtPacket &rhs) {
 	in.eat(protocol::ANS_LIST_ART);
 	uint8_t success;
 	switch(success) {
@@ -42,7 +42,7 @@ istream_news& operator>>(istream_news &in, AnsListArtPacket &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsListArtPacket &rhs) {
+Connection& operator<<(Connection &out, AnsListArtPacket &rhs) {
 	out << protocol::ANS_LIST_ART;
 	out << num_p(static_cast<int>(rhs.articles.size()));
 	for(Article a : rhs.articles) {

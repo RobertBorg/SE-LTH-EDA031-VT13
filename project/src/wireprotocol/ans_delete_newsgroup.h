@@ -16,7 +16,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, AnsDeleteNewsgroupPacket &rhs) {
+Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs) {
 	in.eat(Protocol::ANS_DELETE_NG);
 	uint8_t selection;
 	in >> selection;
