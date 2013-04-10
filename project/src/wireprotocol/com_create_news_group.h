@@ -15,20 +15,20 @@ private:
 	string newsGroupName;
 };
 
-istream_news& operator>>(istream_news &in, ComCreateNewsGroupPacket &rhs) {
-	in.eat(protocol::COM_CREATE_NG);
+Connection& operator>>(Connection &inConn, ComCreateNewsGroupPacket &rhs) {
+	eat(protocol::COM_CREATE_NG);
 	string_p str;
-	in >> str;
+	inConn >> str;
 	newsGroupName = str;
-	in.eat(protocol::COM_END);
-	return in;
+	eat(protocol::COM_END);
+	return inConn;
 }
 
-iostream_news& operator<<(iostream_news &out, ComCreateNewsGroupPacket &rhs) {
-	out << protocol::COM_CREATE_NG;
-	out << string_p(newsGroupName);
-	out << protocol::COM_END;
-	return out;
+Connection& operator<<(Connection &outConn, ComCreateNewsGroupPacket &rhs) {
+	outConn << protocol::COM_CREATE_NG;
+	outConn << string_p(newsGroupName);
+	outConn << protocol::COM_END;
+	return outConn;
 }
 
 

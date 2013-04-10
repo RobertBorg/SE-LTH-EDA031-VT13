@@ -7,7 +7,7 @@
 #include <cstdint>
 #include ".../../lib/clientserver/protocol.h"
 
-struct num_p {
+struct num_p : public Packet{
 	num_p() = default;
 	num_p(size_t &size) : value(size) {}
 	uint32_t value;
@@ -27,8 +27,8 @@ operator unsigned int() const {
 	return value;
 }
 
-istream_news& operator>>(istream_news &in, num_p &rhs) {
-	in.eat(protocol::PAR_NUM)
+Connection& operator>>(Connection &in, num_p &rhs) {
+	eat(protocol::PAR_NUM)
 	uint32_t t = 0;
 	char byte = 0;
 
@@ -42,7 +42,7 @@ istream_news& operator>>(istream_news &in, num_p &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, num_p &rhs) {
+Connection& operator<<(Connection &out, num_p &rhs) {
 	int bitOffset = 24;
 	for(int i = 0; i < 4; ++i) {
 		char byte = (rhs.value >> bitOffset) & 0xFF;
