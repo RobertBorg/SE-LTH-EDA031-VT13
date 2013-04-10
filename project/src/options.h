@@ -16,22 +16,27 @@ public:
 	using variables_map::count;
 	Options(int argc, char* argv[]) : cmdDesc("Allowed options"), cmdHiddenDesc("Hidden command line oprtions") {
 		cmdDesc.add_options()
-			("help", "produce help message");
+			("help", "produce help message")
+			("server-address", value<string>(), "produce help message")
+			("server-port",value<uint16_t>() ,"produce help message");
 
 		cmdHiddenDesc.add_options()
 			("help", "produce help message")
-			("mode-of-operation", value<int>(), "set mode of operation")
+			("server-address", value<string>(), "produce help message")
+			("server-port",value<uint16_t>() ,"produce help message")
+			("mode-of-operation", value<string>(), "set mode of operation")
 			("pos2", value<string>(), "set mode of operation")
 			("pos3", value<string>(), "set mode of operation")
 			("pos4", value<string>(), "set mode of operation")
 			("pos5", value<string>(), "set mode of operation");
 
 
-		posCmdDesc.add("mode-of-operation", 1)
-		.add("pos2", 2)
-		.add("pos3", 3)
-		.add("pos4", 4)
-		.add("pos5", 5);
+		posCmdDesc
+			.add("mode-of-operation", 1)
+			.add("pos2", 2)
+			.add("pos3", 3)
+			.add("pos4", 4)
+			.add("pos5", 5);
 		
 
 		store(command_line_parser(argc, argv).options(cmdHiddenDesc).positional(posCmdDesc).run(), *this);
