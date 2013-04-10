@@ -14,7 +14,7 @@ public:
 		shared_ptr<ComPacket> packet;
 		switch(packetType){
 			case Protocol::COM_LIST_NG:
-				packet(new ComListArticlePacket()) ;
+				packet(new ComListNewsgroupPacket()) ;
 				in << packet;
 			break;
 
