@@ -16,6 +16,17 @@ public:
 		, title(title_), author(author_), text(text_) {}
 
 
+	static &AnsGetArticlePacket createSuccessful(string title, string author, string text){
+		return new AnsGetArticlePacket(true, false, false title, author, text);
+	}
+	static &AnsGetArticlePacket createNGNotFound(){
+		return new AnsGetArticlePacket(false, true, false nullptr, nullptr, nullptr);
+	}
+	static &AnsGetArticlePacket createArtNotFound(){
+		return new AnsGetArticlePacket(false, false, true nullptr, nullptr, nullptr);
+	}
+
+
 private:
 	bool success, ngNotFound, artNotFound;
 	string title, author, text;

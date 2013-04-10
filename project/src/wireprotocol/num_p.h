@@ -13,7 +13,7 @@ struct num_p : public Packet{
 	uint32_t value;
 };
 
-operator unsigned int() const {
+operator uint32_t int() const {
 	return value;
 }
 

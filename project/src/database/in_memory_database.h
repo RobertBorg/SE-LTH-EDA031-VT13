@@ -9,25 +9,78 @@ public:
 		if (ngIt == newsgroups.end){
 			throw NGDoesntExistException();
 		}
-		auto artIt = articles.find(article->id);
-		if (ngIt != articles.end){
+		ngIt->addArticle(article);
+	}
+
+	Article getArticle(uint32_t artId, uint32_t NGId){
+		auto ngIt = newsgroupsById.find(article->newsgroupId);
+		if (ngIt == newsgroups.end){
+			throw NGDoesntExistException();
+		}
+		return ngIt->getArticle(artId);
+	}
+
+
+	void addNewsgroup(shared_ptr<Newsgroup> newsgroup){
+		auto ngIt = newsgroupsByName.find(newsgroup->name);
+
+		if (ngIt != newsgroupsByName.end){
 			throw NGAlreadyExistsException();
 		}
-		articles.emplace(article->id, article);
-
+		newsgroup->id = NGCounter;
+		NGCounter++;
+		newsgroupsByName.emplace(newsgroup->name, newsgroup);
+		newsgroupsById.emplace(newsgroup->id, newsgroup);
 	}
-	Article getArticle(uint32_t artId);
-	void addNewsgroup(Newsgroup newsgroup);
-	vector<Newsgroup> getAllNewsgroups();
-	vector<Article> getArticlesForNewsgroup(uint32_t ngId);
-	void deleteArticle(uint32_t artId, uint32_t ngId);
-	void deleteNewsgroup(uint32_t ngId);
+
+	const auto getNewsgroupIterator(){
+		return newsgroupsById.cbegin();
+	}
+	const auto getNewsgroupEnd(){
+		return newsgroupsById.cend();
+	}
+
+	const auto getArticleIterator(uint32_t ngId){
+		auto ngIt = newsgroupsById.find(ngId);
+		if (ngIt == newsgroupsById.end){
+			throw NGDoesntExistException();
+		}
+		return ngIt->getArticleIterator();
+	}
+	const auto getArticleEnd(uint32_t ngId){
+		auto ngIt = newsgroupsById.find(ngId);
+		if (ngIt == newsgroupsById.end){
+			throw NGDoesntExistException();
+		}
+		return ngIt->getArticleEnd();
+	}
+
+
+	void deleteArticle(uint32_t artId, uint32_t ngId){
+		auto ngIt = newsgroupsById.find(ngId);
+		if (ngIt == newsgroupsById.end){
+			throw NGDoesntExistException();
+		}
+		ngIt->deleteArticle(artId);
+	}
+
+	void deleteNewsgroup(uint32_t ngId){
+		auto ngIt = newsgroupsById.find(ngId);
+		if (ngIt == newsgroupId.end){
+			throw NGDoesntExistException();
+		}
+		auto ngIt2 = newsgroupsByName.find(ngIt->name);
+		newsgroupsByName.erase(ngIt2);
+		newsgroupsById.erase(ngIt);
+
+		
+	}
 };
 
 private:
-
-
-	map<uint32_t, shared_ptr<Newsgroup>> newsgroups;
+	uint NGCounter = 1;
+	map<string, shared_ptr<Newsgroup>> newsgroupsByName
+	map<uint32_t, shared_ptr<Newsgroup>> newsgroupsById;
 	map<uint32_t, shared_ptr<Article>> articles;
 
 #endif

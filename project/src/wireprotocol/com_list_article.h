@@ -4,8 +4,12 @@
 
 class ComListArticlePacket : public ComPacket{
 public:
-	AnsPacket process(Database *db){
-		
+	shared_ptr<AnsPacket> process(Database *db){
+		vector<Article> articles;
+		for_each(db->getArticleIterator(), db->getArticleEnd(), 
+			[&articles] (const pair<uint32_t, Article> pair) {articles.push_back(pair.second); });
+		shared_ptr<AnsPacket> answerPacket(new AnsListArtPacket(articles));
+		return answerPacket;
 	}
 	ComListArticlePacket() = default;
 	ComListArticlePacket(int groupNum_): groupNum(groupNum_){}

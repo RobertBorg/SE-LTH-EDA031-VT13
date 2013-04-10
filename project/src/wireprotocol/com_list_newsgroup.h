@@ -4,10 +4,18 @@
 
 class ComListNewsgroupPacket : public ComPacket{
 public:
-	AnsPacket process(Database *db){
-		
+	shared_ptr<AnsPacket> process(Database *db){
+		vector<Newsgroup> newsgroups;
+		for_each(db->getNewsgroupIterator(), db->getNewsgroupEnd(), 
+			[&newsgroups] (const pair<uint32_t, Newsgroup> pair) {newsgroups.push_back(pair.second); });
+		shared_ptr<AnsPacket> answerPacket(new AnsListNewsgroupPacket(newsgroups));
+		return answerPacket;
 	}
 };
+
+void pushBackValue(pair<uint32_t, Newsgroup> pair){
+
+}
 
 Connection& operator>>(Connection &in, ComListPacket &rhs) {
 	eat(protocol::COM_LIST_NG);
