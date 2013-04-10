@@ -40,7 +40,7 @@
 namespace client_server {
     bool Connection::ignoresPipeSignals = false;
     
-    Connection::Connection(const char* host, int port) {
+    Connection::Connection(const char* host, int port) : isPeeked(false){
         /* 
          * Ignore SIGPIPE signals (broken pipe). A broken pipe (only?) 
          * occurs in a client, when it tries to write to a dead server.
@@ -107,6 +107,10 @@ namespace client_server {
     }
     
     unsigned char Connection::read() const throw(ConnectionClosedException) {
+        if (isPeeked){
+            return peekChar;
+        } 
+        isPeeked = false;
         char data;
         if (my_socket == -1)
             error("Read attempted on a not properly opened Connection");
@@ -114,6 +118,15 @@ namespace client_server {
         if (cnt != 1)
             throw ConnectionClosedException();
         return data;
+    }
+
+    unsigned char Connection::peek() const throw(ConnectionClosedException) {
+        if (isPeeked){
+            return peekChar;
+        }
+        peekChar = read();
+        isPeeked = true;
+        return peekChar;
     }
     
     void Connection::initConnection(int s) {

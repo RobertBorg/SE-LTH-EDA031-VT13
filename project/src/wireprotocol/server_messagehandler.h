@@ -8,9 +8,9 @@
 
 class ServerMessageHandler {
 public:
-	shared_ptr<ComPacket> parsePkg(iostream_news& in) {
+	shared_ptr<ComPacket> parsePkg(Connection& conn) {
 		uint8_t packetType;
-		packeType = in.peek();
+		packeType = conn.peek();
 		shared_ptr<ComPacket> packet;
 		switch(packetType){
 			case Protocol::COM_LIST_NG:

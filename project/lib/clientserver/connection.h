@@ -54,6 +54,8 @@ namespace client_server {
         
         /* Read a character */
         unsigned char read() const throw(ConnectionClosedException);
+
+        unsigned char peek() const;
         
     protected:
         /* The socket number that this connections communicates on */
@@ -71,6 +73,9 @@ namespace client_server {
         
         /* Print error message and exit */
         void error(const char* msg) const;
+
+        bool isPeeked;
+        unsigned char peekChar;
     };
 }
 
