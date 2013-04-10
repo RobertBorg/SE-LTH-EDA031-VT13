@@ -20,23 +20,23 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, ComDeleteArticlePacket &rhs) {
-	in.eat(Protocol::COM_LIST_ART);
+Connection& operator>>(Connection &inConn, ComDeleteArticlePacket &rhs) {
+	eat(Protocol::COM_LIST_ART);
 	num_p num;
-	in >> num;
+	inConn >> num;
 	groupNum = num;
-	in >> num;
+	inConn >> num;
 	articNum = num;
-	in.eat(Protocol::COM_END);
-	return in;
+	eat(Protocol::COM_END);
+	return inConn;
 }
 
-iostream_news& operator<<(iostream_news &out, ComDeleteArticlePacket &rhs) {
-	out << Protocol::COM_LIST_ART;
-	out << num_p(groupNum);
-	out << num_p(articNum);
-	out << Protocol::COM_END;
-	return out;
+Connection& operator<<(Connection &outConn, ComDeleteArticlePacket &rhs) {
+	outConn << Protocol::COM_LIST_ART;
+	outConn << num_p(groupNum);
+	outConn << num_p(articNum);
+	outConn << Protocol::COM_END;
+	return outConn;
 }
 
 #endif

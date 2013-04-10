@@ -3,6 +3,17 @@
 
 /* Abstract superclass for packages */
 
+class Packet {
+public:
+	void eat(const uint8_t &expects){
+		uint8_t next;
+		&this << next;
+		if (next != expects){
+			throw ProtocolViolationException();
+		}
+	}
+};
+
 
 class ComPacket {
 public:

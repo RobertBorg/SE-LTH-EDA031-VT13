@@ -16,20 +16,20 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, ComDeleteNewsgroupPacket &rhs) {
-	in.eat(Protocol::COM_DELETE_NG);
+Connection& operator>>(Connection &inConn, ComDeleteNewsgroupPacket &rhs) {
+	eat(Protocol::COM_DELETE_NG);
 	num_p num;
-	in >> num;
+	inConn >> num;
 	groupNum = num;
-	in.eat(Protocol::COM_END);
-	return in;
+	eat(Protocol::COM_END);
+	return inConn;
 }
 
-iostream_news& operator<<(iostream_news &out, ComDeleteNewsgroupPacket &rhs) {
-	out << Protocol::COM_DELETE_NG;
-	out << num_p(groupNum);
-	out << Protocol::COM_END;
-	return out;
+Connection& operator<<(Connection &outConn, ComDeleteNewsgroupPacket &rhs) {
+	outConn << Protocol::COM_DELETE_NG;
+	outConn << num_p(groupNum);
+	outConn << Protocol::COM_END;
+	return outConn;
 }
 
 

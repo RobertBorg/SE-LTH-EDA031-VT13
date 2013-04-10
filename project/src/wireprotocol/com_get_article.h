@@ -14,11 +14,11 @@ private:
 
 };
 
-istream_news& operator>>(istream_news &in, ComGetArtPacket &rhs) {
-	in.eat(protocol::COM_GET_ART);
+Connection& operator>>(Connection &inConn, ComGetArtPacket &rhs) {
+	eat(protocol::COM_GET_ART);
 	num_p groupNum, artNum;
-	in >> groupNum >> artNum;
-	in.eat(protocol::COM_END);
+	inConn >> groupNum >> artNum;
+	eat(protocol::COM_END);
 
 	newsGroupNumber = groupNum;
 	articleNumber = artNum;
@@ -26,11 +26,11 @@ istream_news& operator>>(istream_news &in, ComGetArtPacket &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, ComGetArtPacket &rhs) {
-	out << protocol::COM_GET_ART;
-	out << num_p(newsGroupNumber) << num_p(artNum);
-	out << protocol::COM_END;
-	return out;
+Connection& operator<<(Connection &outConn, ComGetArtPacket &rhs) {
+	outConn << protocol::COM_GET_ART;
+	outConn << num_p(newsGroupNumber) << num_p(artNum);
+	outConn << protocol::COM_END;
+	return outConn;
 }
 
 #endif /* end of include guard: COM_GET_ART_H__ */
