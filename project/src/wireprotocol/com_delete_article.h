@@ -21,21 +21,21 @@ private:
 
 
 Connection& operator>>(Connection &inConn, ComDeleteArticlePacket &rhs) {
-	eat(Protocol::COM_LIST_ART);
+	eat(protocol::COM_LIST_ART);
 	num_p num;
 	inConn >> num;
 	groupNum = num;
 	inConn >> num;
 	articNum = num;
-	eat(Protocol::COM_END);
+	eat(protocol::COM_END);
 	return inConn;
 }
 
 Connection& operator<<(Connection &outConn, ComDeleteArticlePacket &rhs) {
-	outConn << Protocol::COM_LIST_ART;
+	outConn << protocol::COM_LIST_ART;
 	outConn << num_p(groupNum);
 	outConn << num_p(articNum);
-	outConn << Protocol::COM_END;
+	outConn << protocol::COM_END;
 	return outConn;
 }
 

@@ -16,7 +16,7 @@ struct string_p : public Packet{
 };
 
 Connection &operator>>(Connection &in, string_p &rhs) {
-	eat(Protocol::PAR_STRING);
+	eat(protocol::PAR_STRING);
 	num_p size;
 	in >> size;
 	char c;
@@ -28,7 +28,7 @@ Connection &operator>>(Connection &in, string_p &rhs) {
 }
 
 Connection &operator<<(Connection &out, string_p &rhs) {
-	out << Protocol::PAR_STRING;
+	out << protocol::PAR_STRING;
 	num_p size(rhs.value.length());
 	out << size;
 	for(auto i = rhs.value.begin(); i != rhs.value.end(); ++i) {
