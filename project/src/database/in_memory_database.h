@@ -5,8 +5,8 @@
 class InMemoryDatabase : public Database {
 public:
 	void addArticle(shared_ptr<Article> article){
-		auto ngIt = newsgroups.find(article->newsgroupId);
-		if (ngIt == newsgroups.end){
+		auto ngIt = newsgroupsById.find(article->newsgroupId);
+		if (ngIt == newsgroupsById.end){
 			throw NGDoesntExistException();
 		}
 		ngIt->addArticle(article);

@@ -9,37 +9,37 @@
 
 class ClientMessageHandler {
 public:
-	shared_ptr<Packet> parsePkg(Connection& conn) {
+	void parsePkg(Connection& conn) {
 		uint8_t pkgType = conn.peek();
 		shared_ptr<ComPacket> packet;
 		switch(pkgType) {
 			case protocol::ANS_LIST_NG:
 				packet(new AnsListNewsgroupPacket());
-				conn << &packet;
+				conn >> &packet;
 				break;
 			case protocol::ANS_CREATE_NG:
 				packet(new AnsCreateNewsgroupPacket());
-				conn << &packet;
+				conn >> &packet;
 				break;
 			case protocol::ANS_DELETE_NG:
 				packet(new AnsDeleteNewsgroupPacket());
-				conn << &packet;
+				conn >> &packet;
 				break;
 			case protocol::ANS_LIST_ART:
 				packet(new AnsListArtPacket());
-				conn << &packet;
+				conn >> &packet;
 				break;
 			case protocol::ANS_CREATE_ART:
 				packet(new AnsCreateArticlePacket());
-				conn << &packet;
+				conn >> &packet;
 				break;
 			case protocol::ANS_DELETE_ART:
 				packet(new AnsDeleteArticlePacket());
-				conn << &packet;
+				conn >> &packet;
 				break;
 			case protocol::ANS_GET_ART:
 				packet(new AnsGetArticlePacket());
-				conn << &packet;
+				conn >> &packet;
 				break;
 			default:
 				throw ProtocolViolationException();
@@ -47,6 +47,7 @@ public:
 
 		}
 	}
+
 };
 
 #endif /* end of include guard: CLIENT_MESSAGEHANDLER_H__ */

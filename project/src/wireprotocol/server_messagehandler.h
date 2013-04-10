@@ -16,39 +16,39 @@ public:
 			
 			case protocol::COM_LIST_NG:
 				packet(new ComListNewsgroupPacket()) ;
-				conn << &packet;
+				conn >> &packet;
 			break;
 
 			case protocol::COM_CREATE_NG:
 				packet(new ComCreateNewsGroupPacket()) ;
-				conn << &packet;
+				conn >> &packet;
 
 				break;
 
 			case protocol::COM_DELETE_NG:
 				packet(new ComDeleteNewsgroupPacket()) ;
-				conn << &packet;
+				conn >> &packet;
 				break;
 
 
 			case protocol::COM_LIST_ART:
 				packet(new ComListArticlePacket()) ;
-				conn << &packet;
+				conn >> &packet;
 				break;
 
 			case protocol::COM_CREATE_ART:
 				packet(new ComCreateArtPacket()) ;
-				conn << &packet;
+				conn >> &packet;
 				break;
 
 			case protocol::COM_DELETE_ART:
 				packet(new ComDeleteArticlePacket()) ;
-				conn << &packet;
+				conn >> &packet;
 				break;
 
 			case protocol::COM_GET_ART:
 				packet(new ComGetArtPacket()) ;
-				conn << &packet;
+				conn >> &packet;
 				break;
 
 			case default:
