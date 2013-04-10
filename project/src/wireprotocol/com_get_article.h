@@ -4,14 +4,25 @@
 class ComGetArtPacket : public ComPacket {
 public:
 	ComGetArtPacket() = default;
-	ComGetArtPacket(int &newsGroupNumber_, int &articleNumber_) : newsGroupNumber(newsGroupNumber_), articleNumber(articleNumber_) {}
+	ComGetArtPacket(uint32_t &newsGroupNumber_, uint32_t &articleNumber_) : newsGroupNumber(newsGroupNumber_), articleNumber(articleNumber_) {}
 	virtual shared_ptr<AnsPacket> process(Database *db) const {
-
+		try {
+			shared_ptr<Article> article = db->getArticle(articleNumber, newsGroupNumber);
+			shared_ptr<AnsPacket> answerPacket(
+				AnsGetArticlePacket::createSuccessful(article->title, article->author, article->text));
+			return answerPacket;
+		} catch (NGDoesntExistException e){
+			shared_ptr<AnsPacket> answerPacket(AnsGetArticlePacket::createNGNotFound());
+			return answerPacket;
+		} catch (ArtDoesntExistException e){
+			shared_ptr<AnsPacket> answerPacket(AnsGetArticlePacket::createArtNotFound());
+			return answerPacket;
+		}
 	}
+	
 private:
-	int newsGroupNumber;
-	int articleNumber;
-
+	uint32_t newsGroupNumber;
+	uint32_t articleNumber;
 };
 
 Connection& operator>>(Connection &inConn, ComGetArtPacket &rhs) {
