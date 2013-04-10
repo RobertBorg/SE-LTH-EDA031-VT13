@@ -11,6 +11,16 @@ public:
 	AnsDeleteArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_) 
 		: success(success_), ngNotFound(ngNotFound_), artNotFound(artNotFound_){}
 
+	static &AnsDeleteArticlePacket createSuccesful(){
+		return new AnsDeleteArticlePacket(true, false, false);
+	}
+	static &AnsDeleteArticlePacket createNGNotFound(){
+		return new AnsDeleteArticlePacket(false, true, false);
+	}
+	static &AnsDeleteArticlePacket createArtNotFound(){
+		return new AnsDeleteArticlePacket(false, false, true);
+	}
+
 
 private:
 	bool success, ngNotFound, artNotFound;

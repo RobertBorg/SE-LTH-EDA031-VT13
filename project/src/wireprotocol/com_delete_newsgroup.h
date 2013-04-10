@@ -4,15 +4,22 @@
 
 class ComDeleteNewsgroupPacket : public ComPacket{
 public:
-	AnsPacket process(Database *db){
-		
+	shared_ptr<AnsPacket> process(Database *db){
+		try{
+			db->deleteNewsgroup(groupNum);
+			shared_ptr<AnsPacket> answerPacket(new AnsDeleteNewsgroupPacket(true));
+			return answerPacket;
+		}catch (NGDoesntExistException e){
+			shared_ptr<AnsPacket> answerPacket(new AnsDeleteNewsgroupPacket(false));
+			return answerPacket;
+		} 
 	}
-	ComDeleteNewsgroupPacket(int groupNum_): groupNum(groupNum_){}
+	ComDeleteNewsgroupPacket(uint32_t groupNum_): groupNum(groupNum_){}
 	ComDeleteNewsgroupPacket() = default;
 
 
 private:
-	int groupNum;
+	uint32_t groupNum;
 };
 
 
