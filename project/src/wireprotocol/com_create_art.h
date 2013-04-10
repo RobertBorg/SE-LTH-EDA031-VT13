@@ -1,11 +1,12 @@
 #ifndef COM_CREATE_ART_H__
 #define COM_CREATE_ART_H__
 
-class ComCreateArt : public ComPackage {
+class ComCreateArtPacket : public ComPacket {
 public:
-	ComCreateArt(int &newsGroupNumber_, string &title_, string &author_, string &text_) 
+	ComCreateArtPacket() = default;
+	ComCreateArtPacket(int &newsGroupNumber_, string &title_, string &author_, string &text_) 
 		: newsGroupNumber(newsGroupNumber_), title(title_), author(author_), text(text_) {}
-	virtual shared_ptr<AnsPackage> process(Database *db) const {
+	virtual shared_ptr<AnsPacket> process(Database *db) const {
 
 	}
 private:
@@ -15,7 +16,7 @@ private:
 	string text;
 };
 
-istream_news& operator>>(istream_news &in, ComCreateArt &rhs) {
+istream_news& operator>>(istream_news &in, ComCreateArtPacket &rhs) {
 	COM_CREATE_ART num_p string_p string_p string_p COM_END
 	num_p groupNum;
 	in.eat(protocol::COM_CREATE_ART);
@@ -31,7 +32,7 @@ istream_news& operator>>(istream_news &in, ComCreateArt &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, ComCreateArt &rhs) {
+iostream_news& operator<<(iostream_news &out, ComCreateArtPacket &rhs) {
 	out << protocol::COM_CREATE_ART;
 	out << num_p(rhs.newsGroupNumber);
 	out << string_p(rhs.title);

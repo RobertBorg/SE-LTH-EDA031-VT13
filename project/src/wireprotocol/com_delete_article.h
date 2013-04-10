@@ -5,12 +5,13 @@
 
 using std::string;
 
-class ComDeleteArticlePackage : public ComPackage{
+class ComDeleteArticlePacket : public ComPacket{
 public:
-	AnsPackage process(Database *db){
+	AnsPacket process(Database *db){
 		
 	}
-	ComListArticlePackage(int groupNum_, int articNum_): groupNum(groupNum_), articNum(articNum_){}
+	ComDeleteArticlePacket() = default;
+	ComDeleteArticlePacket(int groupNum_, int articNum_): groupNum(groupNum_), articNum(articNum_){}
 
 
 private:
@@ -19,7 +20,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, ComDeleteArticlePackage &rhs) {
+istream_news& operator>>(istream_news &in, ComDeleteArticlePacket &rhs) {
 	in.eat(Protocol::COM_LIST_ART);
 	num_p num;
 	in >> num;
@@ -30,7 +31,7 @@ istream_news& operator>>(istream_news &in, ComDeleteArticlePackage &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, ComDeleteArticlePackage &rhs) {
+iostream_news& operator<<(iostream_news &out, ComDeleteArticlePacket &rhs) {
 	out << Protocol::COM_LIST_ART;
 	out << num_p(groupNum);
 	out << num_p(articNum);

@@ -5,19 +5,22 @@ using std::string;
 #include <utility>
 using std::pair;
 
-class AnsListNG : public AnsPackage {
+class AnsListNewsgroupPacket : public AnsPacket {
 public:
 	typedef pair<int, string> NewsGroup;
 	typedef vector<NewsGroup> NewsGroups;
-	AnsListNG(NewsGroups &newsGroups_) : newsGroups(newsGroups_) {}
+	AnsListNewsgroupPacket() = default;
+	AnsListNewsgroupPacket(NewsGroups &newsGroups_) : newsGroups(newsGroups_) {}
 	virtual void process() const {
-
+		for (NewsGroup ng : newsGroups) {
+			cout << ng.first << " " << ng.second << endl;
+		}
 	}
 private:
 	NewsGroups newsGroups;
 };
 
-istream_news& operator>>(istream_news &in, AnsListNG &rhs) {
+istream_news& operator>>(istream_news &in, AnsListNewsgroupPacket &rhs) {
 	in.eat(protocol::ANS_LIST_NG);
 	num_p numNG;
 	in >> numNG;
@@ -31,7 +34,7 @@ istream_news& operator>>(istream_news &in, AnsListNG &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsListNG &rhs) {
+iostream_news& operator<<(iostream_news &out, AnsListNewsgroupPacket &rhs) {
 	out << protocol::ANS_LIST_NG;
 	out << num_p(static_cast<int>(rhs.newsGroups.size()));
 	for(NewsGroup ng : rhs.newsGroups) {

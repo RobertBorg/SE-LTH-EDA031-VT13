@@ -2,12 +2,13 @@
 #define ANS_CREATE_NEWSGROUP_H__
 
 
-class AnsCreateNewsgroup : public AnsPackage{
+class AnsCreateNewsgroupPacket : public AnsPacket{
 public:
 	void process(){
 		
 	}
-	AnsCreateNewsgroup(bool success_): success(success_){}
+	AnsCreateNewsgroupPacket() = default;
+	AnsCreateNewsgroupPacket(bool success_): success(success_){}
 
 
 private:
@@ -15,7 +16,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, AnsCreateNewsgroup &rhs) {
+istream_news& operator>>(istream_news &in, AnsCreateNewsgroupPacket &rhs) {
 	in.eat(Protocol::ANS_CREATE_NG);
 	uint8_t selection;
 	in >> selection;
@@ -38,7 +39,7 @@ istream_news& operator>>(istream_news &in, AnsCreateNewsgroup &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsCreateNewsgroup &rhs) {
+iostream_news& operator<<(iostream_news &out, AnsCreateNewsgroupPacket &rhs) {
 	out << Protocol::ANS_CREATE_NG;
 	if (success){
 		out << Protocol:ANS_ACK;

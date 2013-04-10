@@ -12,7 +12,7 @@ using std::endl;
 
 class ClientMessageHandler {
 public:
-	shared_ptr<Package> parsePkg(iostream_news& in) {
+	shared_ptr<Packet> parsePkg(iostream_news& in) {
 		uint8_t pkgType;
 		in >> pkgType;
 		switch(pkgType) {

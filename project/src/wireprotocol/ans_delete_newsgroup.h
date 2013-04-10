@@ -2,12 +2,13 @@
 #define ANS_DELETE_NEWSGROUP_H__
 
 
-class AnsDeleteNewsgroup : public AnsPackage{
+class AnsDeleteNewsgroupPacket : public AnsPacket{
 public:
 	void process(){
 		
 	}
-	AnsDeleteNewsgroup(bool success_): success(success_){}
+	AnsDeleteNewsgroupPacket() = default;
+	AnsDeleteNewsgroupPacket(bool success_): success(success_){}
 
 
 private:
@@ -15,7 +16,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, AnsDeleteNewsgroup &rhs) {
+istream_news& operator>>(istream_news &in, AnsDeleteNewsgroupPacket &rhs) {
 	in.eat(Protocol::ANS_DELETE_NG);
 	uint8_t selection;
 	in >> selection;
@@ -38,7 +39,7 @@ istream_news& operator>>(istream_news &in, AnsDeleteNewsgroup &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsDeleteNewsgroup &rhs) {
+iostream_news& operator<<(iostream_news &out, AnsDeleteNewsgroupPacket &rhs) {
 	out << Protocol::ANS_DELETE_NG;
 	if (success){
 		out << Protocol:ANS_ACK;

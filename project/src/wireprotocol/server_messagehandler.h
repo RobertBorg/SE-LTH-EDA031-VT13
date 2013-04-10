@@ -8,43 +8,54 @@
 
 class ServerMessageHandler {
 public:
-	shared_ptr<Package> parsePkg(iostream_news& in) {
+	shared_ptr<ComPacket> parsePkg(iostream_news& in) {
 		uint8_t packetType;
 		packeType = in.peek();
-
+		shared_ptr<ComPacket> packet;
 		switch(packetType){
 			case Protocol::COM_LIST_NG:
-				string_p name;
-
-
-				in >> name;
-
+				packet(new ComListArticlePacket()) ;
+				in << packet;
 			break;
 
 			case Protocol::COM_CREATE_NG:
-			break;
+				packet(new ComCreateNewsGroupPacket()) ;
+				in << packet;
+				break;
 
 			case Protocol::COM_DELETE_NG:
-			break;
+				packet(new ComDeleteNewsgroupPacket()) ;
+				in << packet;
+				break;
 
 
 			case Protocol::COM_LIST_ART:
-			break;
+				packet(new ComListArticlePacket()) ;
+				in << packet;
+				break;
 
 			case Protocol::COM_CREATE_ART:
-			break;
+				packet(new ComCreateArtPacket()) ;
+				in << packet;
+				break;
 
 			case Protocol::COM_DELETE_ART:
-			break;
+				packet(new ComDeleteArticlePacket()) ;
+				in << packet;
+				break;
 
 			case Protocol::COM_GET_ART:
-			break;
+				packet(new ComGetArtPacket()) ;
+				in << packet;
+				break;
 
 			case default:
-				cerr << "Wrong packet received " << packetType << endl;
-			break;
+				throw ProtocolViolationException();
+				break;
 
 		}
+
+		return packet;
 	}
 };
 

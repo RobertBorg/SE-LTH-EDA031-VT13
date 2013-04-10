@@ -2,12 +2,13 @@
 #define ANS_DELETE_ARTICLE_H__
 
 
-class AnsDeleteArticle : public AnsPackage{
+class AnsDeleteArticlePacket : public AnsPacket{
 public:
 	void process(){
 		
 	}
-	AnsCreateArticle(bool success_, bool ngNotFound_, bool artNotFound_) 
+	AnsDeleteArticlePacket() = default;
+	AnsDeleteArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_) 
 		: success(success_), ngNotFound(ngNotFound_), artNotFound(artNotFound_){}
 
 
@@ -16,7 +17,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, AnsCreateArticle &rhs) {
+istream_news& operator>>(istream_news &in, AnsDeleteArticlePacket &rhs) {
 	in.eat(Protocol::ANS_CREATE_ART);
 	uint8_t selection;
 	in >> selection;
@@ -50,7 +51,7 @@ istream_news& operator>>(istream_news &in, AnsCreateArticle &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsCreateArticle &rhs) {
+iostream_news& operator<<(iostream_news &out, AnsDeleteArticlePacket &rhs) {
 	out << Protocol::ANS_CREATE_ART;
 	if (rhs.success){
 		out << Protocol:ANS_ACK;

@@ -2,12 +2,14 @@
 #define ANS_CREATE_ARTICLE_H__
 
 
-class AnsCreateArticle : public AnsPackage{
+class AnsCreateArticlePacket : public AnsPacket{
 public:
 	void process(){
 		
 	}
-	AnsCreateArticle(bool success_): success(success_){}
+
+	AnsCreateArticlePacket() = default;
+	AnsCreateArticlePacket(bool success_): success(success_){}
 
 
 private:
@@ -15,7 +17,7 @@ private:
 };
 
 
-istream_news& operator>>(istream_news &in, AnsCreateArticle &rhs) {
+istream_news& operator>>(istream_news &in, AnsCreateArticlePacket &rhs) {
 	in.eat(Protocol::ANS_CREATE_ART);
 	uint8_t selection;
 	in >> selection;
@@ -38,7 +40,7 @@ istream_news& operator>>(istream_news &in, AnsCreateArticle &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsCreateArticle &rhs) {
+iostream_news& operator<<(iostream_news &out, AnsCreateArticlePacket &rhs) {
 	out << Protocol::ANS_CREATE_ART;
 	if (success){
 		out << Protocol:ANS_ACK;
