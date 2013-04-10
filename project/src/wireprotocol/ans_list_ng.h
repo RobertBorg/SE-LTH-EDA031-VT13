@@ -13,7 +13,7 @@ public:
 	AnsListNewsgroupPacket(NewsGroups &newsGroups_) : newsGroups(newsGroups_) {}
 	virtual void process() const {
 		for (NewsGroup ng : newsGroups) {
-			cout << ng.first << " " << ng.second << endl;
+			cout <<"Id :" << ng.first << " Name: " << ng.second << endl;
 		}
 	}
 private:

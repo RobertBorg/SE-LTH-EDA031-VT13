@@ -5,7 +5,13 @@
 class AnsDeleteArticlePacket : public AnsPacket{
 public:
 	void process(){
-		
+		if (success){
+			cout << "Article successfully deleted." << endl;
+		} else if (ngNotFound){
+			cout << "Newsgroup not found." << endl;
+		} else if (artNotFound){
+			cout << "Article not found." << endl;
+		}
 	}
 	AnsDeleteArticlePacket() = default;
 	AnsDeleteArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_) 

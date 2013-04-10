@@ -5,7 +5,11 @@
 class AnsCreateArticlePacket : public AnsPacket{
 public:
 	void process(){
-		
+		if (success){
+			cout << "Creation was succesful." << endl;
+		} else {
+			cout << "Newsgroup was not found." << endl;
+		}
 	}
 
 	AnsCreateArticlePacket() = default;

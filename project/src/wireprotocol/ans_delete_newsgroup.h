@@ -5,7 +5,11 @@
 class AnsDeleteNewsgroupPacket : public AnsPacket{
 public:
 	void process(){
-		
+		if (success){
+			cout << "Newsgroup successfully deleted." << endl;
+		} else {
+			cout << "Newgroup was not found." << endl;
+		}
 	}
 	AnsDeleteNewsgroupPacket() = default;
 	AnsDeleteNewsgroupPacket(bool success_): success(success_){}

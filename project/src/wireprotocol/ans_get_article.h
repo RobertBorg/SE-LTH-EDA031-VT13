@@ -8,7 +8,9 @@ using std::string;
 class AnsGetArticlePacket : public AnsPacket{
 public:
 	void process(){
-		
+		cout << "Title: " << title << endl << 
+		"Author: " << author << endl <<
+		"Text: " << text << endl;
 	}
 	AnsGetArticlePacket() = default;
 	AnsGetArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_, string title_, string author_, string text_) 

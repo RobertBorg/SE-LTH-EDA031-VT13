@@ -5,7 +5,11 @@
 class AnsCreateNewsgroupPacket : public AnsPacket{
 public:
 	void process(){
-		
+		if (success){
+			cout << "Newsgroup successfully created." << endl;
+		} else {
+			cout << "Newsgroup with that name already exists." << endl;
+		}
 	}
 	AnsCreateNewsgroupPacket() = default;
 	AnsCreateNewsgroupPacket(bool success_): success(success_){}

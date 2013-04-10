@@ -12,7 +12,9 @@ public:
 	AnsListArtPacket() = default;
 	AnsListArtPacket(Articles &newsGroups_) : articles(newsGroups_) {}
 	virtual void process() const {
-
+		for (Article art : articles){
+			cout << "Id: " << art.first << " Title: " << art.second << endl;
+		}
 	}
 private:
 	Articles articles;
