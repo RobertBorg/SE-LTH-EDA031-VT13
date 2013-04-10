@@ -39,7 +39,7 @@ Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs) {
 	return in;
 }
 
-iostream_news& operator<<(iostream_news &out, AnsDeleteNewsgroupPacket &rhs) {
+Connection& operator<<(Connection &out, AnsDeleteNewsgroupPacket &rhs) {
 	out << Protocol::ANS_DELETE_NG;
 	if (success){
 		out << Protocol:ANS_ACK;

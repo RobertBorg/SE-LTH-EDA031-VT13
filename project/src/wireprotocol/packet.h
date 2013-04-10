@@ -29,5 +29,36 @@ public:
 
 };
 
+Connection& operator>>(Connection &inConn, uint32_t &t) {
+	t = 0;
+	uint8_t byte;
+	for(int i = 0; i < 4; ++i) {
+		in >> byte;
+		t = t << 8;
+		t |= byte;
+	}
+	return inConn;
+}
+
+Connection& operator<<(Connection &outConn, uint32_t &rhs) {
+	int bitOffset = 24;
+	for(int i = 0; i < 4; ++i) {
+		uint8_t byte = (rhs.value >> bitOffset) & 0xFF;
+		out << byte;
+		bitOffset -= 8
+	}
+	return outConn;
+}
+
+Connection& operator>>(Connection &inConn, uint8_t &rhs) {
+	rhs = inConn.read();
+	return inConn;
+}
+
+Connection& operator<<(Connection &outConn, uint8_t &rhs) {
+	outConn.write(rhs);
+	return outConn;
+}
+
 
 #endif
