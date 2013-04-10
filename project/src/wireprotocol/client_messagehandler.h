@@ -19,7 +19,6 @@ public:
 			case protocol::ANS_LIST_NG:
 				num_p numNewsGroups;
 				in >> numNewsGroups;
-				
 				break;
 			case protocol::ANS_CREATE_NG:
 				break;
