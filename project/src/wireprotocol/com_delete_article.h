@@ -8,15 +8,23 @@ using std::string;
 class ComDeleteArticlePacket : public ComPacket{
 public:
 	AnsPacket process(Database *db){
-		
+		try{
+			db->deleteArticle(articNum, groupNum);
+		}catch (NGDoesntExistException e){
+			shared_ptr<AnsPacket> answerPacket(AnsDeleteArticlePacket::createNGNotFound());
+			return answerPacket;
+		} catch (ArtDoesntExistException e){
+			shared_ptr<AnsPacket> answerPacket(AnsDeleteArticlePacket::createArtNotFound());
+			return answerPacket;
+		}
 	}
 	ComDeleteArticlePacket() = default;
-	ComDeleteArticlePacket(int groupNum_, int articNum_): groupNum(groupNum_), articNum(articNum_){}
+	ComDeleteArticlePacket(uint32_t groupNum_, uint32_t articNum_): groupNum(groupNum_), articNum(articNum_){}
 
 
 private:
-	int groupNum;
-	int articNum;
+	uint32_t groupNum;
+	uint32_t articNum;
 };
 
 
