@@ -1,7 +1,7 @@
-#include "options.h"
+#include "client_options.h"
 
 int main(int argc, char* argv[]) {
-	Options o(argc,argv);
+	ClientOptions o(argc,argv);
 	o();
 	return 0;
 }
