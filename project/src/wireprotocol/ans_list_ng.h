@@ -9,6 +9,7 @@ class AnsListNewsgroupPacket : public AnsPacket {
 public:
 	typedef pair<int, string> NewsGroup;
 	typedef vector<NewsGroup> NewsGroups;
+	AnsListNewsgroupPacket() = default;
 	AnsListNewsgroupPacket(NewsGroups &newsGroups_) : newsGroups(newsGroups_) {}
 	virtual void process() const {
 		for (NewsGroup ng : newsGroups) {

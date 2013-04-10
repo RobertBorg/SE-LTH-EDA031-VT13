@@ -7,6 +7,7 @@ public:
 	void process(){
 		
 	}
+	AnsCreateNewsgroupPacket() = default;
 	AnsCreateNewsgroupPacket(bool success_): success(success_){}
 
 

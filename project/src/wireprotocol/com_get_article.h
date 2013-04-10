@@ -3,7 +3,8 @@
 
 class ComGetArtPacket : public ComPacket {
 public:
-	ComGetArt(int &newsGroupNumber_, int &articleNumber_) : newsGroupNumber(newsGroupNumber_), articleNumber(articleNumber_) {}
+	ComGetArtPacket() = default;
+	ComGetArtPacket(int &newsGroupNumber_, int &articleNumber_) : newsGroupNumber(newsGroupNumber_), articleNumber(articleNumber_) {}
 	virtual shared_ptr<AnsPacket> process(Database *db) const {
 
 	}

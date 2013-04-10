@@ -9,6 +9,7 @@ class AnsListArtPacket : public AnsPacket {
 public:
 	typedef pair<int, string> Article;
 	typedef vector<Article> Articles;
+	AnsListArtPacket() = default;
 	AnsListArtPacket(Articles &newsGroups_) : articles(newsGroups_) {}
 	virtual void process() const {
 

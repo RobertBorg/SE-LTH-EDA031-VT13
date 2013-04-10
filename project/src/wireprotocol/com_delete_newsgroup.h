@@ -8,6 +8,7 @@ public:
 		
 	}
 	ComDeleteNewsgroupPacket(int groupNum_): groupNum(groupNum_){}
+	ComDeleteNewsgroupPacket() = default;
 
 
 private:

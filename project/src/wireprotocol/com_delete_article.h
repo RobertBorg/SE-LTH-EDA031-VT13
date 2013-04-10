@@ -10,6 +10,7 @@ public:
 	AnsPacket process(Database *db){
 		
 	}
+	ComDeleteArticlePacket() = default;
 	ComDeleteArticlePacket(int groupNum_, int articNum_): groupNum(groupNum_), articNum(articNum_){}
 
 

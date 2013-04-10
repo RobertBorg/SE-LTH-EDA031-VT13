@@ -7,6 +7,8 @@ public:
 	void process(){
 		
 	}
+
+	AnsCreateArticlePacket() = default;
 	AnsCreateArticlePacket(bool success_): success(success_){}
 
 

@@ -11,35 +11,47 @@ public:
 	shared_ptr<ComPacket> parsePkg(iostream_news& in) {
 		uint8_t packetType;
 		packeType = in.peek();
-
+		shared_ptr<ComPacket> packet;
 		switch(packetType){
 			case Protocol::COM_LIST_NG:
-				shared_ptr<ComPacket> packet(new ComListArticlePacket()) ;
+				packet(new ComListArticlePacket()) ;
 				in << packet;
 			break;
 
 			case Protocol::COM_CREATE_NG:
+				packet(new ComCreateNewsGroupPacket()) ;
+				in << packet;
 				break;
 
 			case Protocol::COM_DELETE_NG:
-			break;
+				packet(new ComDeleteNewsgroupPacket()) ;
+				in << packet;
+				break;
 
 
 			case Protocol::COM_LIST_ART:
-			break;
+				packet(new ComListArticlePacket()) ;
+				in << packet;
+				break;
 
 			case Protocol::COM_CREATE_ART:
-			break;
+				packet(new ComCreateArtPacket()) ;
+				in << packet;
+				break;
 
 			case Protocol::COM_DELETE_ART:
-			break;
+				packet(new ComDeleteArticlePacket()) ;
+				in << packet;
+				break;
 
 			case Protocol::COM_GET_ART:
-			break;
+				packet(new ComGetArtPacket()) ;
+				in << packet;
+				break;
 
 			case default:
 				throw ProtocolViolationException();
-			break;
+				break;
 
 		}
 

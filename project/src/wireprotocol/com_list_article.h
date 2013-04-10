@@ -7,6 +7,7 @@ public:
 	AnsPacket process(Database *db){
 		
 	}
+	ComListArticlePacket() = default;
 	ComListArticlePacket(int groupNum_): groupNum(groupNum_){}
 
 

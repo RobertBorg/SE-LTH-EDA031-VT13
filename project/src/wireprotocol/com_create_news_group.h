@@ -6,6 +6,7 @@
 
 class ComCreateNewsGroupPacket : public ComPacket {
 public:
+	ComCreateNewsGroupPacket() = default;
 	ComCreateNewsGroupPacket(string newsGroupName_) : newsGroupName(newsGroupName_) {}
 	virtual shared_ptr<AnsPacket> process(Database *db) const {
 

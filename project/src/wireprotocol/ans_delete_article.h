@@ -7,6 +7,7 @@ public:
 	void process(){
 		
 	}
+	AnsDeleteArticlePacket() = default;
 	AnsDeleteArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_) 
 		: success(success_), ngNotFound(ngNotFound_), artNotFound(artNotFound_){}
 

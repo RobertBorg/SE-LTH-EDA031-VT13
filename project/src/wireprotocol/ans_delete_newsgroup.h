@@ -7,6 +7,7 @@ public:
 	void process(){
 		
 	}
+	AnsDeleteNewsgroupPacket() = default;
 	AnsDeleteNewsgroupPacket(bool success_): success(success_){}
 
 
