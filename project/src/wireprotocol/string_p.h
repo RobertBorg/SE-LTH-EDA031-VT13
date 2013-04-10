@@ -15,7 +15,7 @@ struct string_p {
 	}
 };
 
-iostream_news &operator>>(iostream_news &in, string_p &rhs) {
+Connection &operator>>(Connection &in, string_p &rhs) {
 	num_p size;
 	in >> size;
 	char c;
@@ -26,7 +26,7 @@ iostream_news &operator>>(iostream_news &in, string_p &rhs) {
 	return in;
 }
 
-iostream_news &operator<<(iostream_news &out, string_p &rhs) {
+Connection &operator<<(Connection &out, string_p &rhs) {
 	num_p size(rhs.value.length());
 	out << size;
 	for(auto i = rhs.value.begin(); i != rhs.value.end(); ++i) {

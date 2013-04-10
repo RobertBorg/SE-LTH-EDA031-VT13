@@ -15,14 +15,14 @@ public:
 };
 
 
-class ComPacket {
+class ComPacket : public Packet {
 public:
 	virtual shared_ptr<AnsPacket> process(Database *db) const;
 
 
 };
 
-class AnsPacket {
+class AnsPacket : public Packet{
 public:
 	virtual void process() const;
 
