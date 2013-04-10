@@ -13,6 +13,7 @@ public:
 		packeType = conn.peek();
 		shared_ptr<ComPacket> packet;
 		switch(packetType){
+			
 			case protocol::COM_LIST_NG:
 				packet(new ComListNewsgroupPacket()) ;
 				conn << &packet;
@@ -21,6 +22,7 @@ public:
 			case protocol::COM_CREATE_NG:
 				packet(new ComCreateNewsGroupPacket()) ;
 				conn << &packet;
+
 				break;
 
 			case protocol::COM_DELETE_NG:
