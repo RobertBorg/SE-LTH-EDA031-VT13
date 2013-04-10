@@ -37,7 +37,7 @@ all: $(ALLTARGETS)
 
 # Linking:
 newsreader: newsreader.o
-	$(CXX) newsreader.o -lboost_program_options-mt -o newsreader
+	$(CXX) newsreader.o -lboost_program_options -o newsreader
 
 # Dependencies, the implicit rule .cc => .o is used
 include $(sources:.cc=.dd)
