@@ -15,38 +15,38 @@ public:
 		switch(packetType){
 			case Protocol::COM_LIST_NG:
 				packet(new ComListNewsgroupPacket()) ;
-				in << packet;
+				conn << &packet;
 			break;
 
 			case Protocol::COM_CREATE_NG:
 				packet(new ComCreateNewsGroupPacket()) ;
-				in << packet;
+				conn << &packet;
 				break;
 
 			case Protocol::COM_DELETE_NG:
 				packet(new ComDeleteNewsgroupPacket()) ;
-				in << packet;
+				conn << &packet;
 				break;
 
 
 			case Protocol::COM_LIST_ART:
 				packet(new ComListArticlePacket()) ;
-				in << packet;
+				conn << &packet;
 				break;
 
 			case Protocol::COM_CREATE_ART:
 				packet(new ComCreateArtPacket()) ;
-				in << packet;
+				conn << &packet;
 				break;
 
 			case Protocol::COM_DELETE_ART:
 				packet(new ComDeleteArticlePacket()) ;
-				in << packet;
+				conn << &packet;
 				break;
 
 			case Protocol::COM_GET_ART:
 				packet(new ComGetArtPacket()) ;
-				in << packet;
+				conn << &packet;
 				break;
 
 			case default:
