@@ -17,7 +17,6 @@ private:
 };
 
 istream_news& operator>>(Connection &inConn, ComCreateArtPacket &rhs) {
-	COM_CREATE_ART num_p string_p string_p string_p COM_END
 	num_p groupNum;
 	eat(protocol::COM_CREATE_ART);
 	string_p title:
