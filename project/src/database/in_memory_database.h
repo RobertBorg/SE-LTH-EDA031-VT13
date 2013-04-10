@@ -9,7 +9,6 @@ public:
 		if (ngIt == newsgroups.end){
 			throw NGDoesntExistException();
 		}
-		// Hitta nytt ID till article
 		ngIt->addArticle(article);
 	}
 
