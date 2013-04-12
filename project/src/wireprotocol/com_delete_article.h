@@ -7,7 +7,7 @@ using std::string;
 
 class ComDeleteArticlePacket : public ComPacket{
 public:
-	AnsPacket process(Database *db){
+	AnsPacket process(Database& db){
 		try{
 			db->deleteArticle(articNum, groupNum);
 		}catch (NGDoesntExistException e){

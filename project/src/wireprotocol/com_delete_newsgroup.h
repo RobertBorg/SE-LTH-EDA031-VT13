@@ -4,7 +4,7 @@
 
 class ComDeleteNewsgroupPacket : public ComPacket{
 public:
-	shared_ptr<AnsPacket> process(Database *db){
+	shared_ptr<AnsPacket> process(Database& db){
 		try{
 			db->deleteNewsgroup(groupNum);
 			shared_ptr<AnsPacket> answerPacket(new AnsDeleteNewsgroupPacket(true));

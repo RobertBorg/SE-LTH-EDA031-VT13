@@ -8,7 +8,7 @@ class ComCreateNewsGroupPacket : public ComPacket {
 public:
 	ComCreateNewsGroupPacket() = default;
 	ComCreateNewsGroupPacket(string newsGroupName_) : newsGroupName(newsGroupName_) {}
-	virtual shared_ptr<AnsPacket> process(Database *db) const {
+	virtual shared_ptr<AnsPacket> process(Database& db) const {
 		try{
 			shared_ptr<NewsGroup> newsGroup(new NewsGroup(0, newsGroupName));
 			db->addNewsgroup(newsGroup);
