@@ -34,10 +34,12 @@ all: $(ALLTARGETS)
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
+libclientserver.a:
+	cp ../lib/clientserver/libclientserver.a ./
 
 # Linking:
-newsreader: newsreader.o connection.o
-	$(CXX) newsreader.o -lboost_program_options -o newsreader
+newsreader: newsreader.o libclientserver.a
+	$(CXX) newsreader.o -L. -lclientserver -lboost_program_options -o newsreader
 
 # Dependencies, the implicit rule .cc => .o is used
 include $(sources:.cc=.dd)
