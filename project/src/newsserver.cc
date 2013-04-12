@@ -1,7 +1,10 @@
 #include "server_options.h"
-#include "packet.h"
+#include "wireprotocol/packet.h"
+#include "wireprotocol/server_messagehandler.h"
 
 using namespace client_server;
+using std::cout;
+using std:: cerr;
 
 int main(int argc, char* argv[]) {
 	ServerOptions o(argc,argv);

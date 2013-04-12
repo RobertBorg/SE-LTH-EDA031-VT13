@@ -2,8 +2,8 @@
 #define SERVER_MESSAGEHANDLER_H__
 
 #include "iostream_news.h"
-#include "protocol.h"
-#include "string_p"
+#include "../../lib/clientserver/protocol.h"
+#include "string_p.h"
 #include <iostream>
 
 class ServerMessageHandler {

@@ -4,8 +4,8 @@
 #include "iostream_news.h"
 
 #include <string>
-#include <cstdint>
-#include ".../../lib/clientserver/protocol.h"
+#include <tr1/cstdint>
+#include "../../lib/clientserver/protocol.h"
 
 struct num_p : public Packet{
 	num_p() = default;
