@@ -17,10 +17,12 @@ public:
 	ServerOptions(int argc, char* argv[]) : cmdDesc("Allowed options"), cmdHiddenDesc("Hidden command line options") {
 		cmdDesc.add_options()
 			("help", "produce help message"),
+			("server-port",value<uint16_t>() ,"produce help message"),
 			("persistent-db", "persistent database on disk");
 
 		cmdHiddenDesc.add_options()
 			("help", "produce help message"),
+			("server-port",value<uint16_t>() ,"produce help message"),
 			("persistent-db", value<bool> "persistent database on disk");
 		
 

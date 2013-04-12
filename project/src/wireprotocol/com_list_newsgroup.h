@@ -4,7 +4,7 @@
 
 class ComListNewsgroupPacket : public ComPacket{
 public:
-	shared_ptr<AnsPacket> process(Database *db){
+	shared_ptr<AnsPacket> process(Database& db){
 		vector<Newsgroup> newsgroups;
 		for_each(db->getNewsgroupIterator(), db->getNewsgroupEnd(), 
 			[&newsgroups] (const pair<uint32_t, Newsgroup> pair) {newsgroups.push_back(pair.second); });

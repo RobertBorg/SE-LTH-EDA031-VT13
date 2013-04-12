@@ -5,7 +5,7 @@ class ComGetArtPacket : public ComPacket {
 public:
 	ComGetArtPacket() = default;
 	ComGetArtPacket(uint32_t &newsGroupNumber_, uint32_t &articleNumber_) : newsGroupNumber(newsGroupNumber_), articleNumber(articleNumber_) {}
-	virtual shared_ptr<AnsPacket> process(Database *db) const {
+	virtual shared_ptr<AnsPacket> process(Database& db) const {
 		try {
 			shared_ptr<Article> article = db->getArticle(articleNumber, newsGroupNumber);
 			shared_ptr<AnsPacket> answerPacket(

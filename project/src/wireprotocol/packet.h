@@ -17,7 +17,7 @@ public:
 
 class ComPacket : public Packet {
 public:
-	virtual shared_ptr<AnsPacket> process(Database *db) const;
+	virtual shared_ptr<AnsPacket> process(Database& db) const;
 
 
 };
