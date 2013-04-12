@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.dd
+*.d
 
 # Compiled Dynamic libraries
 *.so
@@ -16,3 +17,4 @@
 #sublime
 *.sublime-workspace
 .DS_STORE
+
