@@ -35,6 +35,7 @@ all: $(ALLTARGETS)
 	rm -f $@.$$$$
 
 libclientserver.a:
+	make -C ../lib/clientserver
 	cp ../lib/clientserver/libclientserver.a ./
 
 # Linking:
