@@ -74,8 +74,8 @@ namespace client_server {
         /* Print error message and exit */
         void error(const char* msg) const;
 
-        bool isPeeked;
-        unsigned char peekChar;
+        mutable bool isPeeked;
+        mutable unsigned char peekChar;
     };
 }
 

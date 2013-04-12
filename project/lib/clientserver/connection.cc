@@ -121,7 +121,7 @@ namespace client_server {
         return data;
     }
 
-    unsigned char Connection::peek() const throw(ConnectionClosedException) {
+    unsigned char Connection::peek() const {
         if (isPeeked){
             return peekChar;
         }
