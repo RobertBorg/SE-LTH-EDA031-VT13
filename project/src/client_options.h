@@ -14,16 +14,18 @@ class ClientOptions : private variables_map {
 public:
 	using variables_map::operator[];
 	using variables_map::count;
-	ClientOptions(int argc, char* argv[]) : cmdDesc("Allowed options"), cmdHiddenDesc("Hidden command line oprtions") {
+	ClientOptions(int argc, char* argv[]) 
+	: cmdDesc("Allowed options")
+	, cmdHiddenDesc("Hidden command line oprtions")  {
 		cmdDesc.add_options()
 			("help", "produce help message")
-			("server-address", value<string>(), "produce help message")
-			("server-port",value<uint16_t>() ,"produce help message");
+			("server-address,A", value<string>(), "NNTP server address")
+			("server-port,P",value<uint16_t>() ,"NNTP server port");
 
 		cmdHiddenDesc.add_options()
 			("help", "produce help message")
-			("server-address", value<string>(), "produce help message")
-			("server-port",value<uint16_t>() ,"produce help message")
+			("server-address,A", value<string>(), "NNTP server address")
+			("server-port,P",value<uint16_t>() ,"NNTP server port")
 			("mode-of-operation", value<string>(), "set mode of operation")
 			("pos2", value<string>(), "set mode of operation")
 			("pos3", value<string>(), "set mode of operation")
