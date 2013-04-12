@@ -1,4 +1,7 @@
 #include "server_options.h"
+#include "packet.h"
+
+using namespace client_server;
 
 int main(int argc, char* argv[]) {
 	ServerOptions o(argc,argv);
@@ -18,8 +21,8 @@ int main(int argc, char* argv[]) {
         Connection* conn = server.waitForActivity();
         if (conn != 0) {
             try {
-                shared_ptr<ComPacket> packet = msgHandler.parsePkg(conn);
-                shared_ptr<AnsPacket> ansPacket = packet->process(db);
+                boost::shared_ptr<ComPacket> packet = msgHandler.parsePkg(conn);
+                boost::shared_ptr<AnsPacket> ansPacket = packet->process(db);
                 conn << *ansPacket;
             }
             catch (ConnectionClosedException&) {

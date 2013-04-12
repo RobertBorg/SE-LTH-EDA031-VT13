@@ -7,6 +7,7 @@ using std::string;
 using std::cout;
 using std::endl;
 #include <boost/program_options.hpp>
+#include "../lib/clientserver/server.h"
 
 using namespace boost::program_options;
 
