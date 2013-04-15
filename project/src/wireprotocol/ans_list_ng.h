@@ -21,7 +21,7 @@ private:
 };
 
 Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs) {
-	Packet::eat(in, protocol::ANS_LIST_NG);
+	Packet::eat(in, protocol::Protocol::ANS_LIST_NG);
 	num_p numNG;
 	in >> numNG;
 	for(int i = 0 i < numNG; ++i){
@@ -30,18 +30,18 @@ Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs) {
 		in >> id >> str;
 		rhs.newsGroups.push_back(NewsGroup(id,str));
 	}
-	Packet::eat(in, protocol::COM_END);
+	Packet::eat(in, protocol::Protocol::COM_END);
 	return in;
 }
 
 Connection& operator<<(Connection &out, AnsListNewsgroupPacket &rhs) {
-	out << protocol::ANS_LIST_NG;
+	out << protocol::Protocol::ANS_LIST_NG;
 	out << num_p(static_cast<int>(rhs.newsGroups.size()));
 	for(NewsGroup ng : rhs.newsGroups) {
 		out << num_p(ng.first);
 		out << string_p(ng.second);
 	}
-	out << protocol::COM_END;
+	out << protocol::Protocol::COM_END;
 	return out;
 }
 

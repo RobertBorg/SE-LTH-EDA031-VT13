@@ -1,8 +1,6 @@
 #ifndef STRING_P_H__
 #define STRING_P_H__
 
-
-#include "iostream_news.h"
 #include "num_p.h"
 
 #include <string>
@@ -10,13 +8,13 @@ using std::string;
 
 struct string_p : public Packet{
 	string value;
-	const string& operator string() {
+	const string& string() {
 		return value;
 	}
 };
 
 Connection &operator>>(Connection &in, string_p &rhs) {
-	Packet::eat(in, protocol::PAR_STRING);
+	Packet::eat(in, protocol::Protocol::PAR_STRING);
 	num_p size;
 	in >> size;
 	char c;
@@ -28,7 +26,7 @@ Connection &operator>>(Connection &in, string_p &rhs) {
 }
 
 Connection &operator<<(Connection &out, string_p &rhs) {
-	out << protocol::PAR_STRING;
+	out << protocol::Protocol::PAR_STRING;
 	num_p size(rhs.value.length());
 	out << size;
 	for(auto i = rhs.value.begin(); i != rhs.value.end(); ++i) {

@@ -36,11 +36,11 @@ private:
 
 
 Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
-	Packet::eat(in, protocol::ANS_GET_ART);
+	Packet::eat(in, protocol::Protocol::ANS_GET_ART);
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
-		case protocol::ANS_ACK:
+		case protocol::Protocol::ANS_ACK:
 			string_p title, author, text;
 			in << title << author << text;
 
@@ -54,10 +54,10 @@ Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
 			uint8_t errorMsg;
 			in >> errorMsg;
 			switch(errorMsg){
-				case protocol::ERR_NG_DOES_NOT_EXIST:
+				case protocol::Protocol::ERR_NG_DOES_NOT_EXIST:
 					rhs.ngNotFound = true;
 					break;
-				case protocol::ERR_ART_DOES_NOT_EXIST:
+				case protocol::Protocol::ERR_ART_DOES_NOT_EXIST:
 					rhs.artNotFound = true;
 					break
 				default:
@@ -71,12 +71,12 @@ Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
 			break;
 
 	}
-	Packet::eat(in, protocol::ANS_END);
+	Packet::eat(in, protocol::Protocol::ANS_END);
 	return in;
 }
 
 Connection& operator<<(Connection &out, AnsGetArticlePacket &rhs) {
-	out << protocol::ANS_GET_ART;
+	out << protocol::Protocol::ANS_GET_ART;
 	if (rhs.success){
 		out << protocol:ANS_ACK;
 		out << string_p(rhs.title);
@@ -90,7 +90,7 @@ Connection& operator<<(Connection &out, AnsGetArticlePacket &rhs) {
 			out << protocol:ERR_ART_DOES_NOT_EXIST;
 		}
 	}
-	out << protocol::ANS_END;
+	out << protocol::Protocol::ANS_END;
 	return out;
 }
 

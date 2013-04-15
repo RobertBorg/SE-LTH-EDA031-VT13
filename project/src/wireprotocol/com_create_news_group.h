@@ -24,18 +24,18 @@ private:
 };
 
 Connection& operator>>(Connection &inConn, ComCreateNewsGroupPacket &rhs) {
-	Packet::eat(in, protocol::COM_CREATE_NG);
+	Packet::eat(in, protocol::Protocol::COM_CREATE_NG);
 	string_p str;
 	inConn >> str;
 	newsGroupName = str;
-	Packet::eat(in, protocol::COM_END);
+	Packet::eat(in, protocol::Protocol::COM_END);
 	return inConn;
 }
 
 Connection& operator<<(Connection &outConn, ComCreateNewsGroupPacket &rhs) {
-	outConn << protocol::COM_CREATE_NG;
+	outConn << protocol::Protocol::COM_CREATE_NG;
 	outConn << string_p(newsGroupName);
-	outConn << protocol::COM_END;
+	outConn << protocol::Protocol::COM_END;
 	return outConn;
 }
 

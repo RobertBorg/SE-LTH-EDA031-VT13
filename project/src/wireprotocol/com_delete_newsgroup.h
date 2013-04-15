@@ -24,18 +24,18 @@ private:
 
 
 Connection& operator>>(Connection &inConn, ComDeleteNewsgroupPacket &rhs) {
-	Packet::eat(in, protocol::COM_DELETE_NG);
+	Packet::eat(in, protocol::Protocol::COM_DELETE_NG);
 	num_p num;
 	inConn >> num;
 	groupNum = num;
-	Packet::eat(in, protocol::COM_END);
+	Packet::eat(in, protocol::Protocol::COM_END);
 	return inConn;
 }
 
 Connection& operator<<(Connection &outConn, ComDeleteNewsgroupPacket &rhs) {
-	outConn << protocol::COM_DELETE_NG;
+	outConn << protocol::Protocol::COM_DELETE_NG;
 	outConn << num_p(groupNum);
-	outConn << protocol::COM_END;
+	outConn << protocol::Protocol::COM_END;
 	return outConn;
 }
 

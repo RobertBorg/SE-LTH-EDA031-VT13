@@ -18,12 +18,12 @@ private:
 
 istream_news& operator>>(Connection &inConn, ComCreateArtPacket &rhs) {
 	num_p groupNum;
-	Packet::eat(in, protocol::COM_CREATE_ART);
+	Packet::eat(in, protocol::Protocol::COM_CREATE_ART);
 	string_p title:
 	string_p author;
 	string_p text:
 	inConn >> groupNum >> title >> author >> text;
-	Packet::eat(in, protocol::COM_END);
+	Packet::eat(in, protocol::Protocol::COM_END);
 	rhs.newsGroupNumber = groupNum;
 	rhs.title = title;
 	rhs.author = author;
@@ -32,12 +32,12 @@ istream_news& operator>>(Connection &inConn, ComCreateArtPacket &rhs) {
 }
 
 iostream_news& operator<<(Connection &outConn, ComCreateArtPacket &rhs) {
-	outConn << protocol::COM_CREATE_ART;
+	outConn << protocol::Protocol::COM_CREATE_ART;
 	outConn << num_p(rhs.newsGroupNumber);
 	outConn << string_p(rhs.title);
 	outConn << string_p(rhs.author);
 	outConn << string_p(rhs.text);
-	outConn << protocol::COM_END;
+	outConn << protocol::Protocol::COM_END;
 	return outConn;
 }
 

@@ -21,10 +21,10 @@ private:
 };
 
 Connection& operator>>(Connection &in, AnsListArtPacket &rhs) {
-	Packet::eat(in, protocol::ANS_LIST_ART);
+	Packet::eat(in, protocol::Protocol::ANS_LIST_ART);
 	uint8_t success;
 	switch(success) {
-		case protocol::ANS_ACK:
+		case protocol::Protocol::ANS_ACK:
 			num_p num;
 			in >> num;
 			for( int i = 0; i < num; ++i) {
@@ -34,24 +34,24 @@ Connection& operator>>(Connection &in, AnsListArtPacket &rhs) {
 				rhs.articles.push_back(Article(id,title));
 			}
 			break;
-		case protocol::ANS_NAK:
-			Packet::eat(in, protocol::ERR_NG_DOES_NOT_EXIST]);
+		case protocol::Protocol::ANS_NAK:
+			Packet::eat(in, protocol::Protocol::ERR_NG_DOES_NOT_EXIST]);
 			break;
 		default:
 			throw ProtocolViolationException();
 	}
-	Packet::eat(in, protocol::COM_END);
+	Packet::eat(in, protocol::Protocol::COM_END);
 	return in;
 }
 
 Connection& operator<<(Connection &out, AnsListArtPacket &rhs) {
-	out << protocol::ANS_LIST_ART;
+	out << protocol::Protocol::ANS_LIST_ART;
 	out << num_p(static_cast<int>(rhs.articles.size()));
 	for(Article a : rhs.articles) {
 		out << num_p(a.first);
 		out << string_p(a.second);
 	}
-	out << protocol::COM_END;
+	out << protocol::Protocol::COM_END;
 	return out;
 }
 

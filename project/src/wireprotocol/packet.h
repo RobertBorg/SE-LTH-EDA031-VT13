@@ -17,6 +17,11 @@ Connection& operator>>(Connection &in, uint8_t &rhs) {
 	return in;
 }
 
+Connection& operator>>(Connection &in, char &rhs) {
+	rhs = in.read();
+	return in;
+}
+
 Connection& operator<<(Connection &out, uint8_t &rhs) {
 	out.write(rhs);
 	return out;
@@ -33,7 +38,7 @@ Connection& operator>>(Connection &in, uint32_t &t) {
 	return in;
 }
 
-Connection& operator<<(Connection &out, uint32_t &rhs) {
+Connection& operator<<(Connection &out, uint32_t rhs) {
 	int bitOffset = 24;
 	for(int i = 0; i < 4; ++i) {
 		uint8_t byte = (rhs >> bitOffset) & 0xFF;
@@ -43,10 +48,15 @@ Connection& operator<<(Connection &out, uint32_t &rhs) {
 	return out;
 }
 
+Connection& operator<<(Connection &out, int &rhs) {
+	out << static_cast<uint32_t>(rhs);
+	return out;
+}
+
 
 class Packet {
 public: 
-	void eat(Connection &in, const uint8_t &expects ){
+	static void eat(Connection &in, const uint8_t &expects ){
         uint8_t next;
         in >> next;
         if (next != expects){
@@ -62,6 +72,7 @@ public:
 	virtual void process() const;
 };
 
+template <typename Database>
 class ComPacket : public Packet {
 public:
 	virtual shared_ptr<AnsPacket> process(Database& db) const;
