@@ -5,7 +5,7 @@
 # Compiler and compiler options:
 CXX       = clang++
 CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
-CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast
+CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast -ferror-limit=1
 CC        = $(CXX)
 
 ALLTARGETS = newsreader
