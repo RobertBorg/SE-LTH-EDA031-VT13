@@ -77,7 +77,7 @@ namespace client_server {
         }
     }
     
-    Connection::Connection() {
+    Connection::Connection() : isPeeked(false) {
         /* 
          * See previous constructor for comments.
          */

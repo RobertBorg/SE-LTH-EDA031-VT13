@@ -6,13 +6,17 @@
 
 template <typename Database>
 class ComListArticlePacket : public ComPacket<Database>{
-friend Connection& operator>>(Connection &in, ComListArticlePacket &rhs);
-friend Connection& operator<<(Connection &out, ComListArticlePacket &rhs);
+template <typename Database2>
+friend Connection& operator>>(Connection &in, ComListArticlePacket<Database2> &rhs);
+template <typename Database2>
+friend Connection& operator<<(Connection &out, ComListArticlePacket<Database2> &rhs);
 public:
-	shared_ptr<AnsPacket> process(Database& db){
+	virtual shared_ptr<AnsPacket> process(Database& db) const {
 		vector<AnsListArtPacket::Article> articles;
-		for_each(db->getArticleIterator(), db->getArticleEnd(), 
-			[&articles] (const pair<uint32_t, Article> pair) {articles.push_back(make_pair(pair.first, pair.second.title)); });
+		for_each(db.getArticleBegin(groupNum), db.getArticleEnd(groupNum), 
+			[&articles] (const pair<uint32_t, shared_ptr<Article> > pair) {
+				articles.push_back(make_pair(pair.first, pair.second->title)); 
+			});
 		shared_ptr<AnsPacket> answerPacket(new AnsListArtPacket(articles));
 		return answerPacket;
 	}
@@ -33,6 +37,7 @@ Connection& operator>>(Connection &inConn, ComListArticlePacket<Database> &rhs) 
 	Packet::eat(inConn, protocol::Protocol::COM_END);
 	return inConn;
 }
+
 template <typename Database>
 Connection& operator<<(Connection &outConn, ComListArticlePacket<Database> &rhs) {
 	outConn << protocol::Protocol::COM_LIST_ART;

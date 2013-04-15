@@ -4,6 +4,8 @@
 #include "../../lib/clientserver/protocol.h"
 #include "all_packets.h"
 #include <iostream>
+using std::cout;
+using std::endl;
 
 template <typename Database>
 class ServerMessageHandler {
@@ -15,8 +17,11 @@ public:
 		switch(packetType){
 			
 			case protocol::Protocol::COM_LIST_NG:
+
 				packet = shared_ptr<ComPacket<Database> >(new ComListNewsgroupPacket<Database>()) ;
+				cout << "starting to parse list ng" << endl;
 				conn >> *packet;
+				cout << "parsing done" << endl;
 			break;
 
 			case protocol::Protocol::COM_CREATE_NG:

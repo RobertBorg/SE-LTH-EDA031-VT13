@@ -7,7 +7,7 @@ class AnsDeleteNewsgroupPacket : public AnsPacket{
 friend Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs);
 friend Connection& operator<<(Connection &out, AnsDeleteNewsgroupPacket &rhs);
 public:
-	void process(){
+	virtual void process() const{
 		if (this->success){
 			cout << "Newsgroup successfully deleted." << endl;
 		} else {

@@ -8,7 +8,7 @@ CXXFLAGS  = -pipe -Wall -W -ansi -pedantic-errors -std=c++11
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast -ferror-limit=1
 CC        = $(CXX)
 
-ALLTARGETS = newsreader
+ALLTARGETS = newsreader newsserver
 
 # insert this line somewhere at the top of the file
 DEBUG = false

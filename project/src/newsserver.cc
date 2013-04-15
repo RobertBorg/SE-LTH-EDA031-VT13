@@ -14,6 +14,9 @@ using std:: cerr;
 int main(int argc, char* argv[]) {
 	ServerOptions o(argc,argv);
 	o();
+    if(!o.count("server-port")) {
+        return 0;
+    }
 	uint16_t port = o["server-port"].as<uint16_t>();
 	Server server(port);
 

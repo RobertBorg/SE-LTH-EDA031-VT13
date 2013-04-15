@@ -2,34 +2,41 @@
 #define LIST_PACKAGE_H__
 #include "../database/newsgroup.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 template <typename Database>
 class ComListNewsgroupPacket : public ComPacket<Database>{
-friend Connection& operator>>(Connection &in, ComListNewsgroupPacket &rhs);
-friend Connection& operator<<(Connection &out, ComListNewsgroupPacket &rhs);
+template <typename Database2>
+friend Connection& operator>>(Connection &in, ComListNewsgroupPacket<Database2> &rhs);
+template <typename Database2>
+friend Connection& operator<<(Connection &out, ComListNewsgroupPacket<Database2> &rhs);
 public:
-	shared_ptr<AnsPacket> process(Database& db){
+	virtual shared_ptr<AnsPacket> process(Database& db) const {
 		vector<AnsListNewsgroupPacket::NewsGroup> newsgroups;
-		for_each(db->getNewsgroupIterator(), db->getNewsgroupEnd(), 
-			[&newsgroups] (const pair<uint32_t, Newsgroup> pair) {newsgroups.push_back(make_pair(pair.first, pair.second.name)); });
+		for_each(db.getNewsgroupBegin(), db.getNewsgroupEnd(), 
+			[&newsgroups] (pair<const uint32_t, shared_ptr<Newsgroup> > pair) {newsgroups.push_back(make_pair(pair.first, pair.second->name)); });
 		shared_ptr<AnsPacket> answerPacket(new AnsListNewsgroupPacket(newsgroups));
 		return answerPacket;
 	}
 };
 
-void pushBackValue(pair<uint32_t, Newsgroup> pair){
-
-}
 template <typename Database>
 Connection& operator>>(Connection &in, ComListNewsgroupPacket<Database> &rhs) {
+	cout << "starting parsing in operator >>" << endl;
 	Packet::eat(in, protocol::Protocol::COM_LIST_NG);
 	Packet::eat(in, protocol::Protocol::COM_END);
+	cout << "parsing ok" << endl;
 	return in;
 }
 
 template <typename Database>
 Connection& operator<<(Connection &out, ComListNewsgroupPacket<Database> &rhs) {
-	out << protocol::Protocol::COM_LIST_NG;
-	out << protocol::Protocol::COM_END;
+	uint8_t a =protocol::Protocol::COM_LIST_NG;
+	out << a;
+	a =protocol::Protocol::COM_END;
+	out << a;
 	return out;
 }
 

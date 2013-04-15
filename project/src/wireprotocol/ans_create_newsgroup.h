@@ -6,7 +6,7 @@ class AnsCreateNewsgroupPacket : public AnsPacket{
 friend Connection& operator>>(Connection &in, AnsCreateNewsgroupPacket &rhs);
 friend Connection& operator<<(Connection &out, AnsCreateNewsgroupPacket &rhs);
 public:
-	void process(){
+	virtual void process() const{
 		if (this->success){
 			cout << "Newsgroup successfully created." << endl;
 		} else {

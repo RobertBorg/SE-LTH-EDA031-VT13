@@ -2,6 +2,7 @@
 #define ANS_CREATE_ARTICLE_H__
 
 #include "packet.h"
+#include "../../lib/clientserver/protocol.h"
 
 
 class AnsCreateArticlePacket : public AnsPacket{
@@ -9,7 +10,7 @@ friend Connection& operator>>(Connection &in, AnsCreateArticlePacket &rhs);
 friend Connection& operator<<(Connection &out, AnsCreateArticlePacket &rhs);
 
 public:
-	void process(){
+	virtual void process() const{
 		if (this->success){
 			cout << "Creation was succesful." << endl;
 		} else {

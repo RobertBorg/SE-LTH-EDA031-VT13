@@ -10,7 +10,7 @@ class AnsListNewsgroupPacket : public AnsPacket {
 friend Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs);
 friend Connection& operator<<(Connection &out, AnsListNewsgroupPacket &rhs);
 public:
-	typedef pair<int, string> NewsGroup;
+	typedef pair<uint32_t, string> NewsGroup;
 	typedef vector<NewsGroup> NewsGroups;
 	AnsListNewsgroupPacket() = default;
 	AnsListNewsgroupPacket(NewsGroups &newsGroups_) : newsGroups(newsGroups_) {}
@@ -27,7 +27,7 @@ Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs) {
 	Packet::eat(in, protocol::Protocol::ANS_LIST_NG);
 	num_p numNG;
 	in >> numNG;
-	for(int i = 0 ;i < numNG; ++i){
+	for(unsigned int i = 0 ;i < numNG; ++i){
 		num_p id;
 		string_p str;
 		in >> id >> str;

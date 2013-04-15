@@ -5,11 +5,13 @@ using std::shared_ptr;
 
 template <typename Database>
 class ComGetArtPacket : public ComPacket<Database> {
-friend Connection& operator>>(Connection &in, ComGetArtPacket &rhs);
-friend Connection& operator<<(Connection &out, ComGetArtPacket &rhs);
+template <typename Database2>
+friend Connection& operator>>(Connection &in, ComGetArtPacket<Database2> &rhs);
+template <typename Database2>
+friend Connection& operator<<(Connection &out, ComGetArtPacket<Database2> &rhs);
 public:
 	ComGetArtPacket() = default;
-	ComGetArtPacket(uint32_t &newsGroupNumber_, uint32_t &articleNumber_) : newsGroupNumber(newsGroupNumber_), articleNumber(articleNumber_) {}
+	ComGetArtPacket(const uint32_t &newsGroupNumber_, const uint32_t &articleNumber_) : newsGroupNumber(newsGroupNumber_), articleNumber(articleNumber_) {}
 	virtual shared_ptr<AnsPacket> process(Database& db) const {
 		try {
 			shared_ptr<Article> article = db.getArticle(articleNumber, newsGroupNumber);
@@ -44,7 +46,7 @@ Connection& operator>>(Connection &inConn, ComGetArtPacket<Database> &rhs) {
 template <typename Database>
 Connection& operator<<(Connection &outConn, ComGetArtPacket<Database> &rhs) {
 	outConn << protocol::Protocol::COM_GET_ART;
-	outConn << num_p(rhs.newsGroupNumber) << num_p(rhs.artNum);
+	outConn << num_p(rhs.newsGroupNumber) << num_p(rhs.articleNumber);
 	outConn << protocol::Protocol::COM_END;
 	return outConn;
 }

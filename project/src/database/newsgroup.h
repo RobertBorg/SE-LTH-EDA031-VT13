@@ -13,8 +13,8 @@ private:
 
 public:
 	Newsgroup(uint32_t id_, string name_): id(id_), name(name_){}
-	string name;
 	uint32_t id; // Must be unique
+	string name;
 
 	uint32_t articleCounter = 1; // Describes the number of the next article
 

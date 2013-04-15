@@ -12,7 +12,7 @@ class AnsGetArticlePacket : public AnsPacket{
 friend Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs);
 friend Connection& operator<<(Connection &out, AnsGetArticlePacket &rhs);
 public:
-	void process(){
+	virtual void process() const{
 		if (this->success){
 			cout << "Title: " << title << endl << 
 			"Author: " << author << endl <<

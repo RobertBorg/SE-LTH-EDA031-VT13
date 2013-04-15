@@ -7,7 +7,7 @@ class AnsDeleteArticlePacket : public AnsPacket{
 friend Connection& operator>>(Connection &in, AnsDeleteArticlePacket &rhs);
 friend Connection& operator<<(Connection &out, AnsDeleteArticlePacket &rhs);
 public:
-	void process(){
+	virtual void process() const{
 		if (this->success){
 			cout << "Article successfully deleted." << endl;
 		} else if (ngNotFound){

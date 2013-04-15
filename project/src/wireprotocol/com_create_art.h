@@ -3,11 +3,13 @@
 #include "packet.h"
 template< typename Database>
 class ComCreateArtPacket : public ComPacket<Database> {
-friend Connection& operator>>(Connection &in, ComCreateArtPacket &rhs);
-friend Connection& operator<<(Connection &out, ComCreateArtPacket &rhs);
+template <typename Database2>
+friend Connection& operator>>(Connection &in, ComCreateArtPacket<Database2> &rhs);
+template <typename Database2>
+friend Connection& operator<<(Connection &out, ComCreateArtPacket<Database2> &rhs);
 public:
 	ComCreateArtPacket() = default;
-	ComCreateArtPacket(uint32_t &newsGroupNumber_, string &title_, string &author_, string &text_) 
+	ComCreateArtPacket(const uint32_t &newsGroupNumber_, string &title_, string &author_, string &text_) 
 		: newsGroupNumber(newsGroupNumber_), title(title_), author(author_), text(text_) {}
 	virtual shared_ptr<AnsPacket> process(Database& db) const {
 		try{
@@ -15,7 +17,7 @@ public:
 			article->title = title;
 			article->author = author;
 			article->text = text;
-			db->addArticle(article);
+			db.addArticle(article);
 			shared_ptr<AnsPacket> answerPacket(new AnsCreateArticlePacket(true));
 			return answerPacket;
 		} catch (NGAlreadyExistsException){

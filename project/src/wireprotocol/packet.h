@@ -9,8 +9,15 @@ using std::shared_ptr;
 #include "../../lib/clientserver/connection.h"
 using client_server::Connection;
 
+#include <iostream>
+using std::cout;
+using std::endl;
 
-struct ProtocolViolationException{};
+
+struct ProtocolViolationException{
+	uint8_t expected;
+	uint8_t actual;
+};
 
 Connection& operator>>(Connection &in, uint8_t &rhs) {
 	rhs = in.read();
@@ -60,7 +67,11 @@ public:
         uint8_t next;
         in >> next;
         if (next != expects){
-            throw ProtocolViolationException();
+        	ProtocolViolationException pe;
+        	pe.expected = expects;
+        	pe.actual = next;
+        	
+            throw pe;
         }
     }
 
@@ -70,13 +81,13 @@ public:
 
 class AnsPacket : public Packet{
 public:
-	virtual void process() const;
+	virtual void process() const = 0;
 };
 
 template <typename Database>
 class ComPacket : public Packet {
 public:
-	virtual shared_ptr<AnsPacket> process(Database& db) const;
+	virtual shared_ptr<AnsPacket> process(Database& db) const = 0;
 };
 
 template<typename Packet>

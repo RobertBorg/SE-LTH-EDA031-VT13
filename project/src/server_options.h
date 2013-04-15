@@ -19,22 +19,22 @@ public:
 		cmdDesc.add_options()
 			("help", "produce help message"),
 			("server-port",value<uint16_t>() ,"produce help message"),
-			("persistent-db", "persistent database on disk");
+			("persistent-db", value<bool>(), "persistent database on disk");
 
 		cmdHiddenDesc.add_options()
-			("help", "produce help message"),
 			("server-port",value<uint16_t>(), "produce help message"),
 			("persistent-db", value<bool>(), "persistent database on disk");
 		
+		
 
-		store(command_line_parser(argc, argv).options(cmdHiddenDesc).positional(posCmdDesc).run(), *this);
+		store(command_line_parser(argc, argv).options(cmdHiddenDesc).run(), *this);
 		notify();
 	}
 	ServerOptions& operator() () {
 		if(!count("persistent-db") || count("help")) {
 			cout << 
 			"Usage:" << endl <<
-			"newsreader [options] " << endl <<
+			"newsserver [options] " << endl <<
 			"options:" << endl <<
 			"persistent [true/false] - persistent database on disk" << endl;
 			

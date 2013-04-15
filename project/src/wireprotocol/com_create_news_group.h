@@ -6,14 +6,16 @@
 
 template <typename Database>
 class ComCreateNewsGroupPacket : public ComPacket<Database> {
-friend Connection& operator>>(Connection &in, ComCreateNewsGroupPacket &rhs);
-friend Connection& operator<<(Connection &out, ComCreateNewsGroupPacket &rhs);
+template <typename Database2>
+friend Connection& operator>>(Connection &in, ComCreateNewsGroupPacket<Database2> &rhs);
+template <typename Database2>
+friend Connection& operator<<(Connection &out, ComCreateNewsGroupPacket<Database2> &rhs);
 public:
 	ComCreateNewsGroupPacket() = default;
 	ComCreateNewsGroupPacket(string newsGroupName_) : newsGroupName(newsGroupName_) {}
 	virtual shared_ptr<AnsPacket> process(Database& db) const {
 		try{
-			shared_ptr<Newsgroup> newsGroup(new Newsgroup(newsGroupName, 0));
+			shared_ptr<Newsgroup> newsGroup(new Newsgroup(0, newsGroupName));
 			db.addNewsgroup(newsGroup);
 			shared_ptr<AnsPacket> answerPacket(new AnsCreateNewsgroupPacket(true));
 			return answerPacket;

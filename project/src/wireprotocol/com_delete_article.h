@@ -6,12 +6,14 @@
 using std::string;
 template <typename Database>
 class ComDeleteArticlePacket : public ComPacket<Database>{
-friend Connection& operator>>(Connection &in, ComDeleteArticlePacket &rhs);
-friend Connection& operator<<(Connection &out, ComDeleteArticlePacket &rhs);
+template <typename Database2>
+friend Connection& operator>>(Connection &in, ComDeleteArticlePacket<Database2> &rhs);
+template <typename Database2>
+friend Connection& operator<<(Connection &out, ComDeleteArticlePacket<Database2> &rhs);
 public:
-	shared_ptr<AnsPacket> process(Database& db){
+	virtual shared_ptr<AnsPacket> process(Database& db) const{
 		try{
-			db->deleteArticle(articNum, groupNum);
+			db.deleteArticle(articNum, groupNum);
 			shared_ptr<AnsPacket> answerPacket = AnsDeleteArticlePacket::createSuccessful();
 			return answerPacket;
 		}catch (NGDoesntExistException e){

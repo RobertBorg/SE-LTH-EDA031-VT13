@@ -3,12 +3,14 @@
 
 template <typename Database>
 class ComDeleteNewsgroupPacket : public ComPacket<Database>{
-friend Connection& operator>>(Connection &in, ComDeleteNewsgroupPacket<Database> &rhs);
-friend Connection& operator<<(Connection &out, ComDeleteNewsgroupPacket<Database> &rhs);
+template <typename Database2>
+friend Connection& operator>>(Connection &in, ComDeleteNewsgroupPacket<Database2> &rhs);
+template <typename Database2>
+friend Connection& operator<<(Connection &out, ComDeleteNewsgroupPacket<Database2> &rhs);
 public:
-	shared_ptr<AnsPacket> process(Database& db){
+	virtual shared_ptr<AnsPacket> process(Database& db) const{
 		try{
-			db->deleteNewsgroup(groupNum);
+			db.deleteNewsgroup(groupNum);
 			shared_ptr<AnsPacket> answerPacket(new AnsDeleteNewsgroupPacket(true));
 			return answerPacket;
 		}catch (NGDoesntExistException e){

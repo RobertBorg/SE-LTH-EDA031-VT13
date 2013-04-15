@@ -28,11 +28,12 @@ private:
 Connection& operator>>(Connection &in, AnsListArtPacket &rhs) {
 	Packet::eat(in, protocol::Protocol::ANS_LIST_ART);
 	uint8_t success;
+	in >> success;
 	switch(success) {
 		case protocol::Protocol::ANS_ACK:
 			num_p num;
 			in >> num;
-			for( int i = 0; i < num; ++i) {
+			for( unsigned int i = 0; i < num; ++i) {
 				num_p id;
 				string_p title;
 				in >> id >> title;
