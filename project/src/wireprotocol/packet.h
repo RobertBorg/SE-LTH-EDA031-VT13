@@ -1,33 +1,36 @@
 #ifndef PACKET_H__
 #define PACKET_H__
 
+#include <memory>
+using std::shared_ptr;
+
+#include "../database/database.h"
+
 /* Abstract superclass for packages */
 
 class Packet {
-public:
-	void eat(const uint8_t &expects){
-		uint8_t next;
-		&this << next;
-		if (next != expects){
-			throw ProtocolViolationException();
-		}
-	}
-};
-
-
-class ComPacket : public Packet {
-public:
-	virtual shared_ptr<AnsPacket> process(Database& db) const;
-
+public: 
+	void eat(const uint8_t &expects ){
+        uint8_t next;
+        (&this) >> next;
+        if (next != expects){
+            throw ProtocolViolationException();
+        }
+    }
 
 };
+
 
 class AnsPacket : public Packet{
 public:
 	virtual void process() const;
-
-
 };
+
+class ComPacket : public Packet {
+public:
+	virtual shared_ptr<AnsPacket> process(Database& db) const;
+};
+
 
 Connection& operator>>(Connection &inConn, uint32_t &t) {
 	t = 0;

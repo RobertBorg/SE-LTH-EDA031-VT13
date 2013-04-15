@@ -33,7 +33,7 @@ public:
 		newsgroupsById.emplace(newsgroup->id, newsgroup);
 	}
 
-	const auto getNewsgroupIterator(){
+	const auto getNewsgroupBegin(){
 		return newsgroupsById.cbegin();
 	}
 	const auto getNewsgroupEnd(){

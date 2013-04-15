@@ -56,6 +56,7 @@ namespace client_server {
         unsigned char read() const throw(ConnectionClosedException);
 
         unsigned char peek() const;
+
         
     protected:
         /* The socket number that this connections communicates on */

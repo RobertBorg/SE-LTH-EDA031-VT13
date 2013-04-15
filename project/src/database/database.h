@@ -1,6 +1,8 @@
 #ifndef DATABASE_H__
 #define DATABASE_H__
 
+#include "article.h"
+#include "newsgroup.h"
 
 class Database {
 public:
@@ -8,7 +10,7 @@ public:
 	shared_ptr<Article> getArticle(uint32_t artId, uint32_t NGId);
 	void addNewsgroup(shared_ptr<Newsgroup> newsgroup);
 
-	const auto getNewsgroupIterator();
+	const auto getNewsgroupBegin();
 	const auto getNewsgroupEnd();
 
 	const auto getArticleIterator(uint32_t ngId);
@@ -19,8 +21,5 @@ public:
 };
 
 
-struct NGDoesntExistException{};
-struct ArtDoesntExistException{};
-struct NGAlreadyExistsException{};
 
 #endif

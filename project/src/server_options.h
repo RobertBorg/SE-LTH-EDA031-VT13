@@ -23,8 +23,8 @@ public:
 
 		cmdHiddenDesc.add_options()
 			("help", "produce help message"),
-			("server-port",value<uint16_t>() ,"produce help message"),
-			("persistent-db", value<bool> "persistent database on disk");
+			("server-port",value<uint16_t>(), "produce help message"),
+			("persistent-db", value<bool>(), "persistent database on disk");
 		
 
 		store(command_line_parser(argc, argv).options(cmdHiddenDesc).positional(posCmdDesc).run(), *this);

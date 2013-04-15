@@ -11,11 +11,11 @@ struct num_p : public Packet{
 	num_p() = default;
 	num_p(size_t &size) : value(size) {}
 	uint32_t value;
+	operator uint32_t int() const {
+		return value;
+	}
 };
 
-operator uint32_t int() const {
-	return value;
-}
 
 Connection& operator>>(Connection &in, num_p &rhs) {
 	eat(protocol::PAR_NUM)
