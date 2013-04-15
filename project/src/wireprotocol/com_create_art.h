@@ -7,7 +7,18 @@ public:
 	ComCreateArtPacket(uint32_t &newsGroupNumber_, string &title_, string &author_, string &text_) 
 		: newsGroupNumber(newsGroupNumber_), title(title_), author(author_), text(text_) {}
 	virtual shared_ptr<AnsPacket> process(Database& db) const {
-
+		try{
+			shared_ptr<Article> article(new Article());
+			article->title = title;
+			article->author = author;
+			article->text = text;
+			db->addArticle(article);
+			shared_ptr<AnsPacket> answerPacket(new AnsCreateArticlePacket(true));
+			return answerPacket;
+		} catch (NGAlreadyExistsException){
+			shared_ptr<AnsPacket> answerPacket(new AnsCreateArticlePacket(false));
+			return answerPacket;
+		}
 	}
 private:
 	uint32_t newsGroupNumber;

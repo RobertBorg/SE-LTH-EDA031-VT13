@@ -12,7 +12,7 @@ private:
 	map<uint32_t, shared_ptr<Article>> articles;
 
 public:
-	Newsgroup(string name_, uint32_t id_): name(name_), id(id_){}
+	Newsgroup(uint32_t id_, string name_): id(id_), name(name_){}
 	string name;
 	uint32_t id; // Must be unique
 
