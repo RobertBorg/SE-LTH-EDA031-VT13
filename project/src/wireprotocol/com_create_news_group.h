@@ -1,7 +1,7 @@
 #ifndef COM_CREATE_NEWS_GROUP_H__
 #define COM_CREATE_NEWS_GROUP_H__
 #include "../../lib/clientserver/protocol.h"
-#include "package.h"
+#include "packet.h"
 #include <string>
 
 class ComCreateNewsGroupPacket : public ComPacket {

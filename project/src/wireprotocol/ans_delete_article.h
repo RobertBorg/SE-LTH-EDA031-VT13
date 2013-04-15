@@ -83,4 +83,4 @@ Connection& operator<<(Connection &out, AnsDeleteArticlePacket &rhs) {
 	return out;
 }
 
-#ifndef
+#endif

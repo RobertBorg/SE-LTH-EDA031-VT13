@@ -55,4 +55,4 @@ Connection& operator<<(Connection &out, AnsDeleteNewsgroupPacket &rhs) {
 	return out;
 }
 
-#ifndef
+#endif

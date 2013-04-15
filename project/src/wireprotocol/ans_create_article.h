@@ -26,11 +26,11 @@ Connection& operator>>(Connection &in, AnsCreateArticlePacket &rhs) {
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
-		case protocol:ANS_ACK:
+		case protocol::Protocol::ANS_ACK:
 			rhs.success = true;
 			break;
 
-		case protocol:ANS_NAK:
+		case protocol::Protocol::ANS_NAK:
 			Packet::eat(in, protocol::Protocol::ERR_NG_DOES_NOT_EXIST);
 			rhs.success = false;
 			break;
@@ -47,13 +47,13 @@ Connection& operator>>(Connection &in, AnsCreateArticlePacket &rhs) {
 Connection& operator<<(Connection &out, AnsCreateArticlePacket &rhs) {
 	out << protocol::Protocol::ANS_CREATE_ART;
 	if (success){
-		out << protocol:ANS_ACK;
+		out << protocol::Protocol::ANS_ACK;
 	} else {
-		out << protocol:ANS_NAK;
-		out << protocol:ERR_NG_DOES_NOT_EXIST;
+		out << protocol::Protocol::ANS_NAK;
+		out << protocol::Protocol::ERR_NG_DOES_NOT_EXIST;
 	}
 	out << protocol::Protocol::ANS_END;
 	return out;
 }
 
-#ifndef
+#endif

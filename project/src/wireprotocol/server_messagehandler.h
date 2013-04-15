@@ -2,50 +2,51 @@
 #define SERVER_MESSAGEHANDLER_H__
 
 #include "../../lib/clientserver/protocol.h"
-#include "string_p.h"
+#include "all_packets.h"
 #include <iostream>
 
+template <typename ComPacket>
 class ServerMessageHandler {
 public:
 	shared_ptr<ComPacket> parsePkg(Connection& conn) {
 		uint8_t packetType;
-		packeType = conn.peek();
+		packetType = conn.peek();
 		shared_ptr<ComPacket> packet;
 		switch(packetType){
 			
-			case protocol::COM_LIST_NG:
+			case protocol::Protocol::COM_LIST_NG:
 				packet(new ComListNewsgroupPacket()) ;
 				conn >> &packet;
 			break;
 
-			case protocol::COM_CREATE_NG:
+			case protocol::Protocol::COM_CREATE_NG:
 				packet(new ComCreateNewsGroupPacket()) ;
 				conn >> &packet;
 
 				break;
 
-			case protocol::COM_DELETE_NG:
+			case protocol::Protocol::COM_DELETE_NG:
 				packet(new ComDeleteNewsgroupPacket()) ;
 				conn >> &packet;
 				break;
 
 
-			case protocol::COM_LIST_ART:
+			case protocol::Protocol::COM_LIST_ART:
 				packet(new ComListArticlePacket()) ;
 				conn >> &packet;
 				break;
 
-			case protocol::COM_CREATE_ART:
+			case protocol::Protocol::COM_CREATE_ART:
 				packet(new ComCreateArtPacket()) ;
 				conn >> &packet;
 				break;
 
-			case protocol::COM_DELETE_ART:
+			case protocol::Protocol::COM_DELETE_ART:
 				packet(new ComDeleteArticlePacket()) ;
 				conn >> &packet;
 				break;
 
-			case protocol::COM_GET_ART:
+			case protocol::Protocol::COM_GET_ART:
 				packet(new ComGetArtPacket()) ;
 				conn >> &packet;
 				break;

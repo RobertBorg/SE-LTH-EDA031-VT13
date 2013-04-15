@@ -94,4 +94,4 @@ Connection& operator<<(Connection &out, AnsGetArticlePacket &rhs) {
 	return out;
 }
 
-#ifndef
+#endif
