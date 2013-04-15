@@ -18,8 +18,8 @@ void pushBackValue(pair<uint32_t, Newsgroup> pair){
 }
 
 Connection& operator>>(Connection &in, ComListPacket &rhs) {
-	eat(protocol::COM_LIST_NG);
-	eat(protocol::COM_END);
+	Packet::eat(in, protocol::COM_LIST_NG);
+	Packet::eat(in, protocol::COM_END);
 	return in;
 }
 

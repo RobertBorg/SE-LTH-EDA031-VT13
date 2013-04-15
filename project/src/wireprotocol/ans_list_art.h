@@ -21,7 +21,7 @@ private:
 };
 
 Connection& operator>>(Connection &in, AnsListArtPacket &rhs) {
-	in.eat(protocol::ANS_LIST_ART);
+	Packet::eat(in, protocol::ANS_LIST_ART);
 	uint8_t success;
 	switch(success) {
 		case protocol::ANS_ACK:
@@ -35,12 +35,12 @@ Connection& operator>>(Connection &in, AnsListArtPacket &rhs) {
 			}
 			break;
 		case protocol::ANS_NAK:
-			in.eat(protocol::ERR_NG_DOES_NOT_EXIST]);
+			Packet::eat(in, protocol::ERR_NG_DOES_NOT_EXIST]);
 			break;
 		default:
 			throw ProtocolViolationException();
 	}
-	in.eat(protocol::COM_END);
+	Packet::eat(in, protocol::COM_END);
 	return in;
 }
 

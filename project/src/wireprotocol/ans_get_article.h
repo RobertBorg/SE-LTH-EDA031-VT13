@@ -36,7 +36,7 @@ private:
 
 
 Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
-	eat(protocol::ANS_GET_ART);
+	Packet::eat(in, protocol::ANS_GET_ART);
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
@@ -71,7 +71,7 @@ Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
 			break;
 
 	}
-	eat(protocol::ANS_END);
+	Packet::eat(in, protocol::ANS_END);
 	return in;
 }
 

@@ -16,7 +16,7 @@ struct string_p : public Packet{
 };
 
 Connection &operator>>(Connection &in, string_p &rhs) {
-	eat(protocol::PAR_STRING);
+	Packet::eat(in, protocol::PAR_STRING);
 	num_p size;
 	in >> size;
 	char c;

@@ -21,11 +21,11 @@ private:
 
 
 Connection& operator>>(Connection &inConn, ComListArticlePacket &rhs) {
-	eat(protocol::COM_LIST_ART);
+	Packet::eat(in, protocol::COM_LIST_ART);
 	num_p num;
 	inConn >> num;
 	groupNum = num;
-	eat(protocol::COM_END);
+	Packet::eat(in, protocol::COM_END);
 	return inConn;
 }
 

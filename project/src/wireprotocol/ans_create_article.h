@@ -22,7 +22,7 @@ private:
 
 
 Connection& operator>>(Connection &in, AnsCreateArticlePacket &rhs) {
-	in.eat(protocol::ANS_CREATE_ART);
+	Packet::eat(in, protocol::ANS_CREATE_ART);
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
@@ -31,7 +31,7 @@ Connection& operator>>(Connection &in, AnsCreateArticlePacket &rhs) {
 			break;
 
 		case protocol:ANS_NAK:
-			in.eat(protocol::ERR_NG_DOES_NOT_EXIST);
+			Packet::eat(in, protocol::ERR_NG_DOES_NOT_EXIST);
 			rhs.success = false;
 			break;
 
@@ -40,7 +40,7 @@ Connection& operator>>(Connection &in, AnsCreateArticlePacket &rhs) {
 			break;
 
 	}
-	in.eat(protocol::ANS_END);
+	Packet::eat(in, protocol::ANS_END);
 	return in;
 }
 

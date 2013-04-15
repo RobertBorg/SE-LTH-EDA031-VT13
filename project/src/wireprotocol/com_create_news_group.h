@@ -24,11 +24,11 @@ private:
 };
 
 Connection& operator>>(Connection &inConn, ComCreateNewsGroupPacket &rhs) {
-	eat(protocol::COM_CREATE_NG);
+	Packet::eat(in, protocol::COM_CREATE_NG);
 	string_p str;
 	inConn >> str;
 	newsGroupName = str;
-	eat(protocol::COM_END);
+	Packet::eat(in, protocol::COM_END);
 	return inConn;
 }
 

@@ -18,12 +18,12 @@ private:
 
 istream_news& operator>>(Connection &inConn, ComCreateArtPacket &rhs) {
 	num_p groupNum;
-	eat(protocol::COM_CREATE_ART);
+	Packet::eat(in, protocol::COM_CREATE_ART);
 	string_p title:
 	string_p author;
 	string_p text:
 	inConn >> groupNum >> title >> author >> text;
-	eat(protocol::COM_END);
+	Packet::eat(in, protocol::COM_END);
 	rhs.newsGroupNumber = groupNum;
 	rhs.title = title;
 	rhs.author = author;

@@ -34,7 +34,7 @@ private:
 
 
 Connection& operator>>(Connection &in, AnsDeleteArticlePacket &rhs) {
-	in.eat(protocol::ANS_CREATE_ART);
+	Packet::eat(in, protocol::ANS_CREATE_ART);
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
@@ -63,7 +63,7 @@ Connection& operator>>(Connection &in, AnsDeleteArticlePacket &rhs) {
 			break;
 
 	}
-	in.eat(protocol::ANS_END);
+	Packet::eat(in, protocol::ANS_END);
 	return in;
 }
 

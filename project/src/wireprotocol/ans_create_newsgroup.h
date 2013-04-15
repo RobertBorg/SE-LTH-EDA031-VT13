@@ -21,7 +21,7 @@ private:
 
 
 Connection& operator>>(Connection &in, AnsCreateNewsgroupPacket &rhs) {
-	in.eat(protocol::ANS_CREATE_NG);
+	Packet::eat(in, protocol::ANS_CREATE_NG);
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
@@ -30,7 +30,7 @@ Connection& operator>>(Connection &in, AnsCreateNewsgroupPacket &rhs) {
 			break;
 
 		case protocol:ANS_NAK:
-			in.eat(protocol::ERR_NG_ALREADY_EXISTS);
+			Packet::eat(in, protocol::ERR_NG_ALREADY_EXISTS);
 			rhs.success = false;
 			break;
 
@@ -39,7 +39,7 @@ Connection& operator>>(Connection &in, AnsCreateNewsgroupPacket &rhs) {
 			break;
 
 	}
-	in.eat(protocol::ANS_END);
+	Packet::eat(in, protocol::ANS_END);
 	return in;
 }
 

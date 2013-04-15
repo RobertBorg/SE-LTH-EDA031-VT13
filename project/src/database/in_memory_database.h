@@ -2,7 +2,7 @@
 #define IN_MEMORY_DATABASE_H__
 
 
-class InMemoryDatabase : public Database {
+class InMemoryDatabase : public Database<decltype(map<uint32_t, shared_ptr<Newsgroup>>.cbegin()),decltype(map<uint32_t, shared_ptr<Article>>::cbegin()) {
 public:
 	void addArticle(shared_ptr<Article> article){
 		auto ngIt = newsgroupsById.find(article->newsgroupId);
@@ -40,12 +40,12 @@ public:
 		return newsgroupsById.cend();
 	}
 
-	const auto getArticleIterator(uint32_t ngId){
+	const auto getArticleBegin(uint32_t ngId){
 		auto ngIt = newsgroupsById.find(ngId);
 		if (ngIt == newsgroupsById.end){
 			throw NGDoesntExistException();
 		}
-		return ngIt->getArticleIterator();
+		return ngIt->getArticleBegin();
 	}
 	const auto getArticleEnd(uint32_t ngId){
 		auto ngIt = newsgroupsById.find(ngId);

@@ -26,10 +26,10 @@ private:
 };
 
 Connection& operator>>(Connection &inConn, ComGetArtPacket &rhs) {
-	eat(protocol::COM_GET_ART);
+	Packet::eat(in, protocol::COM_GET_ART);
 	num_p groupNum, artNum;
 	inConn >> groupNum >> artNum;
-	eat(protocol::COM_END);
+	Packet::eat(in, protocol::COM_END);
 
 	newsGroupNumber = groupNum;
 	articleNumber = artNum;

@@ -29,13 +29,13 @@ private:
 
 
 Connection& operator>>(Connection &inConn, ComDeleteArticlePacket &rhs) {
-	eat(protocol::COM_LIST_ART);
+	Packet::eat(in, protocol::COM_LIST_ART);
 	num_p num;
 	inConn >> num;
 	groupNum = num;
 	inConn >> num;
 	articNum = num;
-	eat(protocol::COM_END);
+	Packet::eat(in, protocol::COM_END);
 	return inConn;
 }
 

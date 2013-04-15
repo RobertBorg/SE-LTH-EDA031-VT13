@@ -24,11 +24,11 @@ private:
 
 
 Connection& operator>>(Connection &inConn, ComDeleteNewsgroupPacket &rhs) {
-	eat(protocol::COM_DELETE_NG);
+	Packet::eat(in, protocol::COM_DELETE_NG);
 	num_p num;
 	inConn >> num;
 	groupNum = num;
-	eat(protocol::COM_END);
+	Packet::eat(in, protocol::COM_END);
 	return inConn;
 }
 

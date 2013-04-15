@@ -18,7 +18,7 @@ struct num_p : public Packet{
 
 
 Connection& operator>>(Connection &in, num_p &rhs) {
-	eat(protocol::PAR_NUM)
+	Packet::eat(in, protocol::PAR_NUM)
 	in >> rhs.value;
 	return in;
 }

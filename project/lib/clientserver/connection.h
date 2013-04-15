@@ -58,6 +58,8 @@ namespace client_server {
         unsigned char peek() const;
 
         
+
+        
     protected:
         /* The socket number that this connections communicates on */
         int my_socket;
