@@ -2,6 +2,7 @@
 #define ANS_GET_ARTICLE_H__
 
 #include <string>
+#include "packet.h"
 
 using std::string;
 

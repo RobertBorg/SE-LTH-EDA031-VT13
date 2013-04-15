@@ -4,6 +4,7 @@
 using std::string;
 #include <utility>
 using std::pair;
+#include "packet.h"
 
 class AnsListNewsgroupPacket : public AnsPacket {
 public:

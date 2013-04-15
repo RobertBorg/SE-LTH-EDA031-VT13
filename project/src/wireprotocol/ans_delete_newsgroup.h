@@ -1,6 +1,7 @@
 #ifndef ANS_DELETE_NEWSGROUP_H__
 #define ANS_DELETE_NEWSGROUP_H__
 
+#include "packet.h"
 
 class AnsDeleteNewsgroupPacket : public AnsPacket{
 public:

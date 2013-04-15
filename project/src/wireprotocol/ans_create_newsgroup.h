@@ -1,7 +1,7 @@
 #ifndef ANS_CREATE_NEWSGROUP_H__
 #define ANS_CREATE_NEWSGROUP_H__
 
-
+#include "packet.h"
 class AnsCreateNewsgroupPacket : public AnsPacket{
 public:
 	void process(){

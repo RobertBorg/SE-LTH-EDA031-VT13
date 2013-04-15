@@ -1,6 +1,7 @@
 #ifndef ANS_DELETE_ARTICLE_H__
 #define ANS_DELETE_ARTICLE_H__
 
+#include "packet.h"
 
 class AnsDeleteArticlePacket : public AnsPacket{
 public:
