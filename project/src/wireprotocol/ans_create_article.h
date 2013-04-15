@@ -1,6 +1,8 @@
 #ifndef ANS_CREATE_ARTICLE_H__
 #define ANS_CREATE_ARTICLE_H__
 
+#include "packet.h"
+
 
 class AnsCreateArticlePacket : public AnsPacket{
 public:

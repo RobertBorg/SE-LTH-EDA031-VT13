@@ -12,11 +12,11 @@ public:
 		return answerPacket;
 	}
 	ComListArticlePacket() = default;
-	ComListArticlePacket(int groupNum_): groupNum(groupNum_){}
+	ComListArticlePacket(uint32_t groupNum_): groupNum(groupNum_){}
 
 
 private:
-	int groupNum;
+	uint32_t groupNum;
 };
 
 
