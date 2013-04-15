@@ -4,9 +4,11 @@
 #include "packet.h"
 
 class AnsDeleteNewsgroupPacket : public AnsPacket{
+friend Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs);
+friend Connection& operator<<(Connection &out, AnsDeleteNewsgroupPacket &rhs);
 public:
 	void process(){
-		if (success){
+		if (this->success){
 			cout << "Newsgroup successfully deleted." << endl;
 		} else {
 			cout << "Newgroup was not found." << endl;
@@ -26,17 +28,17 @@ Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs) {
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
-		case protocol:ANS_ACK:
+		case protocol::Protocol::ANS_ACK:
 			rhs.success = true;
 			break;
 
-		case protocol:ANS_NAK:
+		case protocol::Protocol::ANS_NAK:
 			Packet::eat(in, protocol::Protocol::ERR_NG_DOES_NOT_EXIST);
 			rhs.success = false;
 			break;
 
 		default:
-			throw ProcotolViolationException();
+			throw ProtocolViolationException();
 			break;
 
 	}
@@ -46,11 +48,11 @@ Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs) {
 
 Connection& operator<<(Connection &out, AnsDeleteNewsgroupPacket &rhs) {
 	out << protocol::Protocol::ANS_DELETE_NG;
-	if (success){
-		out << protocol:ANS_ACK;
+	if (rhs.success){
+		out << protocol::Protocol::ANS_ACK;
 	} else {
-		out << protocol:ANS_NAK;
-		out << protocol:ERR_NG_DOES_NOT_EXIST;
+		out << protocol::Protocol::ANS_NAK;
+		out << protocol::Protocol::ERR_NG_DOES_NOT_EXIST;
 	}
 	out << protocol::Protocol::ANS_END;
 	return out;

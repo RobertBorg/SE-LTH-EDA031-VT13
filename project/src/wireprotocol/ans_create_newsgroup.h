@@ -3,9 +3,11 @@
 
 #include "packet.h"
 class AnsCreateNewsgroupPacket : public AnsPacket{
+friend Connection& operator>>(Connection &in, AnsCreateNewsgroupPacket &rhs);
+friend Connection& operator<<(Connection &out, AnsCreateNewsgroupPacket &rhs);
 public:
 	void process(){
-		if (success){
+		if (this->success){
 			cout << "Newsgroup successfully created." << endl;
 		} else {
 			cout << "Newsgroup with that name already exists." << endl;
@@ -25,17 +27,17 @@ Connection& operator>>(Connection &in, AnsCreateNewsgroupPacket &rhs) {
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
-		case protocol:ANS_ACK:
+		case protocol::Protocol::ANS_ACK:
 			rhs.success = true;
 			break;
 
-		case protocol:ANS_NAK:
+		case protocol::Protocol::ANS_NAK:
 			Packet::eat(in, protocol::Protocol::ERR_NG_ALREADY_EXISTS);
 			rhs.success = false;
 			break;
 
 		default:
-			throw ProcotolViolationException();
+			throw ProtocolViolationException();
 			break;
 
 	}
@@ -45,11 +47,11 @@ Connection& operator>>(Connection &in, AnsCreateNewsgroupPacket &rhs) {
 
 Connection& operator<<(Connection &out, AnsCreateNewsgroupPacket &rhs) {
 	out << protocol::Protocol::ANS_CREATE_NG;
-	if (success){
-		out << protocol:ANS_ACK;
+	if (rhs.success){
+		out << protocol::Protocol::ANS_ACK;
 	} else {
-		out << protocol:ANS_NAK;
-		out << protocol:ERR_NG_ALREADY_EXISTS;
+		out << protocol::Protocol::ANS_NAK;
+		out << protocol::Protocol::ERR_NG_ALREADY_EXISTS;
 	}
 	out << protocol::Protocol::ANS_END;
 	return out;

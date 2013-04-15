@@ -3,15 +3,26 @@
 
 #include <string>
 #include "packet.h"
+#include "string_p.h"
+#include "num_p.h"
 
 using std::string;
 
 class AnsGetArticlePacket : public AnsPacket{
+friend Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs);
+friend Connection& operator<<(Connection &out, AnsGetArticlePacket &rhs);
 public:
 	void process(){
-		cout << "Title: " << title << endl << 
-		"Author: " << author << endl <<
-		"Text: " << text << endl;
+		if (this->success){
+			cout << "Title: " << title << endl << 
+			"Author: " << author << endl <<
+			"Text: " << text << endl;
+		} else if (this->ngNotFound){
+			cout << "Newsgroup not found...";
+		} else if (this->artNotFound){
+			cout << "Article not found...";
+		}
+		
 	}
 	AnsGetArticlePacket() = default;
 	AnsGetArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_, string title_, string author_, string text_) 
@@ -19,14 +30,14 @@ public:
 		, title(title_), author(author_), text(text_) {}
 
 
-	static &AnsGetArticlePacket createSuccessful(string title, string author, string text){
-		return new AnsGetArticlePacket(true, false, false title, author, text);
+	static shared_ptr<AnsGetArticlePacket> createSuccessful(string title, string author, string text){
+		return shared_ptr<AnsGetArticlePacket>(new AnsGetArticlePacket(true, false, false, title, author, text));
 	}
-	static &AnsGetArticlePacket createNGNotFound(){
-		return new AnsGetArticlePacket(false, true, false nullptr, nullptr, nullptr);
+	static shared_ptr<AnsGetArticlePacket> createNGNotFound(){
+		return shared_ptr<AnsGetArticlePacket>(new AnsGetArticlePacket(false, true, false, nullptr, nullptr, nullptr));
 	}
-	static &AnsGetArticlePacket createArtNotFound(){
-		return new AnsGetArticlePacket(false, false, true nullptr, nullptr, nullptr);
+	static shared_ptr<AnsGetArticlePacket> createArtNotFound(){
+		return shared_ptr<AnsGetArticlePacket>(new AnsGetArticlePacket(false, false, true, nullptr, nullptr, nullptr));
 	}
 
 
@@ -41,7 +52,8 @@ Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
-		case protocol::Protocol::ANS_ACK:
+		case protocol::Protocol::ANS_ACK:{
+			
 			string_p title, author, text;
 			in << title << author << text;
 
@@ -51,25 +63,38 @@ Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
 			rhs.success = true;
 			break;
 
-		case protocol:ANS_NAK:
+		}
+		case protocol::Protocol::ANS_NAK:
+		{
+
 			uint8_t errorMsg;
 			in >> errorMsg;
 			switch(errorMsg){
 				case protocol::Protocol::ERR_NG_DOES_NOT_EXIST:
+				{
+
 					rhs.ngNotFound = true;
 					break;
+				}
 				case protocol::Protocol::ERR_ART_DOES_NOT_EXIST:
+				{
 					rhs.artNotFound = true;
-					break
+					break;
+				}
 				default:
-					throw ProcotolViolationException();
+				{
+					throw ProtocolViolationException();
+				}
 			}
 			rhs.success = false;
 			break;
 
-		default:
-			throw ProcotolViolationException();
+		}
+		default:{
+
+			throw ProtocolViolationException();
 			break;
+		}
 
 	}
 	Packet::eat(in, protocol::Protocol::ANS_END);
@@ -79,16 +104,16 @@ Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
 Connection& operator<<(Connection &out, AnsGetArticlePacket &rhs) {
 	out << protocol::Protocol::ANS_GET_ART;
 	if (rhs.success){
-		out << protocol:ANS_ACK;
+		out << protocol::Protocol::ANS_ACK;
 		out << string_p(rhs.title);
 		out << string_p(rhs.author);
 		out << string_p(rhs.text);
 	} else {
-		out << protocol:ANS_NAK;
+		out << protocol::Protocol::ANS_NAK;
 		if (rhs.ngNotFound){
-			out << protocol:ERR_NG_DOES_NOT_EXIST;
+			out << protocol::Protocol::ERR_NG_DOES_NOT_EXIST;
 		} else {
-			out << protocol:ERR_ART_DOES_NOT_EXIST;
+			out << protocol::Protocol::ERR_ART_DOES_NOT_EXIST;
 		}
 	}
 	out << protocol::Protocol::ANS_END;

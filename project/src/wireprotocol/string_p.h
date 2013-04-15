@@ -5,13 +5,24 @@
 
 #include <string>
 using std::string;
+#include "../../lib/clientserver/connection.h"
+using client_server::Connection;
 
 struct string_p : public Packet{
 	string value;
-	const string& string() {
+	string_p() {}
+	string_p(string &in) : value(in) {}
+	const operator string() {
 		return value;
 	}
+
+	string_p &operator=(std::string str){
+		this->value = str;
+		return *this;
+	}
 };
+
+
 
 Connection &operator>>(Connection &in, string_p &rhs) {
 	Packet::eat(in, protocol::Protocol::PAR_STRING);
@@ -25,7 +36,8 @@ Connection &operator>>(Connection &in, string_p &rhs) {
 	return in;
 }
 
-Connection &operator<<(Connection &out, string_p &rhs) {
+
+Connection &operator<<(Connection &out, const string_p &rhs) {
 	out << protocol::Protocol::PAR_STRING;
 	num_p size(rhs.value.length());
 	out << size;

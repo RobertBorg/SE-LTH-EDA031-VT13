@@ -4,14 +4,17 @@
 #include "packet.h"
 #include <string>
 
-class ComCreateNewsGroupPacket : public ComPacket {
+template <typename Database>
+class ComCreateNewsGroupPacket : public ComPacket<Database> {
+friend Connection& operator>>(Connection &in, ComCreateNewsGroupPacket &rhs);
+friend Connection& operator<<(Connection &out, ComCreateNewsGroupPacket &rhs);
 public:
 	ComCreateNewsGroupPacket() = default;
 	ComCreateNewsGroupPacket(string newsGroupName_) : newsGroupName(newsGroupName_) {}
 	virtual shared_ptr<AnsPacket> process(Database& db) const {
 		try{
-			shared_ptr<NewsGroup> newsGroup(new NewsGroup(0, newsGroupName));
-			db->addNewsgroup(newsGroup);
+			shared_ptr<Newsgroup> newsGroup(new Newsgroup(newsGroupName, 0));
+			db.addNewsgroup(newsGroup);
 			shared_ptr<AnsPacket> answerPacket(new AnsCreateNewsgroupPacket(true));
 			return answerPacket;
 		} catch (NGAlreadyExistsException){
@@ -22,19 +25,19 @@ public:
 private:
 	string newsGroupName;
 };
-
-Connection& operator>>(Connection &inConn, ComCreateNewsGroupPacket &rhs) {
-	Packet::eat(in, protocol::Protocol::COM_CREATE_NG);
+template <typename Database>
+Connection& operator>>(Connection &inConn, ComCreateNewsGroupPacket<Database> &rhs) {
+	Packet::eat(inConn, protocol::Protocol::COM_CREATE_NG);
 	string_p str;
 	inConn >> str;
-	newsGroupName = str;
-	Packet::eat(in, protocol::Protocol::COM_END);
+	rhs.newsGroupName = str;
+	Packet::eat(inConn, protocol::Protocol::COM_END);
 	return inConn;
 }
-
-Connection& operator<<(Connection &outConn, ComCreateNewsGroupPacket &rhs) {
+template <typename Database>
+Connection& operator<<(Connection &outConn, ComCreateNewsGroupPacket<Database> &rhs) {
 	outConn << protocol::Protocol::COM_CREATE_NG;
-	outConn << string_p(newsGroupName);
+	outConn << string_p(rhs.newsGroupName);
 	outConn << protocol::Protocol::COM_END;
 	return outConn;
 }

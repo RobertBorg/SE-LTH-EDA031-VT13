@@ -39,7 +39,7 @@ public:
 		articles.erase(artIt);
 	}
 
-	auto getArticleIterator() -> decltype(articles.cbegin()) {
+	auto getArticleBegin() -> decltype(articles.cbegin()) {
 		return articles.cbegin();
 	}
 	auto getArticleEnd() -> decltype(articles.cend()) {

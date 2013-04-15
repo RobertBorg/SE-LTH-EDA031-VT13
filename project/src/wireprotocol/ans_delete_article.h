@@ -4,9 +4,11 @@
 #include "packet.h"
 
 class AnsDeleteArticlePacket : public AnsPacket{
+friend Connection& operator>>(Connection &in, AnsDeleteArticlePacket &rhs);
+friend Connection& operator<<(Connection &out, AnsDeleteArticlePacket &rhs);
 public:
 	void process(){
-		if (success){
+		if (this->success){
 			cout << "Article successfully deleted." << endl;
 		} else if (ngNotFound){
 			cout << "Newsgroup not found." << endl;
@@ -18,14 +20,14 @@ public:
 	AnsDeleteArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_) 
 		: success(success_), ngNotFound(ngNotFound_), artNotFound(artNotFound_){}
 
-	static &AnsDeleteArticlePacket createSuccesful(){
-		return new AnsDeleteArticlePacket(true, false, false);
+	static shared_ptr<AnsDeleteArticlePacket> createSuccessful(){
+		return shared_ptr<AnsDeleteArticlePacket>(new AnsDeleteArticlePacket(true, false, false));
 	}
-	static &AnsDeleteArticlePacket createNGNotFound(){
-		return new AnsDeleteArticlePacket(false, true, false);
+	static shared_ptr<AnsDeleteArticlePacket> createNGNotFound(){
+		return shared_ptr<AnsDeleteArticlePacket>(new AnsDeleteArticlePacket(false, true, false));
 	}
-	static &AnsDeleteArticlePacket createArtNotFound(){
-		return new AnsDeleteArticlePacket(false, false, true);
+	static shared_ptr<AnsDeleteArticlePacket> createArtNotFound(){
+		return shared_ptr<AnsDeleteArticlePacket>(new AnsDeleteArticlePacket(false, false, true));
 	}
 
 
@@ -43,7 +45,7 @@ Connection& operator>>(Connection &in, AnsDeleteArticlePacket &rhs) {
 			rhs.success = true;
 			break;
 
-		case protocol:ANS_NAK:
+		case protocol::Protocol::ANS_NAK:
 			uint8_t errorMsg;
 			in >> errorMsg;
 			switch(errorMsg){
@@ -52,15 +54,15 @@ Connection& operator>>(Connection &in, AnsDeleteArticlePacket &rhs) {
 					break;
 				case protocol::Protocol::ERR_ART_DOES_NOT_EXIST:
 					rhs.artNotFound = true;
-					break
+					break;
 				default:
-					throw ProcotolViolationException();
+					throw ProtocolViolationException();
 			}
 			rhs.success = false;
 			break;
 
 		default:
-			throw ProcotolViolationException();
+			throw ProtocolViolationException();
 			break;
 
 	}
@@ -71,13 +73,13 @@ Connection& operator>>(Connection &in, AnsDeleteArticlePacket &rhs) {
 Connection& operator<<(Connection &out, AnsDeleteArticlePacket &rhs) {
 	out << protocol::Protocol::ANS_CREATE_ART;
 	if (rhs.success){
-		out << protocol:ANS_ACK;
+		out << protocol::Protocol::ANS_ACK;
 	} else {
-		out << protocol:ANS_NAK;
+		out << protocol::Protocol::ANS_NAK;
 		if (rhs.ngNotFound){
-			out << protocol:ERR_NG_DOES_NOT_EXIST;
+			out << protocol::Protocol::ERR_NG_DOES_NOT_EXIST;
 		} else {
-			out << protocol:ERR_ART_DOES_NOT_EXIST;
+			out << protocol::Protocol::ERR_ART_DOES_NOT_EXIST;
 		}
 	}
 	out << protocol::Protocol::ANS_END;

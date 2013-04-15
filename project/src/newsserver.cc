@@ -1,6 +1,11 @@
 #include "server_options.h"
 #include "wireprotocol/packet.h"
 #include "wireprotocol/server_messagehandler.h"
+#include "database/in_memory_database.h"
+#include "../lib/clientserver/connection.h"
+
+#include <memory>
+using std::shared_ptr;
 
 using namespace client_server;
 using std::cout;
@@ -17,16 +22,16 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    ServerMessageHandler msgHandler();
-    InMemoryDatabase db();
+    ServerMessageHandler<InMemoryDatabase> msgHandler;
+    InMemoryDatabase db;
 
     while (true) {
         Connection* conn = server.waitForActivity();
         if (conn != 0) {
             try {
-                boost::shared_ptr<ComPacket> packet = msgHandler.parsePkg(conn);
-                boost::shared_ptr<AnsPacket> ansPacket = packet->process(db);
-                conn << *ansPacket;
+                shared_ptr<ComPacket<InMemoryDatabase> > packet = msgHandler.parsePkg(*conn);
+                shared_ptr<AnsPacket> ansPacket = packet->process(db);
+                *conn << *ansPacket;
             }
             catch (ConnectionClosedException&) {
                 server.deregisterConnection(conn);

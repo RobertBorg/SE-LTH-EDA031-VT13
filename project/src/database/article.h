@@ -3,6 +3,7 @@
 
 class Article {
 public:
+	Article(uint32_t id_, string title_): id(id_), title(title_){}
 	string title;
 	string author;
 	string text;

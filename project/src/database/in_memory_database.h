@@ -2,85 +2,82 @@
 #define IN_MEMORY_DATABASE_H__
 
 
-class InMemoryDatabase : public Database<decltype(map<uint32_t, shared_ptr<Newsgroup>>.cbegin()),decltype(map<uint32_t, shared_ptr<Article>>::cbegin()) {
+class InMemoryDatabase : public Database< map<uint32_t, shared_ptr<Newsgroup> >::const_iterator, map<uint32_t, shared_ptr<Article> >::const_iterator > {
 public:
 	void addArticle(shared_ptr<Article> article){
 		auto ngIt = newsgroupsById.find(article->newsgroupId);
-		if (ngIt == newsgroupsById.end){
+		if (ngIt == newsgroupsById.end()){
 			throw NGDoesntExistException();
 		}
-		ngIt->addArticle(article);
+		ngIt->second->addArticle(article);
 	}
 
-	Article getArticle(uint32_t artId, uint32_t NGId){
-		auto ngIt = newsgroupsById.find(article->newsgroupId);
-		if (ngIt == newsgroups.end){
+	shared_ptr<Article> getArticle(uint32_t artId, uint32_t NGId){
+		auto ngIt = newsgroupsById.find(NGId);
+		if (ngIt == newsgroupsById.end()){
 			throw NGDoesntExistException();
 		}
-		return ngIt->getArticle(artId);
+		return ngIt->second->getArticle(artId);
 	}
 
 
 	void addNewsgroup(shared_ptr<Newsgroup> newsgroup){
 		auto ngIt = newsgroupsByName.find(newsgroup->name);
 
-		if (ngIt != newsgroupsByName.end){
+		if (ngIt != newsgroupsByName.end()){
 			throw NGAlreadyExistsException();
 		}
 		newsgroup->id = NGCounter;
 		NGCounter++;
-		newsgroupsByName.emplace(newsgroup->name, newsgroup);
-		newsgroupsById.emplace(newsgroup->id, newsgroup);
+		newsgroupsByName.insert(make_pair(newsgroup->name, newsgroup));
+		newsgroupsById.insert(make_pair(newsgroup->id, newsgroup));
 	}
 
-	const auto getNewsgroupBegin(){
+	const map<uint32_t, shared_ptr<Newsgroup>>::const_iterator getNewsgroupBegin() {
 		return newsgroupsById.cbegin();
 	}
-	const auto getNewsgroupEnd(){
+	const map<uint32_t, shared_ptr<Newsgroup>>::const_iterator getNewsgroupEnd() {
 		return newsgroupsById.cend();
 	}
 
-	const auto getArticleBegin(uint32_t ngId){
+	const map<uint32_t, shared_ptr<Article>>::const_iterator getArticleBegin(uint32_t ngId){
 		auto ngIt = newsgroupsById.find(ngId);
-		if (ngIt == newsgroupsById.end){
+		if (ngIt == newsgroupsById.end()){
 			throw NGDoesntExistException();
 		}
-		return ngIt->getArticleBegin();
+		return ngIt->second->getArticleBegin();
 	}
-	const auto getArticleEnd(uint32_t ngId){
+	const map<uint32_t, shared_ptr<Article>>::const_iterator getArticleEnd(uint32_t ngId){
 		auto ngIt = newsgroupsById.find(ngId);
-		if (ngIt == newsgroupsById.end){
+		if (ngIt == newsgroupsById.end()){
 			throw NGDoesntExistException();
 		}
-		return ngIt->getArticleEnd();
+		return ngIt->second->getArticleEnd();
 	}
 
 
 	void deleteArticle(uint32_t artId, uint32_t ngId){
 		auto ngIt = newsgroupsById.find(ngId);
-		if (ngIt == newsgroupsById.end){
+		if (ngIt == newsgroupsById.end()){
 			throw NGDoesntExistException();
 		}
-		ngIt->deleteArticle(artId);
+		ngIt->second->deleteArticle(artId);
 	}
 
 	void deleteNewsgroup(uint32_t ngId){
 		auto ngIt = newsgroupsById.find(ngId);
-		if (ngIt == newsgroupId.end){
+		if (ngIt == newsgroupsById.end()){
 			throw NGDoesntExistException();
 		}
-		auto ngIt2 = newsgroupsByName.find(ngIt->name);
+		auto ngIt2 = newsgroupsByName.find(ngIt->second->name);
 		newsgroupsByName.erase(ngIt2);
 		newsgroupsById.erase(ngIt);
-
-		
 	}
-};
-
 private:
 	uint NGCounter = 1;
-	map<string, shared_ptr<Newsgroup>> newsgroupsByName
+	map<string, shared_ptr<Newsgroup>> newsgroupsByName;
 	map<uint32_t, shared_ptr<Newsgroup>> newsgroupsById;
-	map<uint32_t, shared_ptr<Article>> articles;
+};
+
 
 #endif

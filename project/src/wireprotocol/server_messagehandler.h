@@ -5,53 +5,53 @@
 #include "all_packets.h"
 #include <iostream>
 
-template <typename ComPacket>
+template <typename Database>
 class ServerMessageHandler {
 public:
-	shared_ptr<ComPacket> parsePkg(Connection& conn) {
+	shared_ptr<ComPacket<Database> > parsePkg(Connection& conn) {
 		uint8_t packetType;
 		packetType = conn.peek();
-		shared_ptr<ComPacket> packet;
+		shared_ptr<ComPacket<Database> > packet;
 		switch(packetType){
 			
 			case protocol::Protocol::COM_LIST_NG:
-				packet(new ComListNewsgroupPacket()) ;
-				conn >> &packet;
+				packet = shared_ptr<ComPacket<Database> >(new ComListNewsgroupPacket<Database>()) ;
+				conn >> *packet;
 			break;
 
 			case protocol::Protocol::COM_CREATE_NG:
-				packet(new ComCreateNewsGroupPacket()) ;
-				conn >> &packet;
+				packet = shared_ptr<ComPacket<Database> >(new ComCreateNewsGroupPacket<Database>()) ;
+				conn >> *packet;
 
 				break;
 
 			case protocol::Protocol::COM_DELETE_NG:
-				packet(new ComDeleteNewsgroupPacket()) ;
-				conn >> &packet;
+				packet = shared_ptr<ComPacket<Database> >(new ComDeleteNewsgroupPacket<Database>()) ;
+				conn >> *packet;
 				break;
 
 
 			case protocol::Protocol::COM_LIST_ART:
-				packet(new ComListArticlePacket()) ;
-				conn >> &packet;
+				packet = shared_ptr<ComPacket<Database> >(new ComListArticlePacket<Database>()) ;
+				conn >> *packet;
 				break;
 
 			case protocol::Protocol::COM_CREATE_ART:
-				packet(new ComCreateArtPacket()) ;
-				conn >> &packet;
+				packet = shared_ptr<ComPacket<Database> >(new ComCreateArtPacket<Database>()) ;
+				conn >> *packet;
 				break;
 
 			case protocol::Protocol::COM_DELETE_ART:
-				packet(new ComDeleteArticlePacket()) ;
-				conn >> &packet;
+				packet = shared_ptr<ComPacket<Database> >(new ComDeleteArticlePacket<Database>()) ;
+				conn >> *packet;
 				break;
 
 			case protocol::Protocol::COM_GET_ART:
-				packet(new ComGetArtPacket()) ;
-				conn >> &packet;
+				packet = shared_ptr<ComPacket<Database> >(new ComGetArtPacket<Database>()) ;
+				conn >> *packet;
 				break;
 
-			case default:
+			default:
 				throw ProtocolViolationException();
 				break;
 

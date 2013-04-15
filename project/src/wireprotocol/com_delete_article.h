@@ -4,17 +4,21 @@
 #include <string>
 
 using std::string;
-
-class ComDeleteArticlePacket : public ComPacket{
+template <typename Database>
+class ComDeleteArticlePacket : public ComPacket<Database>{
+friend Connection& operator>>(Connection &in, ComDeleteArticlePacket &rhs);
+friend Connection& operator<<(Connection &out, ComDeleteArticlePacket &rhs);
 public:
-	AnsPacket process(Database& db){
+	shared_ptr<AnsPacket> process(Database& db){
 		try{
 			db->deleteArticle(articNum, groupNum);
+			shared_ptr<AnsPacket> answerPacket = AnsDeleteArticlePacket::createSuccessful();
+			return answerPacket;
 		}catch (NGDoesntExistException e){
-			shared_ptr<AnsPacket> answerPacket(AnsDeleteArticlePacket::createNGNotFound());
+			shared_ptr<AnsPacket> answerPacket = AnsDeleteArticlePacket::createNGNotFound();
 			return answerPacket;
 		} catch (ArtDoesntExistException e){
-			shared_ptr<AnsPacket> answerPacket(AnsDeleteArticlePacket::createArtNotFound());
+			shared_ptr<AnsPacket> answerPacket = AnsDeleteArticlePacket::createArtNotFound();
 			return answerPacket;
 		}
 	}
@@ -27,22 +31,23 @@ private:
 	uint32_t articNum;
 };
 
-
-Connection& operator>>(Connection &inConn, ComDeleteArticlePacket &rhs) {
-	Packet::eat(in, protocol::Protocol::COM_LIST_ART);
+template <typename Database>
+Connection& operator>>(Connection &inConn, ComDeleteArticlePacket<Database> &rhs) {
+	Packet::eat(inConn, protocol::Protocol::COM_LIST_ART);
 	num_p num;
 	inConn >> num;
-	groupNum = num;
+	rhs.groupNum = num;
 	inConn >> num;
-	articNum = num;
-	Packet::eat(in, protocol::Protocol::COM_END);
+	rhs.articNum = num;
+	Packet::eat(inConn, protocol::Protocol::COM_END);
 	return inConn;
 }
 
-Connection& operator<<(Connection &outConn, ComDeleteArticlePacket &rhs) {
+template <typename Database>
+Connection& operator<<(Connection &outConn, ComDeleteArticlePacket<Database> &rhs) {
 	outConn << protocol::Protocol::COM_LIST_ART;
-	outConn << num_p(groupNum);
-	outConn << num_p(articNum);
+	outConn << num_p(rhs.groupNum);
+	outConn << num_p(rhs.articNum);
 	outConn << protocol::Protocol::COM_END;
 	return outConn;
 }

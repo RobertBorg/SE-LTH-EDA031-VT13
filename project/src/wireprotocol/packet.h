@@ -64,6 +64,7 @@ public:
         }
     }
 
+
 };
 
 
@@ -78,7 +79,16 @@ public:
 	virtual shared_ptr<AnsPacket> process(Database& db) const;
 };
 
+template<typename Packet>
+Connection &operator<<(Connection &out, Packet &p) {
+	out << p;
+	return out;
+}
 
-
+template<typename Packet>
+Connection &operator>>(Connection &in, Packet &p) {
+	in >> p;
+	return in;
+}
 
 #endif

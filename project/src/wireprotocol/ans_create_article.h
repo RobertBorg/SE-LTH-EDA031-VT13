@@ -5,9 +5,12 @@
 
 
 class AnsCreateArticlePacket : public AnsPacket{
+friend Connection& operator>>(Connection &in, AnsCreateArticlePacket &rhs);
+friend Connection& operator<<(Connection &out, AnsCreateArticlePacket &rhs);
+
 public:
 	void process(){
-		if (success){
+		if (this->success){
 			cout << "Creation was succesful." << endl;
 		} else {
 			cout << "Newsgroup was not found." << endl;
@@ -20,6 +23,7 @@ public:
 
 private:
 	bool success;
+
 };
 
 
@@ -38,7 +42,7 @@ Connection& operator>>(Connection &in, AnsCreateArticlePacket &rhs) {
 			break;
 
 		default:
-			throw ProcotolViolationException();
+			throw ProtocolViolationException();
 			break;
 
 	}
@@ -48,7 +52,7 @@ Connection& operator>>(Connection &in, AnsCreateArticlePacket &rhs) {
 
 Connection& operator<<(Connection &out, AnsCreateArticlePacket &rhs) {
 	out << protocol::Protocol::ANS_CREATE_ART;
-	if (success){
+	if (rhs.success){
 		out << protocol::Protocol::ANS_ACK;
 	} else {
 		out << protocol::Protocol::ANS_NAK;

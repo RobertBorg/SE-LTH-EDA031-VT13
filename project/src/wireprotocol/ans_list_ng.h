@@ -7,13 +7,15 @@ using std::pair;
 #include "packet.h"
 
 class AnsListNewsgroupPacket : public AnsPacket {
+friend Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs);
+friend Connection& operator<<(Connection &out, AnsListNewsgroupPacket &rhs);
 public:
 	typedef pair<int, string> NewsGroup;
 	typedef vector<NewsGroup> NewsGroups;
 	AnsListNewsgroupPacket() = default;
 	AnsListNewsgroupPacket(NewsGroups &newsGroups_) : newsGroups(newsGroups_) {}
 	virtual void process() const {
-		for (NewsGroup ng : newsGroups) {
+		for (NewsGroup ng : this->newsGroups) {
 			cout <<"Id :" << ng.first << " Name: " << ng.second << endl;
 		}
 	}
@@ -25,11 +27,11 @@ Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs) {
 	Packet::eat(in, protocol::Protocol::ANS_LIST_NG);
 	num_p numNG;
 	in >> numNG;
-	for(int i = 0 i < numNG; ++i){
+	for(int i = 0 ;i < numNG; ++i){
 		num_p id;
 		string_p str;
 		in >> id >> str;
-		rhs.newsGroups.push_back(NewsGroup(id,str));
+		rhs.newsGroups.push_back(make_pair(id, str));
 	}
 	Packet::eat(in, protocol::Protocol::COM_END);
 	return in;
@@ -38,7 +40,7 @@ Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs) {
 Connection& operator<<(Connection &out, AnsListNewsgroupPacket &rhs) {
 	out << protocol::Protocol::ANS_LIST_NG;
 	out << num_p(static_cast<int>(rhs.newsGroups.size()));
-	for(NewsGroup ng : rhs.newsGroups) {
+	for(AnsListNewsgroupPacket::NewsGroup ng : rhs.newsGroups) {
 		out << num_p(ng.first);
 		out << string_p(ng.second);
 	}

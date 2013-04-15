@@ -13,5 +13,7 @@
 #include "com_get_article.h"
 #include "com_list_article.h"
 #include "com_list_newsgroup.h"
+#include "com_delete_newsgroup.h"
+#include "com_delete_article.h"
 
 #endif /* end of include guard: ALL_PACKETS_H__ */
