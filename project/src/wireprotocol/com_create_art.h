@@ -10,7 +10,7 @@ public:
 	ComCreateArtPacket(uint32_t &newsGroupNumber_, string &title_, string &author_, string &text_) 
 		: newsGroupNumber(newsGroupNumber_), title(title_), author(author_), text(text_) {}
 	virtual shared_ptr<AnsPacket> process(Database& db) const {
-		
+
 	}
 private:
 	uint32_t newsGroupNumber;
