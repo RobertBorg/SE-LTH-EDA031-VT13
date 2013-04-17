@@ -33,8 +33,8 @@ int main(int argc, char* argv[]) {
         if (conn != 0) {
             try {
                 shared_ptr<ComPacket<InMemoryDatabase> > packet = msgHandler.parsePkg(*conn);
-                shared_ptr<AnsPacket> ansPacket = packet->process(db);
-                *conn << *ansPacket;
+                shared_ptr<AnsPacket<Connection, Connection> > ansPacket = packet->process(db);
+                ansPacket->write(*conn);
             }
             catch (ConnectionClosedException&) {
                 server.deregisterConnection(conn);

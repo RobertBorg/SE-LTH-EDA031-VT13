@@ -18,9 +18,8 @@ void notEnoughParameters(){
 	// Här händer nåt kul
 }
 
-class DummyDatabase : public Database< map<uint32_t, shared_ptr<Newsgroup> >::const_iterator, map<uint32_t,shared_ptr<Article> >::const_iterator> {
 
-};
+
 int main(int argc, char* argv[]) {
 	ClientOptions o(argc,argv);
 	o();

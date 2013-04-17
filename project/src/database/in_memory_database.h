@@ -33,21 +33,23 @@ public:
 		newsgroupsById.insert(make_pair(newsgroup->id, newsgroup));
 	}
 
-	const map<uint32_t, shared_ptr<Newsgroup>>::const_iterator getNewsgroupBegin() {
+	map<uint32_t, shared_ptr<Newsgroup>>::const_iterator getNewsgroupBegin() {
 		return newsgroupsById.cbegin();
 	}
-	const map<uint32_t, shared_ptr<Newsgroup>>::const_iterator getNewsgroupEnd() {
+
+	map<uint32_t, shared_ptr<Newsgroup>>::const_iterator getNewsgroupEnd() {
 		return newsgroupsById.cend();
 	}
 
-	const map<uint32_t, shared_ptr<Article>>::const_iterator getArticleBegin(uint32_t ngId){
+	map<uint32_t, shared_ptr<Article>>::const_iterator getArticleBegin(uint32_t ngId){
 		auto ngIt = newsgroupsById.find(ngId);
 		if (ngIt == newsgroupsById.end()){
 			throw NGDoesntExistException();
 		}
 		return ngIt->second->getArticleBegin();
 	}
-	const map<uint32_t, shared_ptr<Article>>::const_iterator getArticleEnd(uint32_t ngId){
+	
+	map<uint32_t, shared_ptr<Article>>::const_iterator getArticleEnd(uint32_t ngId){
 		auto ngIt = newsgroupsById.find(ngId);
 		if (ngIt == newsgroupsById.end()){
 			throw NGDoesntExistException();

@@ -2,52 +2,18 @@
 #define ANS_GET_ARTICLE_H__
 
 #include <string>
+using std::string;
+#include <memory>
+using std::shared_ptr;
+using std::make_shared;
 #include "packet.h"
 #include "string_p.h"
 #include "num_p.h"
 
-using std::string;
 
-class AnsGetArticlePacket : public AnsPacket{
-friend Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs);
-friend Connection& operator<<(Connection &out, AnsGetArticlePacket &rhs);
-public:
-	virtual void process() const{
-		if (this->success){
-			cout << "Title: " << title << endl << 
-			"Author: " << author << endl <<
-			"Text: " << text << endl;
-		} else if (this->ngNotFound){
-			cout << "Newsgroup not found...";
-		} else if (this->artNotFound){
-			cout << "Article not found...";
-		}
-		
-	}
-	AnsGetArticlePacket() = default;
-	AnsGetArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_, string title_, string author_, string text_) 
-		: success(success_), ngNotFound(ngNotFound_), artNotFound(artNotFound_)
-		, title(title_), author(author_), text(text_) {}
-
-
-	static shared_ptr<AnsGetArticlePacket> createSuccessful(string title, string author, string text){
-		return shared_ptr<AnsGetArticlePacket>(new AnsGetArticlePacket(true, false, false, title, author, text));
-	}
-	static shared_ptr<AnsGetArticlePacket> createNGNotFound(){
-		return shared_ptr<AnsGetArticlePacket>(new AnsGetArticlePacket(false, true, false, nullptr, nullptr, nullptr));
-	}
-	static shared_ptr<AnsGetArticlePacket> createArtNotFound(){
-		return shared_ptr<AnsGetArticlePacket>(new AnsGetArticlePacket(false, false, true, nullptr, nullptr, nullptr));
-	}
-
-
-private:
-	bool success, ngNotFound, artNotFound;
-	string title, author, text;
-};
-
-
-Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
+template <typename istream, typename ostream>
+class AnsGetArticlePacket : public AnsPacket<istream, ostream> {
+friend istream& operator>>(istream &in, AnsGetArticlePacket<istream, ostream> &rhs) {
 	Packet::eat(in, protocol::Protocol::ANS_GET_ART);
 	uint8_t selection;
 	in >> selection;
@@ -83,7 +49,7 @@ Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
 				}
 				default:
 				{
-					throw ProtocolViolationException();
+					throw SeralizationViolationException();
 				}
 			}
 			rhs.success = false;
@@ -92,7 +58,7 @@ Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
 		}
 		default:{
 
-			throw ProtocolViolationException();
+			throw SeralizationViolationException();
 			break;
 		}
 
@@ -100,8 +66,7 @@ Connection& operator>>(Connection &in, AnsGetArticlePacket &rhs) {
 	Packet::eat(in, protocol::Protocol::ANS_END);
 	return in;
 }
-
-Connection& operator<<(Connection &out, AnsGetArticlePacket &rhs) {
+friend ostream& operator<<(ostream &out, AnsGetArticlePacket<istream, ostream> &rhs) {
 	out << protocol::Protocol::ANS_GET_ART;
 	if (rhs.success){
 		out << protocol::Protocol::ANS_ACK;
@@ -119,5 +84,46 @@ Connection& operator<<(Connection &out, AnsGetArticlePacket &rhs) {
 	out << protocol::Protocol::ANS_END;
 	return out;
 }
+public:
+	virtual void process() const{
+		if (this->success){
+			cout << "Title: " << title << endl << 
+			"Author: " << author << endl <<
+			"Text: " << text << endl;
+		} else if (this->ngNotFound){
+			cout << "Newsgroup not found...";
+		} else if (this->artNotFound){
+			cout << "Article not found...";
+		}
+		
+	}
+	AnsGetArticlePacket() = default;
+	AnsGetArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_, string title_, string author_, string text_) 
+		: success(success_), ngNotFound(ngNotFound_), artNotFound(artNotFound_)
+		, title(title_), author(author_), text(text_) {}
+
+
+	static shared_ptr<AnsGetArticlePacket<istream, ostream>> createSuccessful(string title, string author, string text){
+		return shared_ptr<AnsGetArticlePacket<istream, ostream>>(new AnsGetArticlePacket<istream, ostream>(true, false, false, title, author, text));
+	}
+	static shared_ptr<AnsGetArticlePacket<istream, ostream>> createNGNotFound(){
+		return shared_ptr<AnsGetArticlePacket<istream, ostream>>(new AnsGetArticlePacket<istream, ostream>(false, true, false, nullptr, nullptr, nullptr));
+	}
+	static shared_ptr<AnsGetArticlePacket<istream, ostream>> createArtNotFound(){
+		return shared_ptr<AnsGetArticlePacket<istream, ostream>>(new AnsGetArticlePacket<istream, ostream>(false, false, true, nullptr, nullptr, nullptr));
+	}
+
+	virtual void write(ostream &out) {
+		out << *this;
+	}
+
+	virtual void read(istream &in) {
+		in >> *this;
+	}
+
+private:
+	bool success, ngNotFound, artNotFound;
+	string title, author, text;
+};
 
 #endif

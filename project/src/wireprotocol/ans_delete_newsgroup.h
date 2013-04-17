@@ -3,27 +3,9 @@
 
 #include "packet.h"
 
-class AnsDeleteNewsgroupPacket : public AnsPacket{
-friend Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs);
-friend Connection& operator<<(Connection &out, AnsDeleteNewsgroupPacket &rhs);
-public:
-	virtual void process() const{
-		if (this->success){
-			cout << "Newsgroup successfully deleted." << endl;
-		} else {
-			cout << "Newgroup was not found." << endl;
-		}
-	}
-	AnsDeleteNewsgroupPacket() = default;
-	AnsDeleteNewsgroupPacket(bool success_): success(success_){}
-
-
-private:
-	bool success;
-};
-
-
-Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs) {
+template <typename istream, typename ostream>
+class AnsDeleteNewsgroupPacket : public AnsPacket<istream, ostream> {
+friend istream& operator>>(istream &in, AnsDeleteNewsgroupPacket<istream, ostream> &rhs){
 	Packet::eat(in, protocol::Protocol::ANS_DELETE_NG);
 	uint8_t selection;
 	in >> selection;
@@ -38,15 +20,14 @@ Connection& operator>>(Connection &in, AnsDeleteNewsgroupPacket &rhs) {
 			break;
 
 		default:
-			throw ProtocolViolationException();
+			throw SeralizationViolationException();
 			break;
 
 	}
 	Packet::eat(in, protocol::Protocol::ANS_END);
 	return in;
 }
-
-Connection& operator<<(Connection &out, AnsDeleteNewsgroupPacket &rhs) {
+friend ostream& operator<<(ostream &out, AnsDeleteNewsgroupPacket<istream, ostream> &rhs){
 	out << protocol::Protocol::ANS_DELETE_NG;
 	if (rhs.success){
 		out << protocol::Protocol::ANS_ACK;
@@ -57,5 +38,27 @@ Connection& operator<<(Connection &out, AnsDeleteNewsgroupPacket &rhs) {
 	out << protocol::Protocol::ANS_END;
 	return out;
 }
+public:
+	virtual void process() const{
+		if (this->success){
+			cout << "Newsgroup successfully deleted." << endl;
+		} else {
+			cout << "Newgroup was not found." << endl;
+		}
+	}
+	AnsDeleteNewsgroupPacket() = default;
+	AnsDeleteNewsgroupPacket(bool success_): success(success_){}
+
+	virtual void write(ostream &out) {
+		out << *this;
+	}
+
+	virtual void read(istream &in) {
+		in >> *this;
+	}
+
+private:
+	bool success;
+};
 
 #endif
