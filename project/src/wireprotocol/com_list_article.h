@@ -24,11 +24,16 @@ friend ostream& operator<<(ostream &out, ComListArticlePacket<Database, istream,
 public:
 	virtual shared_ptr<AnsPacket<istream, ostream>> process(Database& db) const {
 		vector< typename AnsListArtPacket<istream, ostream>::Article > articles;
-		for_each(db.getArticleBegin(groupNum), db.getArticleEnd(groupNum), 
-			[&articles] (const pair<uint32_t, shared_ptr<Article> > pair) {
-				articles.push_back(make_pair(pair.first, pair.second->title)); 
-			});
-		shared_ptr<AnsPacket<istream, ostream>> answerPacket(new AnsListArtPacket<istream, ostream>(articles));
+		bool success = true;
+		try {
+			for_each(db.getArticleBegin(groupNum), db.getArticleEnd(groupNum), 
+				[&articles] (const pair<uint32_t, shared_ptr<Article> > pair) {
+					articles.push_back(make_pair(pair.first, pair.second->title)); 
+				});
+		} catch (NGDoesntExistException& ex) {
+			success = false;
+		}
+		shared_ptr<AnsPacket<istream, ostream>> answerPacket(new AnsListArtPacket<istream, ostream>(articles, success));
 		return answerPacket;
 	}
 	ComListArticlePacket() = default;

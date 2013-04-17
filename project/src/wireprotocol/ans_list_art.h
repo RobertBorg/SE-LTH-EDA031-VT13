@@ -53,7 +53,7 @@ public:
 	typedef pair<int, string> Article;
 	typedef vector<Article> Articles;
 	AnsListArtPacket() = default;
-	AnsListArtPacket(Articles &newsGroups_) : articles(newsGroups_) {}
+	AnsListArtPacket(Articles &newsGroups_, bool &newsGroupExists_) : articles(newsGroups_), newsGroupExists(newsGroupExists_) {}
 	virtual void process() const {
 		for (Article art : this->articles){
 			cout << "Id: " << art.first << " Title: " << art.second << endl;
