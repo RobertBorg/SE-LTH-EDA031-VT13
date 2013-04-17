@@ -35,10 +35,10 @@ public:
 
 		posCmdDesc
 			.add("mode-of-operation", 1)
-			.add("pos2", 2)
-			.add("pos3", 3)
-			.add("pos4", 4)
-			.add("pos5", 5);
+			.add("pos2", 1)
+			.add("pos3", 1)
+			.add("pos4", 1)
+			.add("pos5", 1);
 		
 
 		store(command_line_parser(argc, argv).options(cmdHiddenDesc).positional(posCmdDesc).run(), *this);

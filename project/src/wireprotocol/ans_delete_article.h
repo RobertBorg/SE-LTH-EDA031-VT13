@@ -6,7 +6,7 @@
 template <typename istream, typename ostream>
 class AnsDeleteArticlePacket : public AnsPacket<istream, ostream>{
 friend istream& operator>>(istream &in, AnsDeleteArticlePacket<istream, ostream> &rhs){
-	Packet::eat(in, protocol::Protocol::ANS_CREATE_ART);
+	Packet::eat(in, protocol::Protocol::ANS_DELETE_ART);
 	uint8_t selection;
 	in >> selection;
 	switch(selection){
@@ -39,7 +39,7 @@ friend istream& operator>>(istream &in, AnsDeleteArticlePacket<istream, ostream>
 	return in;
 }
 friend ostream& operator<<(ostream &out, AnsDeleteArticlePacket<istream, ostream> &rhs){
-	out << protocol::Protocol::ANS_CREATE_ART;
+	out << protocol::Protocol::ANS_DELETE_ART;
 	if (rhs.success){
 		out << protocol::Protocol::ANS_ACK;
 	} else {

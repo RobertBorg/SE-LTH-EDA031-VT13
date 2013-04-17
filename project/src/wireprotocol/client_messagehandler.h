@@ -53,7 +53,6 @@ public:
 			default:
 				throw SeralizationViolationException();
 				break;
-
 		}
 
 		packet->process();

@@ -29,7 +29,7 @@ friend ostream& operator<<(ostream &out, ComCreateArtPacket<Database, istream, o
 }
 public:
 	ComCreateArtPacket() = default;
-	ComCreateArtPacket(const uint32_t &newsGroupNumber_, string &title_, string &author_, string &text_) 
+	ComCreateArtPacket(const uint32_t &newsGroupNumber_, const string &title_, const string &author_, const string &text_) 
 		: newsGroupNumber(newsGroupNumber_), title(title_), author(author_), text(text_) {}
 	virtual shared_ptr<AnsPacket<istream, ostream>> process(Database& db) const {
 		try{
@@ -37,6 +37,7 @@ public:
 			article->title = title;
 			article->author = author;
 			article->text = text;
+			article->newsgroupId = newsGroupNumber;
 			db.addArticle(article);
 			shared_ptr<AnsPacket<istream, ostream>> answerPacket(new AnsCreateArticlePacket<istream, ostream>(true));
 			return answerPacket;

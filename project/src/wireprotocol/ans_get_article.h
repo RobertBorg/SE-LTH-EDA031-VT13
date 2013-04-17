@@ -21,7 +21,7 @@ friend istream& operator>>(istream &in, AnsGetArticlePacket<istream, ostream> &r
 		case protocol::Protocol::ANS_ACK:{
 			
 			string_p title, author, text;
-			in << title << author << text;
+			in >> title >> author >> text;
 
 			rhs.title = title;
 			rhs.author = author;

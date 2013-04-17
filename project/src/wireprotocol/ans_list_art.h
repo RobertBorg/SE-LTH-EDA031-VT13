@@ -36,10 +36,15 @@ friend istream& operator>>(istream &in, AnsListArtPacket<istream, ostream> &rhs)
 }
 friend ostream& operator<<(ostream &out, AnsListArtPacket<istream, ostream> &rhs) {
 	out << protocol::Protocol::ANS_LIST_ART;
-	out << num_p(static_cast<int>(rhs.articles.size()));
-	for(AnsListArtPacket::Article a : rhs.articles) {
-		out << num_p(a.first);
-		out << string_p(a.second);
+	if(rhs.newsGroupExists) {
+		out << protocol::Protocol::ANS_ACK;
+		out << num_p(static_cast<int>(rhs.articles.size()));
+		for(AnsListArtPacket::Article a : rhs.articles) {
+			out << num_p(a.first);
+			out << string_p(a.second);
+		}
+	} else {
+		out << protocol::Protocol::ANS_NAK;
 	}
 	out << protocol::Protocol::COM_END;
 	return out;
@@ -65,6 +70,7 @@ public:
 
 private:
 	vector<Article> articles;
+	bool newsGroupExists;
 };
 
 #endif /* end of include guard: ANS_LIST_ART_H__ */

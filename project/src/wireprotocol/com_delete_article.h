@@ -9,7 +9,7 @@ using std::string;
 template <typename Database, typename istream = Connection, typename ostream = Connection>
 class ComDeleteArticlePacket : public ComPacket<Database, istream, ostream> {
 friend istream& operator>>(istream &in, ComDeleteArticlePacket<Database, istream, ostream> &rhs) {
-	Packet::eat(in, protocol::Protocol::COM_LIST_ART);
+	Packet::eat(in, protocol::Protocol::COM_DELETE_ART);
 	num_p num;
 	in >> num;
 	rhs.groupNum = num;
@@ -19,7 +19,7 @@ friend istream& operator>>(istream &in, ComDeleteArticlePacket<Database, istream
 	return in;
 }
 friend ostream& operator<<(ostream &out, ComDeleteArticlePacket<Database, istream, ostream> &rhs) {
-	out << protocol::Protocol::COM_LIST_ART;
+	out << protocol::Protocol::COM_DELETE_ART;
 	out << num_p(rhs.groupNum);
 	out << num_p(rhs.articNum);
 	out << protocol::Protocol::COM_END;

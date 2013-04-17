@@ -11,7 +11,7 @@ using client_server::Connection;
 struct string_p : public Packet{
 	string value;
 	string_p() {}
-	string_p(string &in) : value(in) {}
+	string_p(const string &in) : value(in) {}
 	const operator string() {
 		return value;
 	}
