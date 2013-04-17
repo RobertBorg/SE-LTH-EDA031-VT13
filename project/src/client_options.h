@@ -48,15 +48,15 @@ public:
 		if(!count("mode-of-operation") || count("help")) {
 			cout << 
 			"Usage:" << endl <<
-			"newsreader [options] [mode-of-operation] " << endl <<
+			"newsreader [options] [string mode-of-operation] " << endl <<
 			"mode-of-operations:" << endl <<
 			"list-newsgroup - lists all news groups and their ids" << endl <<
-			"create-newsgroup [title] - creates a newsgroup with title [title]" << endl <<
-			"delete-newsgroup [id] - deletes newsgroup with id [id]" << endl <<
-			"list-article [newsgroup] - lists articles title and their ids from newsgroup [newsgroup]" << endl <<
-			"create-article [id] [title] [author] [text] - creates an article in news group [id]" << endl <<
-			"delete-article [newsgroupId] [articleId] - deletes article [articleId] in newsgroup [newsgroupId]" << endl <<
-			"get-article [newsgroupId] [articleId] - gets article [articleId] in newsgroup [newsgroupId]" << endl;
+			"create-newsgroup [string title] - creates a newsgroup with title [string title]" << endl <<
+			"delete-newsgroup [int id] - deletes newsgroup with id [id]" << endl <<
+			"list-article [int newsgroup] - lists articles title and their ids from newsgroup [int newsgroup]" << endl <<
+			"create-article [int id] [string title] [string author] [string text] - creates an article in newsgroup [int id]" << endl <<
+			"delete-article [int newsgroupId] [int articleId] - deletes article [int articleId] in newsgroup [int newsgroupId]" << endl <<
+			"get-article [int newsgroupId] [int articleId] - gets article [int articleId] in newsgroup [int newsgroupId]" << endl;
 
 			cout << cmdDesc << endl;
 		}
