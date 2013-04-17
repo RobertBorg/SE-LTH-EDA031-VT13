@@ -104,7 +104,10 @@ int main(int argc, char* argv[]) {
     			notEnoughParameters();
     		}
 
-    	}
+    	} else {
+            cout << "unsupported mode-of-operation" << endl;
+            return 0;
+        }
     	msgHandler.parsePkg(connection);
 	}
 	return 0;
