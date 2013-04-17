@@ -34,9 +34,7 @@ public:
 		if(!count("persistent-db") || count("help")) {
 			cout << 
 			"Usage:" << endl <<
-			"newsserver [options] " << endl <<
-			"options:" << endl <<
-			"persistent [true/false] - persistent database on disk" << endl;
+			"newsserver [options] " << endl;
 			
 
 			cout << cmdDesc << endl;

@@ -9,25 +9,10 @@ using std::shared_ptr;
 
 using namespace client_server;
 using std::cout;
-using std:: cerr;
+using std::cerr;
 
-int main(int argc, char* argv[]) {
-	ServerOptions o(argc,argv);
-	o();
-    if(!o.count("server-port")) {
-        return 0;
-    }
-	uint16_t port = o["server-port"].as<uint16_t>();
-	Server server(port);
-
-	if (! server.isReady()) {
-        cerr << "Server initialization error" << endl;
-        exit(1);
-    }
-
-    ServerMessageHandler<InMemoryDatabase> msgHandler;
-    InMemoryDatabase db;
-
+template <typename Database>
+void mainLoop(Server &server, ServerMessageHandler<Database> &msgHandler, Database &db) {
     while (true) {
         Connection* conn = server.waitForActivity();
         if (conn != 0) {
@@ -47,5 +32,33 @@ int main(int argc, char* argv[]) {
             cout << "New client connects" << endl;
         }
     }
+}
+
+int main(int argc, char* argv[]) {
+	ServerOptions o(argc,argv);
+	o();
+    if(!o.count("server-port")) {
+        return 0;
+    }
+	uint16_t port = o["server-port"].as<uint16_t>();
+	Server server(port);
+
+	if (! server.isReady()) {
+        cerr << "Server initialization error" << endl;
+        exit(1);
+    }
+
+    if(o["persistent-db"].as<bool>()){
+        cerr << "on file db not implemented" << endl;
+        //ServerMessageHandler<OnFileDatabase> msgHandler;
+        //OnFileDatabase db;
+        //mainLoop(server, msgHandler, db);
+    } else {
+        ServerMessageHandler<InMemoryDatabase> msgHandler;
+        InMemoryDatabase db;
+        mainLoop(server, msgHandler, db);
+    }
+
+
 	return 0;
 }
