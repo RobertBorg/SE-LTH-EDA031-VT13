@@ -18,11 +18,14 @@ using namespace boost::filesystem;
  		database/
  			max 		-- file that contains an uint that tells the last ng-ID created in this database
  			NGID1/
+ 				name  	-- Name of the newsgroup
  				max    -- file that contains an uint that tells the last art-ID created In this Newsgroup
  			NGID2/
+ 				name
  				max
  				ArtID1   -- file that contains three string_p, title, author and text
  			NGID3/
+ 				name
  				max
  				ArtID1
  				ArtID2
@@ -33,7 +36,8 @@ ArtID1 is a number
 
 **/
 
-class OnFileDatabase : public Database {
+class OnFileDatabase : public Database <NGIterator, ArticleIterator > {
+public:{
 public:
 
 	OnFileDatabase(){
@@ -135,24 +139,42 @@ public:
 		if (exists(ngPath)){
 			throw NGAlreadyExistsException();
 		}
+
+		for (auto itr = NGIterator("database/") ; itr != NGIterator(), ++itr){ // To check that name doesnt already exists
+			if (itr->name == newsgroup->name){
+				throw NGAlreadyExistsException();
+			}
+		}
+
 		create_directory(ngPath);
 		pathStr.append("/max");
 		fstream stream;
-		stream.open(pathStr, fstream::in | fstream:trunc);
+		stream.open(pathStr, fstream::in | fstream:trunc); // Write maxvalue
 		uint artCounter = 1;
 		stream << artCounter;
+
+		string namePath = "database/";
+		namePath.append(number);		// WRite name
+		namePath.append("/name");
+		path nameP(namePath);
+		stream.open(nameP, fstream::in | fstream:trunc);
+		stream << newsgroup->name;
+		stream.close();
 	}
 
-	const auto getNewsgroupBegin(){
-
+	const NGIterator getNewsgroupBegin(){
+		return NGIterator("database/");
 		
 	}
 	const auto getNewsgroupEnd(){
-	}
+		return NGIterator();
+	}	
 
 	const auto getArticleIterator(uint32_t ngId){
+		return ArticleIterator(ngId);
 	}
 	const auto getArticleEnd(uint32_t ngId){
+		return ArticleIterator();
 	}
 
 
@@ -196,6 +218,8 @@ private:
 
 class ArticleIterator {
 
+	ArticleIterator() : diritr() {}
+
 	ArticleIterator(uint32_t ngId){
 		string pathstr = "database/";
 		pathstr.append = to_string(ngId);
@@ -218,19 +242,67 @@ class ArticleIterator {
     shared_ptr<Article> ArticleIterator::operator*() {
     	directory_entry *entry = *dirItr;
     	path p = entry->path();
-    	fstream stream(p, fstream::out);
+    	fstream stream;
 
+    	stream.open(p, fstream::out)
     	shared_ptr<Article> art(new Article());
 
     	string_p title, author, text;
     	stream << title << author << text;
+    	stream.close();
     	art->title = title;
     	art->author = author;
     	art->text = text;
+    	int iid = atoi(p.fileName());
+    	uint32_t id = static_cast<uint32_t>(iid);
+    	art->id = id;
 
     	return art;
     }
+private:
+	directory_iterator dirItr;
+};
 
+class NGIterator {
+	NGIterator() : diritr() {}
+
+	NGIterator(string path){
+		path ngPath(path);
+		dirItr(ngPath);
+	}
+
+	NGIterator& NGIterator::operator++() {
+        ++dirItr;
+        return *this;
+    }
+
+	bool NGIterator::operator==(const NGIterator& ni) const {
+        return dirItr == ni.dirItr;
+    }
+    bool NGIterator::operator!=(const NGIterator& ni) const {
+        return !(*this == ni);
+    }
+
+    shared_ptr<Newsgroup> NGIterator::operator*() {
+    	directory_entry *entry = *dirItr;
+
+    	int iid = atoi(p.fileName());
+    	uint32_t id = static_cast<uint32_t>(iid);
+
+    	path p = entry->path();
+    	p += path("/name");
+
+    	fstream stream;
+    	stream.open(p, fstream::out);
+    	string name;
+    	stream << name;
+
+    	shared_ptr<Newsgroup> ng(new Newsgroup());
+    	ng->id = id;
+    	ng->name = name;
+
+    	return ng;
+    }
 
 private:
 	directory_iterator dirItr;
