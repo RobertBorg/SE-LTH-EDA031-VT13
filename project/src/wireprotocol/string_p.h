@@ -26,10 +26,10 @@ struct string_p : public Packet{
 template <typename istream>
 istream &operator>>(istream &in, string_p &rhs) {
 	Packet::eat(in, protocol::Protocol::PAR_STRING);
-	num_p size;
+	uint32_t size;
 	in >> size;
 	char c;
-	while(size.value-- > 0) {
+	while(size-- > 0) {
 		in >> c;
 		rhs.value.push_back(c);
 	}
@@ -39,7 +39,7 @@ istream &operator>>(istream &in, string_p &rhs) {
 template <typename ostream>
 ostream &operator<<(ostream &out, const string_p &rhs) {
 	out << protocol::Protocol::PAR_STRING;
-	num_p size(rhs.value.length());
+	uint32_t size(rhs.value.length());
 	out << size;
 	for(auto i = rhs.value.begin(); i != rhs.value.end(); ++i) {
 		out << *i;
