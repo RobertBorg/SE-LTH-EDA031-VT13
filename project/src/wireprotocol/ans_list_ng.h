@@ -24,7 +24,7 @@ friend istream& operator>>(istream &in, AnsListNewsgroupPacket<istream, ostream>
 		in >> id >> str;
 		rhs.newsGroups.push_back(make_pair(id.value, str));
 	}
-	Packet::eat(in, protocol::Protocol::COM_END);
+	Packet::eat(in, protocol::Protocol::ANS_END);
 	return in;
 }
 friend ostream& operator<<(ostream &out, AnsListNewsgroupPacket<istream, ostream> &rhs){
@@ -34,7 +34,7 @@ friend ostream& operator<<(ostream &out, AnsListNewsgroupPacket<istream, ostream
 		out << num_p(ng.first);
 		out << string_p(ng.second);
 	}
-	out << protocol::Protocol::COM_END;
+	out << protocol::Protocol::ANS_END;
 	return out;
 }
 public:

@@ -33,7 +33,7 @@ friend istream& operator>>(istream &in, AnsListArtPacket<istream, ostream> &rhs)
 		default:
 			throw SeralizationViolationException();
 	}
-	Packet::eat(in, protocol::Protocol::COM_END);
+	Packet::eat(in, protocol::Protocol::ANS_END);
 	return in;
 }
 friend ostream& operator<<(ostream &out, AnsListArtPacket<istream, ostream> &rhs) {
@@ -48,7 +48,7 @@ friend ostream& operator<<(ostream &out, AnsListArtPacket<istream, ostream> &rhs
 	} else {
 		out << protocol::Protocol::ANS_NAK << protocol::Protocol::ERR_NG_DOES_NOT_EXIST;
 	}
-	out << protocol::Protocol::COM_END;
+	out << protocol::Protocol::ANS_END;
 	return out;
 }
 public:
