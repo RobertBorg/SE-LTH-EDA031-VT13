@@ -16,6 +16,7 @@ friend istream& operator>>(istream &in, AnsListArtPacket<istream, ostream> &rhs)
 	in >> success;
 	switch(success) {
 		case protocol::Protocol::ANS_ACK:
+			rhs.newsGroupExists = true;
 			num_p num;
 			in >> num;
 			for( unsigned int i = 0; i < num.value; ++i) {
@@ -27,6 +28,7 @@ friend istream& operator>>(istream &in, AnsListArtPacket<istream, ostream> &rhs)
 			break;
 		case protocol::Protocol::ANS_NAK:
 			Packet::eat(in, protocol::Protocol::ERR_NG_DOES_NOT_EXIST);
+			rhs.newsGroupExists = false;
 			break;
 		default:
 			throw SeralizationViolationException();
@@ -44,7 +46,7 @@ friend ostream& operator<<(ostream &out, AnsListArtPacket<istream, ostream> &rhs
 			out << string_p(a.second);
 		}
 	} else {
-		out << protocol::Protocol::ANS_NAK;
+		out << protocol::Protocol::ANS_NAK << protocol::Protocol::ERR_NG_DOES_NOT_EXIST;
 	}
 	out << protocol::Protocol::COM_END;
 	return out;
@@ -55,8 +57,13 @@ public:
 	AnsListArtPacket() = default;
 	AnsListArtPacket(Articles &newsGroups_, bool &newsGroupExists_) : articles(newsGroups_), newsGroupExists(newsGroupExists_) {}
 	virtual void process() const {
-		for (Article art : this->articles){
-			cout << "Id: " << art.first << " Title: " << art.second << endl;
+		if(newsGroupExists) {
+			cout << "there are " << this->articles.size() << " articles in newsgroup." << endl;
+			for (Article art : this->articles){
+				cout << "Id: " << art.first << " Title: " << art.second << endl;
+			}
+		} else {
+			cout << "there is no such newsgroup" << endl;
 		}
 	}
 
