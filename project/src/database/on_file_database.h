@@ -10,6 +10,28 @@ using namespace boost::filesystem;
 
 #include "../wireprotocol/string_p.h";
 
+/**
+--  Fstream works like the standard fstream, but you can put a path object instead of string as first parameter.
+
+-- Directory structure
+
+ 		database/
+ 			max 		-- file that contains an uint that tells the last ng-ID created in this database
+ 			NGID1/
+ 				max    -- file that contains an uint that tells the last art-ID created In this Newsgroup
+ 			NGID2/
+ 				max
+ 				ArtID1   -- file that contains three string_p, title, author and text
+ 			NGID3/
+ 				max
+ 				ArtID1
+ 				ArtID2
+
+
+NGID1 is a number
+ArtID1 is a number
+
+**/
 
 class OnFileDatabase : public Database {
 public:
