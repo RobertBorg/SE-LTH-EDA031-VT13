@@ -43,8 +43,12 @@ public:
 	AnsListNewsgroupPacket() = default;
 	AnsListNewsgroupPacket(NewsGroups &newsGroups_) : newsGroups(newsGroups_) {}
 	virtual void process() const {
-		for (NewsGroup ng : this->newsGroups) {
-			cout <<"Id :" << ng.first << " Name: " << ng.second << endl;
+		if(this->newsGroups.size() != 0){
+			for (NewsGroup ng : this->newsGroups) {
+				cout <<"Id :" << ng.first << " Name: " << ng.second << endl;
+			}
+		} else {
+			cout << "There are no newsgroups." << endl;
 		}
 	}
 
