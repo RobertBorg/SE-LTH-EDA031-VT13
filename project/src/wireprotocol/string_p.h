@@ -23,8 +23,8 @@ struct string_p : public Packet{
 };
 
 
-
-Connection &operator>>(Connection &in, string_p &rhs) {
+template <typename istream>
+istream &operator>>(istream &in, string_p &rhs) {
 	Packet::eat(in, protocol::Protocol::PAR_STRING);
 	num_p size;
 	in >> size;
@@ -36,8 +36,8 @@ Connection &operator>>(Connection &in, string_p &rhs) {
 	return in;
 }
 
-
-Connection &operator<<(Connection &out, const string_p &rhs) {
+template <typename ostream>
+ostream &operator<<(ostream &out, const string_p &rhs) {
 	out << protocol::Protocol::PAR_STRING;
 	num_p size(rhs.value.length());
 	out << size;

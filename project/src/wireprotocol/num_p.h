@@ -17,14 +17,15 @@ struct num_p : public Packet{
 	uint32_t value;
 };
 
-
-Connection& operator>>(Connection &in, num_p &rhs) {
+template <typename istream>
+istream& operator>>(istream &in, num_p &rhs) {
 	Packet::eat(in, protocol::Protocol::PAR_NUM);
 	in >> rhs.value;
 	return in;
 }
 
-Connection& operator<<(Connection &out, const num_p &rhs) {
+template <typename ostream>
+ostream& operator<<(ostream &out, const num_p &rhs) {
 	out << protocol::Protocol::PAR_NUM;
 	out << rhs.value;
 	return out;
