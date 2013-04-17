@@ -52,9 +52,9 @@ public:
 			"mode-of-operations:" << endl <<
 			"list-newsgroup - lists all news groups and their ids" << endl <<
 			"create-newsgroup [string title] - creates a newsgroup with title [string title]" << endl <<
-			"delete-newsgroup [int id] - deletes newsgroup with id [id]" << endl <<
-			"list-article [int newsgroup] - lists articles title and their ids from newsgroup [int newsgroup]" << endl <<
-			"create-article [int id] [string title] [string author] [string text] - creates an article in newsgroup [int id]" << endl <<
+			"delete-newsgroup [int newsgroupId] - deletes newsgroup with id [newsgroupId]" << endl <<
+			"list-article [int newsgroupId] - lists articles title and their ids from newsgroup [int newsgroupId]" << endl <<
+			"create-article [int newsgroupId] [string title] [string author] [string text] - creates an article in newsgroup [int id]" << endl <<
 			"delete-article [int newsgroupId] [int articleId] - deletes article [int articleId] in newsgroup [int newsgroupId]" << endl <<
 			"get-article [int newsgroupId] [int articleId] - gets article [int articleId] in newsgroup [int newsgroupId]" << endl;
 
