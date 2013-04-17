@@ -8,6 +8,30 @@ using std::endl;
 #include <boost/filesystem.hpp>
 using namespace boost::filesystem;
 
+#include "../wireprotocol/string_p.h";
+
+/**
+--  Fstream works like the standard fstream, but you can put a path object instead of string as first parameter.
+
+-- Directory structure
+
+ 		database/
+ 			max 		-- file that contains an uint that tells the last ng-ID created in this database
+ 			NGID1/
+ 				max    -- file that contains an uint that tells the last art-ID created In this Newsgroup
+ 			NGID2/
+ 				max
+ 				ArtID1   -- file that contains three string_p, title, author and text
+ 			NGID3/
+ 				max
+ 				ArtID1
+ 				ArtID2
+
+
+NGID1 is a number
+ArtID1 is a number
+
+**/
 
 class OnFileDatabase : public Database {
 public:
@@ -70,15 +94,12 @@ public:
 			artPath.append(to_string(artCounter));
 			if (!exists(artPath)){
 				stream.open(artPath, fstream::in | fstream:trunc);
-				writeArticle(article, stream);
+				stream << string_p(article->title) << string_p(article->author) << string_p(article->text);
 				stream.close();
 			}
 		}
 	}
 
-	void writeArticle(shared_ptr<Article> art, fstream &s){
-		s << art->title << art->author << art->text;
-	}
 
 	shared_ptr<Article> getArticle(uint32_t artId, uint32_t NGId){
 		path artPath("database/");
@@ -94,13 +115,31 @@ public:
 		fstream stream;
 		stream.open(artPath, fstream::out);
 		shared_ptr<Article> article(new Article());
-		stream >> article->title >> article->author >> article->text
-
+		string_p title, author, text;
+		stream >> title >> author >> text;
+		article->title = title;
+		article->author = author;
+		article->text = text;
+		return article;
 	}
 
 
 	void addNewsgroup(shared_ptr<Newsgroup> newsgroup){
+		string number = to_string(newsgroup.Id);
+		string pathStr("database");
+		pathStr.append("/");
+		pathStr.append(number);
+		path ngPath(pathStr);
 
+		if (exists(ngPath)){
+			throw NGAlreadyExistsException();
+		}
+		create_directory(ngPath);
+		pathStr.append("/max");
+		fstream stream;
+		stream.open(pathStr, fstream::in | fstream:trunc);
+		uint artCounter = 1;
+		stream << artCounter;
 	}
 
 	const auto getNewsgroupBegin(){
@@ -117,10 +156,36 @@ public:
 
 
 	void deleteArticle(uint32_t artId, uint32_t ngId){
+		string number = to_string(ngId);
+		string pathStr("database");
+		pathStr.append("/");
+		pathStr.append(number);
+		path ngPath(pathStr);
+
+		if (!exists(ngPath)){
+			throw NGDoesntExistException();
+		}
+		string artNum = to_string(artId);
+		pathStr.append("/");
+		pathStr.append(artNum);
+		if (!exists(ngPath)){
+			throw ArtDoesntExistException();
+		}
+
+		remove_all(ngPath);
 	}
 
 	void deleteNewsgroup(uint32_t ngId){
-		
+		string number = to_string(newsgroup.Id);
+		string pathStr("database");
+		pathStr.append("/");
+		pathStr.append(number);
+		path ngPath(pathStr);
+
+		if (!exists(ngPath)){
+			throw NGDoesntExistException();
+		}
+		remove_all(ngPath);
 	}
 };
 
