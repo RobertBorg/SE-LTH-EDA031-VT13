@@ -50,6 +50,7 @@ public:
 		} else {
 			// P is a directory
 			// Each folder in P represents a newsgroup
+			// just continue
 		}
 		if (exists(ngCountFile)){
 			if (is_directory(ngCountFile)){
@@ -187,10 +188,54 @@ public:
 		}
 		remove_all(ngPath);
 	}
-};
 
 private:
 	path p;
 	uint ngCounter;
+};
+
+class ArticleIterator {
+
+	ArticleIterator(uint32_t ngId){
+		string pathstr = "database/";
+		pathstr.append = to_string(ngId);
+		path ngPath(pathstr);
+		dirItr(ngPath);
+	}
+
+	ArticleIterator& ArticleIterator::operator++() {
+        ++dirItr;
+        return *this;
+    }
+
+	bool ArticleIterator::operator==(const ArticleIterator& ai) const {
+        return dirItr == ai.dirItr;
+    }
+    bool ArticleIterator::operator!=(const ArticleIterator& ai) const {
+        return !(*this == ai);
+    }
+
+    shared_ptr<Article> ArticleIterator::operator*() {
+    	directory_entry *entry = *dirItr;
+    	path p = entry->path();
+    	fstream stream(p, fstream::out);
+
+    	shared_ptr<Article> art(new Article());
+
+    	string_p title, author, text;
+    	stream << title << author << text;
+    	art->title = title;
+    	art->author = author;
+    	art->text = text;
+
+    	return art;
+    }
+
+
+private:
+	directory_iterator dirItr;
+};
+
+
 
 #endif
