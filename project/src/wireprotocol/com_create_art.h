@@ -1,38 +1,10 @@
 #ifndef COM_CREATE_ART_H__
 #define COM_CREATE_ART_H__
 #include "packet.h"
-template< typename Database>
-class ComCreateArtPacket : public ComPacket<Database> {
-template <typename Database2>
-friend Connection& operator>>(Connection &in, ComCreateArtPacket<Database2> &rhs);
-template <typename Database2>
-friend Connection& operator<<(Connection &out, ComCreateArtPacket<Database2> &rhs);
-public:
-	ComCreateArtPacket() = default;
-	ComCreateArtPacket(const uint32_t &newsGroupNumber_, string &title_, string &author_, string &text_) 
-		: newsGroupNumber(newsGroupNumber_), title(title_), author(author_), text(text_) {}
-	virtual shared_ptr<AnsPacket> process(Database& db) const {
-		try{
-			shared_ptr<Article> article(new Article());
-			article->title = title;
-			article->author = author;
-			article->text = text;
-			db.addArticle(article);
-			shared_ptr<AnsPacket> answerPacket(new AnsCreateArticlePacket(true));
-			return answerPacket;
-		} catch (NGAlreadyExistsException){
-			shared_ptr<AnsPacket> answerPacket(new AnsCreateArticlePacket(false));
-			return answerPacket;
-		}
-	}
-private:
-	uint32_t newsGroupNumber;
-	string title;
-	string author;
-	string text;
-};
-template < typename Database>
-Connection& operator>>(Connection &in, ComCreateArtPacket<Database> &rhs) {
+
+template <typename Database, typename istream = Connection, typename ostream = Connection>
+class ComCreateArtPacket : public ComPacket<Database, istream, ostream> {
+friend istream& operator>>(istream &in, ComCreateArtPacket<Database, istream, ostream> &rhs) {
 	num_p groupNum;
 	Packet::eat(in, protocol::Protocol::COM_CREATE_ART);
 	string_p title;
@@ -46,9 +18,7 @@ Connection& operator>>(Connection &in, ComCreateArtPacket<Database> &rhs) {
 	rhs.text = text;
 	return in;
 }
-
-template < typename Database>
-Connection& operator<<(Connection &out, ComCreateArtPacket<Database> &rhs) {
+friend ostream& operator<<(ostream &out, ComCreateArtPacket<Database, istream, ostream> &rhs) {
 	out << protocol::Protocol::COM_CREATE_ART;
 	out << num_p(rhs.newsGroupNumber);
 	out << string_p(rhs.title);
@@ -57,5 +27,39 @@ Connection& operator<<(Connection &out, ComCreateArtPacket<Database> &rhs) {
 	out << protocol::Protocol::COM_END;
 	return out;
 }
+public:
+	ComCreateArtPacket() = default;
+	ComCreateArtPacket(const uint32_t &newsGroupNumber_, const string &title_, const string &author_, const string &text_) 
+		: newsGroupNumber(newsGroupNumber_), title(title_), author(author_), text(text_) {}
+	virtual shared_ptr<AnsPacket<istream, ostream>> process(Database& db) const {
+		try{
+			shared_ptr<Article> article(new Article());
+			article->title = title;
+			article->author = author;
+			article->text = text;
+			article->newsgroupId = newsGroupNumber;
+			db.addArticle(article);
+			shared_ptr<AnsPacket<istream, ostream>> answerPacket(new AnsCreateArticlePacket<istream, ostream>(true));
+			return answerPacket;
+		} catch (NGAlreadyExistsException){
+			shared_ptr<AnsPacket<istream, ostream>> answerPacket(new AnsCreateArticlePacket<istream, ostream>(false));
+			return answerPacket;
+		}
+	}
+
+	virtual void write(ostream &out) {
+		out << *this;
+	}
+
+	virtual void read(istream &in) {
+		in >> *this;
+	}
+
+private:
+	uint32_t newsGroupNumber;
+	string title;
+	string author;
+	string text;
+};
 
 #endif /* end of include guard: COM_CREATE_ART_H__ */

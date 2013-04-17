@@ -4,41 +4,31 @@
 using std::string;
 #include <utility>
 using std::pair;
+#include <memory>
+using std::shared_ptr;
 #include "packet.h"
 
-class AnsListNewsgroupPacket : public AnsPacket {
-friend Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs);
-friend Connection& operator<<(Connection &out, AnsListNewsgroupPacket &rhs);
-public:
-	typedef pair<uint32_t, string> NewsGroup;
-	typedef vector<NewsGroup> NewsGroups;
-	AnsListNewsgroupPacket() = default;
-	AnsListNewsgroupPacket(NewsGroups &newsGroups_) : newsGroups(newsGroups_) {}
-	virtual void process() const {
-		for (NewsGroup ng : this->newsGroups) {
-			cout <<"Id :" << ng.first << " Name: " << ng.second << endl;
-		}
-	}
-private:
-	NewsGroups newsGroups;
-};
+#include <iostream>
+using std::cout;
+using std::endl;
 
-Connection& operator>>(Connection &in, AnsListNewsgroupPacket &rhs) {
+template <typename istream, typename ostream>
+class AnsListNewsgroupPacket : public AnsPacket<istream, ostream> {
+friend istream& operator>>(istream &in, AnsListNewsgroupPacket<istream, ostream> &rhs) {
 	Packet::eat(in, protocol::Protocol::ANS_LIST_NG);
 	num_p numNG;
 	in >> numNG;
-	for(unsigned int i = 0 ;i < numNG; ++i){
+	for(unsigned int i = 0 ;i < numNG.value; ++i){
 		num_p id;
 		string_p str;
 		in >> id >> str;
-		rhs.newsGroups.push_back(make_pair(id, str));
+		rhs.newsGroups.push_back(make_pair(id.value, str));
 	}
 	Packet::eat(in, protocol::Protocol::COM_END);
 	return in;
 }
-
-Connection& operator<<(Connection &out, AnsListNewsgroupPacket &rhs) {
-	out << protocol::Protocol::ANS_LIST_NG;
+friend ostream& operator<<(ostream &out, AnsListNewsgroupPacket<istream, ostream> &rhs){
+	out << protocol::Protocol::proto::ANS_LIST_NG;
 	out << num_p(static_cast<int>(rhs.newsGroups.size()));
 	for(AnsListNewsgroupPacket::NewsGroup ng : rhs.newsGroups) {
 		out << num_p(ng.first);
@@ -47,5 +37,31 @@ Connection& operator<<(Connection &out, AnsListNewsgroupPacket &rhs) {
 	out << protocol::Protocol::COM_END;
 	return out;
 }
+public:
+	typedef pair<uint32_t, string> NewsGroup;
+	typedef vector<NewsGroup> NewsGroups;
+	AnsListNewsgroupPacket() = default;
+	AnsListNewsgroupPacket(NewsGroups &newsGroups_) : newsGroups(newsGroups_) {}
+	virtual void process() const {
+		if(this->newsGroups.size() != 0){
+			for (NewsGroup ng : this->newsGroups) {
+				cout <<"Id :" << ng.first << " Name: " << ng.second << endl;
+			}
+		} else {
+			cout << "There are no newsgroups." << endl;
+		}
+	}
+
+	virtual void write(ostream &out) {
+		out << *this;
+	}
+
+	virtual void read(istream &in) {
+		in >> *this;
+	}
+
+private:
+	NewsGroups newsGroups;
+};
 
 #endif /* end of include guard: ANS_LIST_NG_H__ */

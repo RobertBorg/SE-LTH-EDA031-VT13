@@ -9,7 +9,30 @@ using std::shared_ptr;
 
 using namespace client_server;
 using std::cout;
-using std:: cerr;
+using std::cerr;
+
+template <typename Database>
+void mainLoop(Server &server, ServerMessageHandler<Database> &msgHandler, Database &db) {
+    while (true) {
+        Connection* conn = server.waitForActivity();
+        if (conn != 0) {
+            try {
+                shared_ptr<ComPacket<InMemoryDatabase> > packet = msgHandler.parsePkg(*conn);
+                shared_ptr<AnsPacket<Connection, Connection> > ansPacket = packet->process(db);
+                ansPacket->write(*conn);
+            }
+            catch (ConnectionClosedException&) {
+                server.deregisterConnection(conn);
+                delete conn;
+                cout << "Client closed connection" << endl;
+            }
+        }
+        else {
+            server.registerConnection(new Connection);
+            cout << "New client connects" << endl;
+        }
+    }
+}
 
 int main(int argc, char* argv[]) {
 	ServerOptions o(argc,argv);
@@ -25,27 +48,17 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    ServerMessageHandler<InMemoryDatabase> msgHandler;
-    InMemoryDatabase db;
-
-    while (true) {
-        Connection* conn = server.waitForActivity();
-        if (conn != 0) {
-            try {
-                shared_ptr<ComPacket<InMemoryDatabase> > packet = msgHandler.parsePkg(*conn);
-                shared_ptr<AnsPacket> ansPacket = packet->process(db);
-                *conn << *ansPacket;
-            }
-            catch (ConnectionClosedException&) {
-                server.deregisterConnection(conn);
-                delete conn;
-                cout << "Client closed connection" << endl;
-            }
-        }
-        else {
-            server.registerConnection(new Connection);
-            cout << "New client connects" << endl;
-        }
+    if(o["persistent-db"].as<bool>()){
+        cerr << "on file db not implemented" << endl;
+        //ServerMessageHandler<OnFileDatabase> msgHandler;
+        //OnFileDatabase db;
+        //mainLoop(server, msgHandler, db);
+    } else {
+        ServerMessageHandler<InMemoryDatabase> msgHandler;
+        InMemoryDatabase db;
+        mainLoop(server, msgHandler, db);
     }
+
+
 	return 0;
 }

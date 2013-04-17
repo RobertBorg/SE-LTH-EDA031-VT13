@@ -1,44 +1,41 @@
 #ifndef LIST_PACKAGE_H__
 #define LIST_PACKAGE_H__
 #include "../database/newsgroup.h"
+#include "packet.h"
 
 #include <iostream>
 using std::cout;
 using std::endl;
 
-template <typename Database>
-class ComListNewsgroupPacket : public ComPacket<Database>{
-template <typename Database2>
-friend Connection& operator>>(Connection &in, ComListNewsgroupPacket<Database2> &rhs);
-template <typename Database2>
-friend Connection& operator<<(Connection &out, ComListNewsgroupPacket<Database2> &rhs);
-public:
-	virtual shared_ptr<AnsPacket> process(Database& db) const {
-		vector<AnsListNewsgroupPacket::NewsGroup> newsgroups;
-		for_each(db.getNewsgroupBegin(), db.getNewsgroupEnd(), 
-			[&newsgroups] (pair<const uint32_t, shared_ptr<Newsgroup> > pair) {newsgroups.push_back(make_pair(pair.first, pair.second->name)); });
-		shared_ptr<AnsPacket> answerPacket(new AnsListNewsgroupPacket(newsgroups));
-		return answerPacket;
-	}
-};
-
-template <typename Database>
-Connection& operator>>(Connection &in, ComListNewsgroupPacket<Database> &rhs) {
-	cout << "starting parsing in operator >>" << endl;
+template <typename Database, typename istream = Connection, typename ostream = Connection>
+class ComListNewsgroupPacket : public ComPacket<Database, istream, ostream> {
+friend Connection& operator>>(istream &in, ComListNewsgroupPacket<Database, istream, ostream> &rhs) {
 	Packet::eat(in, protocol::Protocol::COM_LIST_NG);
 	Packet::eat(in, protocol::Protocol::COM_END);
-	cout << "parsing ok" << endl;
 	return in;
 }
-
-template <typename Database>
-Connection& operator<<(Connection &out, ComListNewsgroupPacket<Database> &rhs) {
-	uint8_t a =protocol::Protocol::COM_LIST_NG;
-	out << a;
-	a =protocol::Protocol::COM_END;
-	out << a;
+friend Connection& operator<<(ostream &out, ComListNewsgroupPacket<Database, istream, ostream> &rhs) {
+	out << protocol::Protocol::COM_LIST_NG;
+	out << protocol::Protocol::COM_END;
 	return out;
 }
+public:
+	virtual shared_ptr<AnsPacket<istream, ostream>> process(Database& db) const {
+		vector<typename AnsListNewsgroupPacket<istream, ostream>::NewsGroup> newsgroups;
+		for_each(db.getNewsgroupBegin(), db.getNewsgroupEnd(), 
+			[&newsgroups] (pair<const uint32_t, shared_ptr<Newsgroup> > pair) {newsgroups.push_back(make_pair(pair.first, pair.second->name)); });
+		shared_ptr<AnsPacket<istream, ostream>> answerPacket(new AnsListNewsgroupPacket<istream, ostream>(newsgroups));
+		return answerPacket;
+	}
 
+	virtual void write(ostream &out) {
+		out << *this;
+	}
+
+	virtual void read(istream &in) {
+		in >> *this;
+	}
+
+};
 
 #endif

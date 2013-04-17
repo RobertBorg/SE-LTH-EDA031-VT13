@@ -8,33 +8,62 @@ using std::shared_ptr;
 
 #include "../../lib/clientserver/connection.h"
 using client_server::Connection;
+#include "../../lib/clientserver/protocol.h"
 
 #include <iostream>
 using std::cout;
+using std::cerr;
 using std::endl;
 
 
-struct ProtocolViolationException{
+struct SeralizationViolationException {
 	uint8_t expected;
 	uint8_t actual;
 };
 
-Connection& operator>>(Connection &in, uint8_t &rhs) {
+template <typename istream>
+istream& operator>>(istream &in, uint8_t &rhs) {
 	rhs = in.read();
 	return in;
 }
 
-Connection& operator>>(Connection &in, char &rhs) {
+template <typename istream>
+istream& operator>>(istream &in, char &rhs) {
 	rhs = in.read();
 	return in;
 }
 
-Connection& operator<<(Connection &out, uint8_t &rhs) {
+
+template <typename ostream>
+ostream& operator<<(ostream &out, const char &rhs) {
 	out.write(rhs);
 	return out;
 }
 
-Connection& operator>>(Connection &in, uint32_t &t) {
+template <typename ostream>
+ostream& operator<<(ostream &out, const uint8_t &rhs) {
+	out.write(rhs);
+	return out;
+}
+
+template <typename ostream>
+ostream& operator<<(ostream &out, const protocol::Protocol::proto &rhs) {
+	uint8_t temp = rhs;
+	out << temp;
+	return out;
+}
+
+template <typename istream>
+istream& operator>>(istream &in, protocol::Protocol::proto &rhs) {
+	uint8_t temp;
+	in >> temp;
+	rhs = static_cast<protocol::Protocol::proto>(temp);
+	return in;
+}
+
+
+template <typename istream>
+istream& operator>>(istream &in, uint32_t &t) {
 	t = 0;
 	uint8_t byte;
 	for(int i = 0; i < 4; ++i) {
@@ -45,7 +74,8 @@ Connection& operator>>(Connection &in, uint32_t &t) {
 	return in;
 }
 
-Connection& operator<<(Connection &out, uint32_t rhs) {
+template <typename ostream>
+ostream& operator<<(ostream &out, uint32_t rhs) {
 	int bitOffset = 24;
 	for(int i = 0; i < 4; ++i) {
 		uint8_t byte = (rhs >> bitOffset) & 0xFF;
@@ -55,19 +85,22 @@ Connection& operator<<(Connection &out, uint32_t rhs) {
 	return out;
 }
 
-Connection& operator<<(Connection &out, int &rhs) {
+template <typename ostream>
+ostream& operator<<(ostream &out, int &rhs) {
 	out << static_cast<uint32_t>(rhs);
 	return out;
 }
 
 
+
 class Packet {
 public: 
-	static void eat(Connection &in, const uint8_t &expects ){
+	template <typename istream>
+	static void eat(istream &in, const uint8_t &expects ){
         uint8_t next;
         in >> next;
         if (next != expects){
-        	ProtocolViolationException pe;
+        	SeralizationViolationException pe;
         	pe.expected = expects;
         	pe.actual = next;
         	
@@ -78,28 +111,35 @@ public:
 
 };
 
-
+template <typename istream = Connection, typename ostream = Connection>
 class AnsPacket : public Packet{
 public:
-	virtual void process() const = 0;
+	virtual void process() const {
+	}
+
+	virtual void write(ostream &out) {
+		cerr << "write not overloaded" << endl;
+	}
+
+	virtual void read(istream &in) {
+		cerr << "read not overloaded" << endl;
+	}
 };
 
-template <typename Database>
+template <typename Database, typename istream = Connection, typename ostream = Connection>
 class ComPacket : public Packet {
 public:
-	virtual shared_ptr<AnsPacket> process(Database& db) const = 0;
+	virtual shared_ptr<AnsPacket<istream, ostream>> process(Database& db) const {
+		return nullptr;
+	}
+
+	virtual void write(ostream &out) {
+		cerr << "write not overloaded" << endl;
+	}
+
+	virtual void read(istream &in) {
+		cerr << "read not overloaded" << endl;
+	}
 };
-
-template<typename Packet>
-Connection &operator<<(Connection &out, Packet &p) {
-	out << p;
-	return out;
-}
-
-template<typename Packet>
-Connection &operator>>(Connection &in, Packet &p) {
-	in >> p;
-	return in;
-}
 
 #endif

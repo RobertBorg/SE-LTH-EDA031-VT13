@@ -15,38 +15,28 @@ class ServerOptions : private variables_map {
 public:
 	using variables_map::operator[];
 	using variables_map::count;
-	ServerOptions(int argc, char* argv[]) : cmdDesc("Allowed options"), cmdHiddenDesc("Hidden command line options") {
+	ServerOptions(int argc, char* argv[]) : cmdDesc("Allowed options") {
 		cmdDesc.add_options()
-			("help", "produce help message"),
-			("server-port",value<uint16_t>() ,"produce help message"),
-			("persistent-db", value<bool>(), "persistent database on disk");
-
-		cmdHiddenDesc.add_options()
-			("server-port",value<uint16_t>(), "produce help message"),
-			("persistent-db", value<bool>(), "persistent database on disk");
+			("help", "produce help message")
+			("server-port",value<uint16_t>() ,"liston on port arg")
+			("persistent-db", value<bool>(), "persistent database on disk [true/false]");
 		
 		
 
-		store(command_line_parser(argc, argv).options(cmdHiddenDesc).run(), *this);
+		store(command_line_parser(argc, argv).options(cmdDesc).run(), *this);
 		notify();
 	}
 	ServerOptions& operator() () {
-		if(!count("persistent-db") || count("help")) {
+		if(count("help") || !count("server-port") || !count("persistent-db")) {
 			cout << 
 			"Usage:" << endl <<
-			"newsserver [options] " << endl <<
-			"options:" << endl <<
-			"persistent [true/false] - persistent database on disk" << endl;
-			
-
+			"newsserver [options] " << endl;
 			cout << cmdDesc << endl;
 		}
 		return *this;
 	}
 private:
 	options_description cmdDesc;
-	options_description cmdHiddenDesc;
-	positional_options_description posCmdDesc;
 };
 
 #endif /* end of include guard: OPTIONS_H__ */
