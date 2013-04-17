@@ -1,15 +1,23 @@
-#include "server_options.h"
-#include "wireprotocol/packet.h"
-#include "wireprotocol/server_messagehandler.h"
-#include "database/in_memory_database.h"
-#include "../lib/clientserver/connection.h"
+#include <iostream>
+using std::cout;
+using std::cerr;
+using std::endl;
 
 #include <memory>
 using std::shared_ptr;
 
+
+#include "../lib/clientserver/connection.h"
 using namespace client_server;
-using std::cout;
-using std::cerr;
+
+
+#include "server_options.h"
+#include "wireprotocol/packet.h"
+#include "wireprotocol/server_messagehandler.h"
+#include "database/in_memory_database.h"
+
+
+
 
 template <typename Database>
 void mainLoop(Server &server, ServerMessageHandler<Database> &msgHandler, Database &db) {
@@ -35,8 +43,8 @@ void mainLoop(Server &server, ServerMessageHandler<Database> &msgHandler, Databa
 }
 
 int main(int argc, char* argv[]) {
-	ServerOptions o(argc,argv);
-	o();
+    ServerOptions o(argc,argv);
+    o();
     if(!o.count("server-port")) {
         return 0;
     }

@@ -1,6 +1,7 @@
 #ifndef COM_CREATE_ART_H__
 #define COM_CREATE_ART_H__
 #include "packet.h"
+#include "../database/database_exeptions.h"
 
 template <typename Database, typename istream = Connection, typename ostream = Connection>
 class ComCreateArtPacket : public ComPacket<Database, istream, ostream> {
@@ -41,7 +42,7 @@ public:
 			db.addArticle(article);
 			shared_ptr<AnsPacket<istream, ostream>> answerPacket(new AnsCreateArticlePacket<istream, ostream>(true));
 			return answerPacket;
-		} catch (NGAlreadyExistsException){
+		} catch (NGDoesntExistException &ex){
 			shared_ptr<AnsPacket<istream, ostream>> answerPacket(new AnsCreateArticlePacket<istream, ostream>(false));
 			return answerPacket;
 		}
