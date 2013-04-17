@@ -91,13 +91,15 @@ public:
 			"Author: " << author << endl <<
 			"Text: " << text << endl;
 		} else if (this->ngNotFound){
-			cout << "Newsgroup not found...";
+			cout << "Newsgroup not found..." << endl;
 		} else if (this->artNotFound){
-			cout << "Article not found...";
+			cout << "Article not found..." << endl;
 		}
 		
 	}
 	AnsGetArticlePacket() = default;
+	AnsGetArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_)
+		: success(success_), ngNotFound(ngNotFound_), artNotFound(artNotFound_) {}
 	AnsGetArticlePacket(bool success_, bool ngNotFound_, bool artNotFound_, string title_, string author_, string text_) 
 		: success(success_), ngNotFound(ngNotFound_), artNotFound(artNotFound_)
 		, title(title_), author(author_), text(text_) {}
@@ -107,10 +109,10 @@ public:
 		return shared_ptr<AnsGetArticlePacket<istream, ostream>>(new AnsGetArticlePacket<istream, ostream>(true, false, false, title, author, text));
 	}
 	static shared_ptr<AnsGetArticlePacket<istream, ostream>> createNGNotFound(){
-		return shared_ptr<AnsGetArticlePacket<istream, ostream>>(new AnsGetArticlePacket<istream, ostream>(false, true, false, nullptr, nullptr, nullptr));
+		return shared_ptr<AnsGetArticlePacket<istream, ostream>>(new AnsGetArticlePacket<istream, ostream>(false, true, false));
 	}
 	static shared_ptr<AnsGetArticlePacket<istream, ostream>> createArtNotFound(){
-		return shared_ptr<AnsGetArticlePacket<istream, ostream>>(new AnsGetArticlePacket<istream, ostream>(false, false, true, nullptr, nullptr, nullptr));
+		return shared_ptr<AnsGetArticlePacket<istream, ostream>>(new AnsGetArticlePacket<istream, ostream>(false, false, true));
 	}
 
 	virtual void write(ostream &out) {

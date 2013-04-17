@@ -1,6 +1,12 @@
 #ifndef IN_MEMORY_DATABASE_H__
 #define IN_MEMORY_DATABASE_H__
+#include "database.h"
+#include "database_exceptions.h"
 
+#include <iostream>
+using std::cout;
+using std::cerr;
+using std::endl;
 
 class InMemoryDatabase : public Database< map<uint32_t, shared_ptr<Newsgroup> >::const_iterator, map<uint32_t, shared_ptr<Article> >::const_iterator > {
 public:

@@ -1,7 +1,7 @@
 #ifndef COM_CREATE_ART_H__
 #define COM_CREATE_ART_H__
 #include "packet.h"
-#include "../database/database_exeptions.h"
+#include "../database/database_exceptions.h"
 
 template <typename Database, typename istream = Connection, typename ostream = Connection>
 class ComCreateArtPacket : public ComPacket<Database, istream, ostream> {

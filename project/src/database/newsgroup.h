@@ -5,7 +5,12 @@
 using std::map;
 #include <utility>
 using std::make_pair;
-#include "database_exeptions.h"
+#include "database_exceptions.h"
+
+#include <iostream>
+using std::cout;
+using std::cerr;
+using std::endl;
 
 class Newsgroup {
 private:

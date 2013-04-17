@@ -6,6 +6,11 @@ using std::shared_ptr;
 using std::dynamic_pointer_cast;
 
 
+#include <iostream>
+using std::cout;
+using std::cerr;
+using std::endl;
+
 template <typename Database, typename istream = Connection, typename ostream = Connection>
 class ComGetArtPacket : public ComPacket<Database, istream, ostream> {
 friend istream& operator>>(istream &in, ComGetArtPacket<Database, istream, ostream> &rhs) {
@@ -34,12 +39,12 @@ public:
 			shared_ptr<AnsPacket<istream, ostream>> answerPacket = 
 				dynamic_pointer_cast<AnsPacket<istream, ostream> >(AnsGetArticlePacket<istream, ostream>::createSuccessful(article->title, article->author, article->text));
 			return answerPacket;
-		} catch (NGDoesntExistException e){
+		} catch (NGDoesntExistException &e){
 			shared_ptr<AnsPacket<istream, ostream>> answerPacket = AnsGetArticlePacket<istream, ostream>::createNGNotFound();
-			return dynamic_pointer_cast<AnsGetArticlePacket<istream, ostream> >(answerPacket);
-		} catch (ArtDoesntExistException e){
-			shared_ptr<AnsPacket<istream, ostream>> answerPacket =AnsGetArticlePacket<istream, ostream>::createArtNotFound();
-			return dynamic_pointer_cast<AnsGetArticlePacket<istream, ostream> >(answerPacket);
+			return dynamic_pointer_cast<AnsPacket<istream, ostream> >(answerPacket);
+		} catch (ArtDoesntExistException &e){
+			shared_ptr<AnsPacket<istream, ostream>> answerPacket = AnsGetArticlePacket<istream, ostream>::createArtNotFound();
+			return dynamic_pointer_cast<AnsPacket<istream, ostream> >(answerPacket);
 		}
 	}
 	
