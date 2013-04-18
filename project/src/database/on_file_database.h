@@ -239,7 +239,7 @@ class ArticleIterator {
         return !(*this == ai);
     }
 
-    shared_ptr<Article> ArticleIterator::operator*() {
+    const pair<uint32_t, shared_ptr<Article> > ArticleIterator::operator*() {
     	directory_entry *entry = *dirItr;
     	path p = entry->path();
     	fstream stream;
@@ -257,7 +257,7 @@ class ArticleIterator {
     	uint32_t id = static_cast<uint32_t>(iid);
     	art->id = id;
 
-    	return art;
+    	return makepair(id, art);
     }
 private:
 	directory_iterator dirItr;
@@ -283,7 +283,7 @@ class NGIterator {
         return !(*this == ni);
     }
 
-    shared_ptr<Newsgroup> NGIterator::operator*() {
+    const pair<uint32_t, shared_ptr<Newsgroup> > NGIterator::operator*() {
     	directory_entry *entry = *dirItr;
 
     	int iid = atoi(p.fileName());
@@ -301,7 +301,7 @@ class NGIterator {
     	ng->id = id;
     	ng->name = name;
 
-    	return ng;
+    	return makepair(id, ng);
     }
 
 private:
