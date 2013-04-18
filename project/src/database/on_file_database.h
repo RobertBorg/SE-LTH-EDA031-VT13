@@ -11,7 +11,7 @@ using namespace boost::filesystem;
 #include "../wireprotocol/string_p.h";
 
 /**
---  Fstream works like the standard fstream, but you can put a path object instead of string as first parameter.
+--  fstream works like the standard fstream, but you can put a path object instead of string as first parameter.
 
 -- Directory structure
 
