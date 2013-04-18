@@ -286,10 +286,12 @@ class NGIterator {
     const pair<uint32_t, shared_ptr<Newsgroup> > NGIterator::operator*() {
     	directory_entry *entry = *dirItr;
 
-    	int iid = atoi(p.fileName());
-    	uint32_t id = static_cast<uint32_t>(iid);
+    	
 
     	path p = entry->path();
+		int iid = atoi(p.fileName());
+    	uint32_t id = static_cast<uint32_t>(iid);
+
     	p += path("/name");
 
     	fstream stream;
