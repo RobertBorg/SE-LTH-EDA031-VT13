@@ -51,9 +51,14 @@ namespace client_server {
         
         /* Write a character */
         void write(unsigned char ch) const throw(ConnectionClosedException);
-        
+        /* Same as write, but has the same name as standard stream */
+        void put(unsigned char ch) const throw(ConnectionClosedException);
+
+
         /* Read a character */
         unsigned char read() const throw(ConnectionClosedException);
+        /* Same as read, but has the same name as standard stream */
+        unsigned char get() const throw(ConnectionClosedException);
 
         unsigned char peek() const;
 

@@ -15,9 +15,9 @@ friend istream& operator>>(istream &in, AnsDeleteArticlePacket<istream, ostream>
 			break;
 
 		case protocol::Protocol::ANS_NAK:
-			uint8_t errorMsg;
-			in >> errorMsg;
-			switch(errorMsg){
+			uint8_t errorCode;
+			in >> errorCode;
+			switch(errorCode){
 				case protocol::Protocol::ERR_NG_DOES_NOT_EXIST:
 					rhs.ngNotFound = true;
 					break;

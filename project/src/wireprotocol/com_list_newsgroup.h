@@ -6,6 +6,7 @@
 #include <iostream>
 using std::cout;
 using std::endl;
+using std::for_each;
 
 template <typename Database, typename istream = Connection, typename ostream = Connection>
 class ComListNewsgroupPacket : public ComPacket<Database, istream, ostream> {

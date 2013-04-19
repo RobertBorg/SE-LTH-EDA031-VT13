@@ -17,6 +17,7 @@ private:
 	map<uint32_t, shared_ptr<Article>> articles;
 
 public:
+	Newsgroup() {}
 	Newsgroup(uint32_t id_, string name_): id(id_), name(name_){}
 	uint32_t id; // Must be unique
 	string name;

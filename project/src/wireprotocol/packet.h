@@ -23,26 +23,26 @@ struct SeralizationViolationException {
 
 template <typename istream>
 istream& operator>>(istream &in, uint8_t &rhs) {
-	rhs = in.read();
+	rhs = in.get();
 	return in;
 }
 
 template <typename istream>
 istream& operator>>(istream &in, char &rhs) {
-	rhs = in.read();
+	rhs = in.get();
 	return in;
 }
 
 
 template <typename ostream>
 ostream& operator<<(ostream &out, const char &rhs) {
-	out.write(rhs);
+	out.put(rhs);
 	return out;
 }
 
 template <typename ostream>
 ostream& operator<<(ostream &out, const uint8_t &rhs) {
-	out.write(rhs);
+	out.put(rhs);
 	return out;
 }
 

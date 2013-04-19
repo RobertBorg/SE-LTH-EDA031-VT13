@@ -15,8 +15,7 @@ using namespace client_server;
 #include "wireprotocol/packet.h"
 #include "wireprotocol/server_messagehandler.h"
 #include "database/in_memory_database.h"
-
-
+#include "database/on_file_database.h"
 
 
 template <typename Database>
@@ -25,7 +24,7 @@ void mainLoop(Server &server, ServerMessageHandler<Database> &msgHandler, Databa
         Connection* conn = server.waitForActivity();
         if (conn != 0) {
             try {
-                shared_ptr<ComPacket<InMemoryDatabase> > packet = msgHandler.parsePkg(*conn);
+                shared_ptr<ComPacket<Database> > packet = msgHandler.parsePkg(*conn);
                 shared_ptr<AnsPacket<Connection, Connection> > ansPacket = packet->process(db);
                 ansPacket->write(*conn);
             }
@@ -57,10 +56,10 @@ int main(int argc, char* argv[]) {
     }
 
     if(o["persistent-db"].as<bool>()){
-        cerr << "on file db not implemented" << endl;
-        //ServerMessageHandler<OnFileDatabase> msgHandler;
-        //OnFileDatabase db;
-        //mainLoop(server, msgHandler, db);
+        //cerr << "on file db not implemented" << endl;
+        ServerMessageHandler<OnFileDatabase> msgHandler;
+        OnFileDatabase db;
+        mainLoop(server, msgHandler, db);
     } else {
         ServerMessageHandler<InMemoryDatabase> msgHandler;
         InMemoryDatabase db;
