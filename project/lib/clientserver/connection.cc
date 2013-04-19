@@ -106,10 +106,6 @@ namespace client_server {
             throw ConnectionClosedException();
     }
 
-    void Connection::put(unsigned char ch) const throw(ConnectionClosedException){
-        write(ch);
-    }
-    
     unsigned char Connection::read() const throw(ConnectionClosedException) {
         if (isPeeked){
             isPeeked = false;
@@ -123,10 +119,6 @@ namespace client_server {
         if (cnt != 1)
             throw ConnectionClosedException();
         return data;
-    }
-
-    unsigned char Connection::get() const throw(ConnectionClosedException) {
-        return read();
     }
 
     unsigned char Connection::peek() const {

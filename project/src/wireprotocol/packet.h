@@ -27,9 +27,21 @@ istream& operator>>(istream &in, uint8_t &rhs) {
 	return in;
 }
 
+template <>
+Connection& operator>><Connection>(Connection &in, uint8_t &rhs) {
+	rhs = in.read();
+	return in;
+}
+
 template <typename istream>
 istream& operator>>(istream &in, char &rhs) {
 	rhs = in.get();
+	return in;
+}
+
+template <>
+Connection& operator>><Connection>(Connection &in, char &rhs) {
+	rhs = in.read();
 	return in;
 }
 
@@ -40,9 +52,21 @@ ostream& operator<<(ostream &out, const char &rhs) {
 	return out;
 }
 
+template <>
+Connection& operator<<<Connection>(Connection &out, const char &rhs) {
+	out.write(rhs);
+	return out;
+}
+
 template <typename ostream>
 ostream& operator<<(ostream &out, const uint8_t &rhs) {
 	out.put(rhs);
+	return out;
+}
+
+template <>
+Connection& operator<<<Connection>(Connection &out, const uint8_t &rhs) {
+	out.write(rhs);
 	return out;
 }
 
