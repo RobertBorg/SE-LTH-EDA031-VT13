@@ -43,7 +43,7 @@ newsreader: newsreader.o libclientserver.a
 	$(CXX) $(CXXFLAGS) newsreader.o -L. -lclientserver -lboost_program_options -o newsreader
 
 newsserver: newsserver.o libclientserver.a
-	$(CXX) $(CXXFLAGS) newsserver.o -L. -lclientserver -lboost_program_options -o newsserver
+	$(CXX) $(CXXFLAGS) newsserver.o -L. -lclientserver -lboost_system -lboost_program_options -lboost_filesystem -o newsserver
 
 # Dependencies, the implicit rule .cc => .o is used
 include $(sources:.cc=.dd)
